@@ -36,7 +36,7 @@ async def on_message(message):
 		embed=discord.Embed(title="⭐ Helptext⭐ ", description="this is what I can do ;D", color=0xee0000)
 		embed.add_field(name=";bot" , value="talk through me", inline=True)
 		embed.add_field(name=";details", value="view my code", inline=True)
-		await self.bot.say(embed=embed)
+		await client.send_message(message.channel, embed=embed)
 		return
 
    #clash with haoshaun's bot     
