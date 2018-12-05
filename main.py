@@ -40,7 +40,7 @@ async def on_message(message):
 		await client.send_message(message.channel, embed=embed)
 		return
 
-   #clash with haoshaun's bot     
+   #clash with haoshaun's bot (credits: haoshaun)
    # if message.content.startswith('vote:'):
 		await client.add_reaction(message,"\U0001F44D")
 		await client.add_reaction(message,"\U0001F44E")
@@ -61,6 +61,7 @@ async def on_message(message):
 		await client.send_file(message.channel, 'my_image.jpg')
 		return
 
+	#credits to haoshaun
 	if message.content.lower() == ';details':
 		em = discord.Embed(title='read my code!', url='https://repl.it/@VimalMuthuvel/pi-thon', colour=0xb949b5)
 		em = em.set_author(name='Minininja',url='https://github.com/usvimal')
