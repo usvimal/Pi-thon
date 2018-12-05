@@ -31,6 +31,13 @@ async def on_message(message):
 			await client.send_message(message.channel, msg)
 			return
 		return
+	
+	if message.content.lower().startswith(';help'):
+		embed=discord.Embed(title="⭐ Helptext⭐ ", description="this is what I can do ;D", color=0xee0000)
+		embed.add_field(name=;bot , value=talk through me, inline=True)
+		embed.add_field(name=;details, value=view my code, inline=True)
+		await self.bot.say(embed=embed)
+		return
 
    #clash with haoshaun's bot     
    # if message.content.startswith('vote:'):
