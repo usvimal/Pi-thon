@@ -54,9 +54,10 @@ async def on_message(message):
 		return
 
 	if message.content.lower() == ';details':
-    	em = discord.Embed(title='read my code!', url='https://repl.it/@VimalMuthuvel/pi-thon', colour=0xb949b5)
-        em = em.set_author(name='Minininja',url='https://github.com/usvimal')
-        await client.send_message(message.channel,embed=em)
+		em = discord.Embed(title='read my code!', url='https://repl.it/@VimalMuthuvel/pi-thon', colour=0xb949b5)
+		em = em.set_author(name='Minininja',url='https://github.com/usvimal')
+		await client.send_message(message.channel,embed=em)
+		return
         
 #keep_alive()
 token = os.environ.get("DISCORD_BOT_SECRET")
