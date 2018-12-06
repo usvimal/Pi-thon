@@ -40,8 +40,8 @@ async def on_message(message):
 		await client.send_message(message.channel, embed=embed)
 		return
 
-   #clash with haoshaun's bot (credits: haoshaun)
-   # if message.content.startswith('vote:'):
+   # credits to haoshaun
+   # if message.content.startswith(';vote'):
 		await client.add_reaction(message,"\U0001F44D")
 		await client.add_reaction(message,"\U0001F44E")
 		return
