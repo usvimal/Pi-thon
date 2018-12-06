@@ -41,7 +41,7 @@ async def on_message(message):
 		return
 
    # credits to haoshaun
-   # if message.content.startswith(';vote'):
+	if message.content.startswith(';vote'):
 		await client.add_reaction(message,"\U0001F44D")
 		await client.add_reaction(message,"\U0001F44E")
 		return
