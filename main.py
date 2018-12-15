@@ -1,6 +1,5 @@
 import discord
 import os
-from keep_alive import keep_alive
 
 client = discord.Client()
 
@@ -76,6 +75,5 @@ async def on_message(message):
 		await client.send_message(message.channel,embed=em)
 		return
         
-#keep_alive()
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
