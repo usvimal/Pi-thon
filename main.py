@@ -1,7 +1,7 @@
 import discord
 import os
 
-#from gglsbl import SafeBrowsingList
+from gglsbl import SafeBrowsingList
 
 sbl = SafeBrowsingList(os.environ.get("google_safe_browsing"))
 
