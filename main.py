@@ -3,8 +3,7 @@ import os
 
 #from gglsbl import SafeBrowsingList
 
-#sbl = SafeBrowsingList(os.environ.get("google_safe_browsing"))
-#sbl.update_hash_prefix_cache()
+sbl = SafeBrowsingList(os.environ.get("google_safe_browsing"))
 
 client = discord.Client()
 
@@ -80,16 +79,16 @@ async def on_message(message):
 		await client.send_message(message.channel,embed=em)
 		return
 	
-	#google safe browsing to scan links
-	#url = message.content.lower()
-	#threat_list = sbl.lookup_url(url)
-	#if threat_list == None:
-	#	msg = 'no threat'.format(message)
-	#	await client.send_message(message.channel, msg)
-	#	return
-	#else: 
-	#	msg = ('threats: ' + str(threat_list)).format(message)
-	#	await client.send_message(message.channel, msg)
+	google safe browsing to scan links
+	url = message.content.lower()
+	threat_list = sbl.lookup_url(url)
+	if threat_list == None:
+		msg = 'no threat'.format(message)
+		await client.send_message(message.channel, msg)
+		return
+	else: 
+		msg = ('threats: ' + str(threat_list)).format(message)
+		await client.send_message(message.channel, msg)
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
