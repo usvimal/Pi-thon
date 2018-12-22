@@ -79,7 +79,7 @@ async def on_message(message):
 		await client.send_message(message.channel,embed=em)
 		return
 	
-	google safe browsing to scan links
+	#google safe browsing to scan links
 	url = message.content.lower()
 	threat_list = sbl.lookup_url(url)
 	if threat_list == None:
