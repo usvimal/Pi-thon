@@ -84,7 +84,12 @@ async def on_message(message):
 	if dot in message.content:
 		msg = str(message.content.split(' ')) # [this splits the message by the white space]
 		print(msg)
-		threat_list = sbl.lookup_url(msg)
+		for i in msg:
+			if '.' in i:
+				string_w_dot = i
+				print(string_w_dot)
+				break
+		threat_list = sbl.lookup_url(string_w_dot)
 		if threat_list == None:
 			#msg = 'no threat'.format(message)
 			#await client.send_message(message.channel, msg)
