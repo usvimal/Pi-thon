@@ -86,6 +86,7 @@ async def on_message(message):
 		print(msg)
 		for i in msg:
 			if dot in i:
+				link = "'"# + "i" + "'"#
 				print(i)
 		threat_list = sbl.lookup_url(i)
 		if threat_list == None:
