@@ -82,14 +82,9 @@ async def on_message(message):
 	#google safe browsing to scan links with its api
 	dot = '.' 
 	if dot in message.content:
-		msg = message.content.split(' ') # [this splits the message by the white space]
+		msg = str(message.content.split(' ')) # [this splits the message by the white space]
 		print(msg)
-		for i in msg:
-			if '.' in i:
-				string_w_dot = i
-				break
-				print(string_w_dot)
-		threat_list = sbl.lookup_url(str(msg))
+		threat_list = sbl.lookup_url(msg)
 		if threat_list == None:
 			#msg = 'no threat'.format(message)
 			#await client.send_message(message.channel, msg)
