@@ -91,8 +91,8 @@ async def on_message(message):
 				print(string_w_dot)
 		threat_list = sbl.lookup_url(string_w_dot)
 		if threat_list == None:
-			msg = 'no threat'.format(message)
-			await client.send_message(message.channel, msg)
+			#msg = 'no threat'.format(message)
+			#await client.send_message(message.channel, msg)
 			return
 		else: 
 			msg = ('threats: ' + str(threat_list)).format(message)
