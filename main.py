@@ -80,15 +80,17 @@ async def on_message(message):
 		return
 	
 	#google safe browsing to scan links
-	url = message.content.lower()
-	threat_list = sbl.lookup_url(url)
-	if threat_list == None:
-	#	msg = 'no threat'.format(message)
-	#	await client.send_message(message.channel, msg)
-		return
-	else: 
-		msg = ('threats: ' + str(threat_list)).format(message)
-		await client.send_message(message.channel, msg)
+	if '.' in message.content():
+		url = message.content.lower()
+		threat_list = sbl.lookup_url(url)
+		if threat_list == None:
+			msg = 'no threat'.format(message)
+			await client.send_message(message.channel, msg)
+			return
+		else: 
+			msg = ('threats: ' + str(threat_list)).format(message)
+			await client.send_message(message.channel, msg)
+			return
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
