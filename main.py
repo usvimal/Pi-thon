@@ -89,7 +89,7 @@ async def on_message(message):
 				string_w_dot = i
 				break
 				print(string_w_dot)
-		threat_list = sbl.lookup_url(string_w_dot)
+		threat_list = sbl.lookup_url(msg)
 		if threat_list == None:
 			#msg = 'no threat'.format(message)
 			#await client.send_message(message.channel, msg)
