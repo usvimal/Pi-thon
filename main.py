@@ -79,7 +79,7 @@ async def on_message(message):
 		await client.send_message(message.channel,embed=em)
 		return
 	
-	#google safe browsing to scan links
+	#google safe browsing to scan links with its api
 	if dot in content:
     		msg = content.split(' ') # [this splits the message by the white space] 
     		for i in msg:
