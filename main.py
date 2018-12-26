@@ -80,6 +80,7 @@ async def on_message(message):
 		return
 	
 	#google safe browsing to scan links with its api
+	dot = '.' 
 	if dot in content:
 		msg = content.split(' ') # [this splits the message by the white space] 
 		for i in msg:
