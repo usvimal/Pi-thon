@@ -74,7 +74,7 @@ async def on_message(message):
 	#credits to haoshaun
 	#link to github
 	if message.content.lower() == ';details':
-		em = discord.Embed(title='read my code!', url='https://repl.it/@VimalMuthuvel/pi-thon', colour=0xb949b5)
+		em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
 		em = em.set_author(name='Minininja',url='https://github.com/usvimal')
 		await client.send_message(message.channel,embed=em)
 		return
