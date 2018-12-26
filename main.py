@@ -84,8 +84,10 @@ async def on_message(message):
     		msg = content.split(' ') # [this splits the message by the white space] 
     		for i in msg:
 			if '.' in i:
-			string_w_dot = i
-			break
+				string_w_dot = i
+				break
+				return
+			return
 		threat_list = sbl.lookup_url(msg)
 		if threat_list == None:
 			msg = 'no threat'.format(message)
