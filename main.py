@@ -87,7 +87,6 @@ async def on_message(message):
 			if '.' in i:
 				string_w_dot = i
 				break
-			return
 		threat_list = sbl.lookup_url(string_w_dot)
 		if threat_list == None:
 			msg = 'no threat'.format(message)
