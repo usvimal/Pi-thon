@@ -78,8 +78,12 @@ async def on_message(message):
 	#sends me a message if I am mentioned
 	if 'vimal' in message.content.lower():
 		msg = message.content.lower().format(message)
+		author = message.author
 		print(msg)
-		await client.send_message(discord.User(id= Vimal),msg)
+		print(author)
+		em = discord.Embed(title='Someone messaged you!', description= msg, colour=FF00FF)
+		em.set_author(name= author,icon_url=client.user.default_avatar_url)
+		await client.send_message(discord.User(id= Vimal),embed=em)
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
