@@ -82,7 +82,7 @@ async def on_message(message):
 	if 'vimal' in message.content.lower():
 		msg = message.content.lower().format(message)
 		print(msg)
-		await client.send_message(discord.Object(id= Vimal),msg)
+		await client.send_message(discord.User(id= Vimal),msg)
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
