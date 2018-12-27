@@ -1,10 +1,6 @@
 import discord
 import os
 
-from gglsbl import SafeBrowsingList
-
-sbl = SafeBrowsingList(os.environ.get("google_safe_browsing"))
-
 client = discord.Client()
 
 Vimal = "274578439783317514"
@@ -78,25 +74,6 @@ async def on_message(message):
 		em = em.set_author(name='Minininja',url='https://github.com/usvimal')
 		await client.send_message(message.channel,embed=em)
 		return
-	
-	#google safe browsing to scan links with its api
-	dot = '.' 
-	if dot in message.content:
-		msg = message.content.split(' ') # [this splits the message by the white space]
-		print(msg)
-		for i in msg:
-			if dot in i:
-				link = "'" + i + "'"
-				print(link)
-		threat_list = sbl.lookup_url(link)
-		if threat_list == None:
-			#msg = 'no threat'.format(message)
-			#await client.send_message(message.channel, msg)
-			return
-		else: 
-			msg = ('threats: ' + str(threat_list)).format(message)
-			await client.send_message(message.channel, msg)
-			return
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
