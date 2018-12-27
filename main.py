@@ -74,6 +74,12 @@ async def on_message(message):
 		em = em.set_author(name='Minininja',url='https://github.com/usvimal')
 		await client.send_message(message.channel,embed=em)
 		return
+	
+	#sends me a message if I am mentioned
+	if 'vimal' in message.content.lower():
+		msg = message.content.lower().format(message)
+		print(msg)
+		await client.send_message(Vimal,msg)
 			
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
