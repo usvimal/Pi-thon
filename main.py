@@ -33,7 +33,7 @@ async def on_message(message):
 			await client.send_message(message.channel, msg)
 			return
 		else:
-			msg = (You are not authorised sorry!).format(message)
+			msg = ('You are not authorised sorry!').format(message)
 			await client.send_message(message.channel, msg)
 			return
 		return
