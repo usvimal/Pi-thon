@@ -28,12 +28,12 @@ async def on_message(message):
 		msg = message.content.split(' ')
 		msg = ' '.join(msg[1:])
 		print(message.author.id)
-		if message.author.id == Cilian or message.author.id == WY:
+		if message.author.id == Vimal or message.author.id == Cilian or message.author.id == WY:
 			msg = (msg).format(message)
 			await client.send_message(message.channel, msg)
 			return
 		else:
-			msg = ('You are not authorised sorry!').format(message)
+			msg = ('You are not authorised sorry!' {0.author.mention}).format(message)
 			await client.send_message(message.channel, msg)
 			return
 		return
