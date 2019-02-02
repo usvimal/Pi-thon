@@ -1,5 +1,6 @@
 import discord
 import os
+import platform
 import asyncio
 
 from asyncio.subprocess import PIPE
@@ -21,6 +22,6 @@ async def on_ready():
 
 	await client.change_presence(game=discord.Game(name='epic games'))
 	return
-			
+
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
