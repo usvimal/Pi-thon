@@ -77,7 +77,7 @@ async def on_message(message):
 	# sends ben shapiro photo when someone says ok this is epic
 	if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
 		msg = ''.format(message)
-		await message.channel.send('my_image.jpg')
+		await message.channel.send(file=discord.File('my_image.jpg'))
 		return
 
 
