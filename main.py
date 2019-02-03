@@ -85,7 +85,7 @@ async def on_message(message):
 	if message.content.lower() == ';details':
 		em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
 		em=em.set_author(name='Minininja',url='https://github.com/usvimal')
-		await message.channel.send(message.channel,embed=em)
+		await message.channel.send(embed=em)
 		return
 
 	#sends me a message if I am mentioned
