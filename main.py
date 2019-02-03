@@ -93,7 +93,7 @@ async def on_message(message):
 		msg = message.content.lower().format(message)
 		author = message.author
 		em = discord.Embed(title='Someone messaged you!', description= msg, colour=0xFF00FF)
-		em.set_author(name= author,icon_url=User.avatar_url)
+		em.set_author(name= author,icon_url=author.avatar_url)
 		channel = client.get_channel(274578439783317514)
 		await message.channel.send(embed=em)
 
