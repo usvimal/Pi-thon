@@ -18,7 +18,7 @@ WY = "260781340608167938"
 async def on_ready():
 	print("*Hackerman voice* I'm in")
 	print('Logged in as ' + client.user.name + ' (ID:' + client.user.id + ') | Connected to ' + str(
-		len(client.servers)) + ' servers | Connected to  + str(len(set(client.get_all_members()))) +  users')
+		len(client.servers)) + " servers | Connected to  + str(len(set(client.get_all_members()))) +  users")
 	print('--------')
 	print('Current Discord.py Version: {} | Current Python Version: {}'.format(discord.__version__,
 																			   platform.python_version()))
