@@ -58,8 +58,8 @@ async def on_message(message):
 	# credits to haoshaun
 	# vote feature, will add reactions (thumbsup and thumbsdown)
 	if message.content.startswith(';vote'):
-		await message.add_reaction(message,"\U0001F44D")
-		await message.add_reaction(message,"\U0001F44E")
+		await message.add_reaction("\U0001F44D")
+		await message.add_reaction("\U0001F44E")
 		return
 
 	# sends message when libtard is mentioned
