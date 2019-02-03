@@ -21,7 +21,7 @@ async def on_ready():
 	print('--------')
 	print('Current Discord.py Version: {discord.__version__} | Current Python Version: {platform.python_version()}')
 
-	await client.change_presence(game=discord.Game(name='epic games'))
+	await client.change_presence(activity=discord.Game(name='epic games'))
 	return
 
 
