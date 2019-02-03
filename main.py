@@ -80,7 +80,23 @@ async def on_message(message):
 		await message.channel.send(file=discord.File('my_image.jpg'))
 		return
 
+	#credits to haoshaun
+	#link to github
+	if message.content.lower() == ';details':
+		em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
+		em=em.set_author(name='Minininja',url='https://github.com/usvimal')
+		await message.channel.send(message.channel,embed=em)
+		return
 
+	#sends me a message if I am mentioned
+	if 'vimal' in message.content.lower():
+		msg = message.content.lower().format(message)
+		author = message.author
+		print(msg)
+		print(author)
+		em = discord.Embed(title='Someone messaged you!', description= msg, colour=0xFF00FF)
+		em.set_author(name= author,icon_url=client.user.default_avatar_url)
+		await message.channel.send(discord.User(id= Vimal),embed=em)
 
 token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
