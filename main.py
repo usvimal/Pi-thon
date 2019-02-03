@@ -32,7 +32,7 @@ async def on_message(message):
 
 	# deletes your message and talks through the bot
 	if message.content.startswith(';bot'):
-		await message.delete(message)
+		await message.delete()
 		msg = message.content.split(' ')
 		msg = ' '.join(msg[1:])
 		print(message.author.id)
