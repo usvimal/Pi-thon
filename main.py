@@ -17,7 +17,7 @@ WY = "260781340608167938"
 # outputs in log when bot is logged in
 async def on_ready():
 	print("*Hackerman voice* I'm in")
-	print('Logged in as ' + client.user.name + ' (ID:' + str(client.user.id) + ') | Connected to ' + str(len(client.servers)) + " servers | Connected to  + str(len(set(client.get_all_members()))) +  users")
+	print('Logged in as ' + str(client.user.name) + ' (ID:' + str(client.user.id) + ') | Connected to ' + str(len(client.servers)) + " servers | Connected to  + str(len(set(client.get_all_members()))) +  users")
 	print('--------')
 	print('Current Discord.py Version: {discord.__version__} | Current Python Version: {platform.python_version()}')
 
