@@ -94,7 +94,7 @@ async def on_message(message):
 		author = message.author
 		em = discord.Embed(title='Someone messaged you!', description= msg, colour=0xFF00FF)
 		em.set_author(name= author,icon_url=author.avatar_url)
-		channel = client.get_channel(Vimal)
+		channel = client.get_user(Vimal)
 		await message.channel.send(embed=em)
 
 token = os.environ.get("DISCORD_BOT_SECRET")
