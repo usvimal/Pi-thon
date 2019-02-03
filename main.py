@@ -47,5 +47,5 @@ async def on_message(message):
 			return
 		return
 
-token = int(os.environ.get("DISCORD_BOT_SECRET"))
+token = os.environ.get("DISCORD_BOT_SECRET")
 client.run(token)
