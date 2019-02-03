@@ -1,1 +1,1 @@
-git+git://github.com/Rapptz/discord.py.git#egg=discord.py
+git+https://github.com/Rapptz/discord.py@rewrite
