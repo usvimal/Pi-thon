@@ -20,8 +20,7 @@ async def on_ready():
 	print('Logged in as ' + client.user.name + ' (ID:' + client.user.id + ') | Connected to ' + str(
 		len(client.servers)) + " servers | Connected to  + str(len(set(client.get_all_members()))) +  users")
 	print('--------')
-	print('Current Discord.py Version: {} | Current Python Version: {}'.format(discord.__version__,
-																			   platform.python_version()))
+	print(f'Current Discord.py Version: {discord.__version__} | Current Python Version: {platform.python_version()}')
 
 	await client.change_presence(game=discord.Game(name='epic games'))
 	return
