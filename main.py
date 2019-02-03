@@ -40,12 +40,12 @@ async def on_message(message):
 		msg = ' '.join(msg[1:])
 		print(message.author.id)
 		if message.author.id == Vimal or message.author.id == Cilian or message.author.id == WY:
-			msg = (msg).format(message)
-			await channel.send(msg)
+			msg = msg.format(message)
+			await message.channel.send(msg)
 			return
 		else:
 			msg = ('You are not authorised sorry! {0.author.mention}').format(message)
-			await channel.send(msg)
+			await message.channel.send(msg)
 			return
 		return
 
