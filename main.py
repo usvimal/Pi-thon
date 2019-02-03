@@ -8,9 +8,9 @@ from discord.ext import commands
 
 client = discord.Client()
 
-Vimal = int('274578439783317514')
-Cilian = int('424781702779633684')
-WY = int('260781340608167938')
+Vimal = 274578439783317514
+Cilian = 424781702779633684
+WY = 260781340608167938
 
 
 @client.event
