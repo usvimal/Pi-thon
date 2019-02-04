@@ -46,18 +46,18 @@ async def on_message(message):
 			msg = ('You are not authorised sorry! {0.author.mention}').format(message)
 			await message.channel.send(msg)
 			return
-		return
 
 	# function list
 	if message.content.lower().startswith(';help'):
 		embed = discord.Embed(title="⭐ Helptext⭐ ", description="this is what I can do ;D", color=0xee0000)
 		embed.add_field(name=";bot", value="talk through me", inline=True)
 		embed.add_field(name=";details", value="view my code", inline=True)
+		embed.add_field(name=";vote", value="enter no. of seconds for the vote to carry on", inline=True)
 		await message.channel.send(embed=embed)
 		return
 	# credits to haoshaun
 	# vote feature, will add reactions (thumbsup and thumbsdown) and output final result
-	if message.content.startswith('vote'):
+	if message.content.startswith(';vote'):
 		msg = message.content.split(' ')
 		try:
 			msg = int(' '.join(msg[1:]))
