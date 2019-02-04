@@ -61,6 +61,8 @@ async def on_message(message):
 		await message.add_reaction("\U0001F44D")
 		await message.add_reaction("\U0001F44E")
 		await asyncio.sleep(10)
+		print(discord.Reaction.count("\U0001F44D"))
+		print(message.reactions)
 		if discord.Reaction.count("\U0001F44D") > discord.Reaction.count("\U0001F44E"):
 			await message.channel.send('The answer is yes')
 		else:
