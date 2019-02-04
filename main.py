@@ -59,9 +59,9 @@ async def on_message(message):
 	# vote feature, will add reactions (thumbsup and thumbsdown)
 	if message.content.startswith(';vote'):
 		await message.add_reaction("\U0001F44D")
-		Thumbs_up = discord.Reaction("\U0001F44D")
+		Thumbs_up = discord.Reaction.emoji("\U0001F44D")
 		await message.add_reaction("\U0001F44E")
-		Thumbs_down = discord.Reaction("\U0001F44E")
+		Thumbs_down = discord.Reaction.emoji("\U0001F44E")
 		await asyncio.sleep(10)
 		if Thumbs_up.count > Thumbs_down.count:
 			await message.channel.send('The answer is yes')
