@@ -56,18 +56,30 @@ async def on_message(message):
 		await message.channel.send(embed=embed)
 		return
 	# credits to haoshaun
-	# vote feature, will add reactions (thumbsup and thumbsdown)
-	if message.content.startswith(';vote'):
-		await message.add_reaction("\U0001F44D")
-		await message.add_reaction("\U0001F44E")
-		await asyncio.sleep(10)
-		print(message.Reaction.count("\U0001F44D"))
-		print(message.Reaction.count("\U0001F44E"))
-		if message.Reaction.count("\U0001F44D") > message.Reaction.count("\U0001F44E"):
-			await message.channel.send('The answer is yes')
+	# vote feature, will add reactions (thumbsup and thumbsdown) and output final result
+	if message.content.startswith('vote'):
+		msg = message.content.split(' ')
+		try:
+			msg = int(' '.join(msg[1:]))
+		except ValueError:
+			await message.channel.send(
+				"Please structure the message such that ;vote <duration of voting in seconds>")
 		else:
-			await message.channel.send('The answer is no')
-		return
+			await message.add_reaction('✅')
+			await message.add_reaction('❌')
+		print(msg)
+		await asyncio.sleep(msg)
+		reactions = (await message.channel.get_message(message.id)).reactions
+		print(reactions)
+		counts = {}
+		for reaction in reactions:
+			counts[reaction.emoji] = reaction.count - 1
+			print(f'{reaction.emoji} = {counts}')
+		if counts['✅'] > counts['❌']:
+			await message.channel.send("The results are out: '✅'")
+		else:
+			await message.channel.send("The results are out: '❌'")
+			return
 
 	# sends message when libtard is mentioned
 	if 'libtard' in message.content.lower():
