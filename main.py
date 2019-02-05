@@ -2,11 +2,10 @@ import discord
 import os
 import platform
 import asyncio
-import typing
 
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix=';', pm_help=None, description='A bot that does stuff.... probably')
+bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
 creatorID = int(os.environ.get("creatorID"))
 CillyID = int(os.environ.get("CillyID"))
@@ -21,14 +20,12 @@ async def on_ready():
 	print('Logged in as ' + str(bot.user.name) + ' (ID:' + str(bot.user.id) + ') | Connected to ' + str(
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
 	print('--------')
-	print('Current Discord.py Version: {} | Current Python Version: {}'.format(discord.__version__,
-																			   platform.python_version()))
+	print('Current Discord.py Version:{}|Current Python Version: {}'.format(discord.__version__,platform.python_version()))
 	await bot.change_presence(activity=discord.Game(name='epic games'))
 	return
 
 
 async def on_message(message):
-
 	# we do not want the bot to reply to itself
 	if message.author == bot.user:
 		return
