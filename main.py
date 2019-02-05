@@ -58,6 +58,7 @@ async def on_message(message):
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
 		return
+	return
 
 
 @bot.command()
