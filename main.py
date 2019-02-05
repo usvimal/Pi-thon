@@ -60,7 +60,7 @@ async def on_message(message):
 @bot.command()
 async def talk(ctx, *, arg):
 	"""deletes your message and talks through the bot"""
-	await ctx.delete(arg)
+	await ctx.delete()
 	print(arg.author.id)
 	if arg.author.id == creatorID or arg.author.id == CillyID or arg.author.id == WYID:
 		await ctx.send(arg)
