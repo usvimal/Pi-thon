@@ -25,6 +25,41 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Game(name='epic games'))
 	return
 
+"""
+@bot.event
+async def on_message(message):
+	# we do not want the bot to reply to itself
+	if message.author == bot.user:
+		return
+
+	# sends message when libtard is mentioned
+	if 'libtard' in message.content.lower():
+		msg = 'libtard epic rekt 8)'.format(message)
+		await message.channel.send(msg)
+		return
+
+	# sends thinking emoji when someone says hmm
+	elif message.content.lower().startswith('hmm'):
+		msg = '\U0001F914'.format(message)
+		await message.channel.send(msg)
+		return
+
+	# sends ben shapiro photo when someone says ok this is epic
+	if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
+		await message.channel.send(file=discord.File('my_image.jpg'))
+		return
+
+	# sends me a message if I am mentioned
+	if creator in message.content.lower():
+		msg = message.content.lower().format(message)
+		author = message.author
+		em = discord.Embed(title='Someone messaged you!', description=msg, colour=0xFF00FF)
+		em.set_author(name=author, icon_url=author.avatar_url)
+		channel = bot.get_user(creatorID)
+		await channel.send(embed=em)
+		return
+	return
+"""
 
 @bot.command()
 async def talk(ctx, *, arg):
@@ -35,7 +70,7 @@ async def talk(ctx, *, arg):
 		await ctx.send(arg)
 		return
 	else:
-		await ctx.send('You are not authorised sorry! {0.author.mention}')
+		await ctx.send('You are not authorised sorry! {0.ctx.author.mention}')
 		return
 
 
@@ -78,41 +113,6 @@ async def ping(ctx):
 	async with ctx.typing():
 		ping: float = time.time() - pingtime
 	await ctx.send(" time is `%.03f seconds` :ping_pong:" % ping)
-	return
-
-
-@bot.event
-async def on_message(message):
-	# we do not want the bot to reply to itself
-	if message.author == bot.user:
-		return
-
-	# sends message when libtard is mentioned
-	if 'libtard' in message.content.lower():
-		msg = 'libtard epic rekt 8)'.format(message)
-		await message.channel.send(msg)
-		return
-
-	# sends thinking emoji when someone says hmm
-	elif message.content.lower().startswith('hmm'):
-		msg = '\U0001F914'.format(message)
-		await message.channel.send(msg)
-		return
-
-	# sends ben shapiro photo when someone says ok this is epic
-	if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
-		await message.channel.send(file=discord.File('my_image.jpg'))
-		return
-
-	# sends me a message if I am mentioned
-	if creator in message.content.lower():
-		msg = message.content.lower().format(message)
-		author = message.author
-		em = discord.Embed(title='Someone messaged you!', description=msg, colour=0xFF00FF)
-		em.set_author(name=author, icon_url=author.avatar_url)
-		channel = bot.get_user(creatorID)
-		await channel.send(embed=em)
-		return
 	return
 
 
