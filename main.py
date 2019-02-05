@@ -8,9 +8,9 @@ from discord.ext import commands
 
 client = discord.Client()
 
-Vimal = 274578439783317514
-Cilian = 424781702779633684
-WY = 260781340608167938
+creatorID = os.environ.get("creatorID")
+CillyID = os.environ.get("CillyID")
+WYID = os.environ.get("WYID")
 
 
 @client.event
