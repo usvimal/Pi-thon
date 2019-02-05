@@ -60,9 +60,9 @@ async def on_message(message):
 @bot.command()
 async def talk(ctx, *, arg):
 	"""deletes your message and talks through the bot"""
-	await ctx.delete()
-	print(arg.author.id)
-	if arg.author.id == creatorID or arg.author.id == CillyID or arg.author.id == WYID:
+	await ctx.message.delete()
+	print(ctx.message.author.id)
+	if ctx.message.author.id == creatorID or ctx.message.author.id == CillyID or ctx.message.author.id == WYID:
 		await ctx.send(arg)
 		return
 	else:
@@ -74,8 +74,8 @@ async def talk(ctx, *, arg):
 async def vote(ctx, time: int, *, reason: str):
 	"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
 	"""enter time in seconds and your reason"""
-	await ctx.add_reaction('✅')
-	await ctx.add_reaction('❌')
+	await ctx.message.add_reaction('✅')
+	await ctx.message.add_reaction('❌')
 	await asyncio.sleep(time)
 	reactions = (await ctx.get_message(ctx.id)).reactions
 	print(reactions)
