@@ -8,9 +8,9 @@ from discord.ext import commands
 
 client = discord.Client()
 
-creatorID = os.environ.get("creatorID")
-CillyID = os.environ.get("CillyID")
-WYID = os.environ.get("WYID")
+creatorID = int(os.environ.get("creatorID"))
+CillyID = int(os.environ.get("CillyID"))
+WYID = int(os.environ.get("WYID"))
 
 @client.event
 # outputs in log when bot is logged in
