@@ -58,7 +58,7 @@ async def on_message(message):
 
 
 @bot.command()
-async def bot(ctx, *, arg):
+async def talk(ctx, *, arg):
 	"""deletes your message and talks through the bot"""
 	await ctx.delete(arg)
 	print(arg.author.id)
@@ -68,7 +68,6 @@ async def bot(ctx, *, arg):
 	else:
 		await ctx.send('You are not authorised sorry! {0.author.mention}')
 		return
-	return
 
 
 @bot.command()
