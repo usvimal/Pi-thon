@@ -12,7 +12,6 @@ creatorID = os.environ.get("creatorID")
 CillyID = os.environ.get("CillyID")
 WYID = os.environ.get("WYID")
 
-
 @client.event
 # outputs in log when bot is logged in
 async def on_ready():
@@ -38,7 +37,7 @@ async def on_message(message):
 		msg = message.content.split(' ')
 		msg = ' '.join(msg[1:])
 		print(message.author.id)
-		if message.author.id == Vimal or message.author.id == Cilian or message.author.id == WY:
+		if message.author.id == creatorID or message.author.id == CillyID or message.author.id == WYID:
 			msg = msg.format(message)
 			await message.channel.send(msg)
 			return
@@ -113,7 +112,7 @@ async def on_message(message):
 		author = message.author
 		em = discord.Embed(title='Someone messaged you!', description= msg, colour=0xFF00FF)
 		em.set_author(name= author,icon_url=author.avatar_url)
-		channel = client.get_user(Vimal)
+		channel = client.get_user(creatorID)
 		await channel.send(embed=em)
 
 token = os.environ.get("DISCORD_BOT_SECRET")
