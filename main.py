@@ -77,7 +77,7 @@ async def vote(ctx, time: int, *, reason: str):
 	await ctx.message.add_reaction('✅')
 	await ctx.message.add_reaction('❌')
 	await asyncio.sleep(time)
-	reactions = (await ctx.get_message(ctx.id)).reactions
+	reactions = (await ctx.get_message(ctx.message.id)).reactions
 	print(reactions)
 	counts = {}
 	for reaction in reactions:
