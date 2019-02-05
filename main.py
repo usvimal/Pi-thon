@@ -57,6 +57,7 @@ async def on_message(message):
 		em.set_author(name=author, icon_url=author.avatar_url)
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
+		return
 
 
 @bot.command()
