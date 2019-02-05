@@ -90,6 +90,7 @@ async def vote(ctx, time: int, *, reason: str):
 		return
 
 
+@bot.command
 async def details(ctx):
 	"""link to github"""
 	em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
