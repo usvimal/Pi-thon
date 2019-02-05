@@ -68,6 +68,7 @@ async def bot(ctx, *, arg):
 	else:
 		await ctx.send('You are not authorised sorry! {0.author.mention}')
 		return
+	return
 
 
 @bot.command()
@@ -88,6 +89,7 @@ async def vote(ctx, time: int, *, reason: str):
 	else:
 		await ctx.send("The answer to" + reason + ": ❌")
 		return
+	return
 
 
 @bot.command
