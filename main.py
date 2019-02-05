@@ -20,11 +20,12 @@ async def on_ready():
 	print('Logged in as ' + str(bot.user.name) + ' (ID:' + str(bot.user.id) + ') | Connected to ' + str(
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
 	print('--------')
-	print('Current Discord.py Version:{}|Current Python Version: {}'.format(discord.__version__,platform.python_version()))
+	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
 	await bot.change_presence(activity=discord.Game(name='epic games'))
 	return
 
 
+@bot.event
 async def on_message(message):
 	# we do not want the bot to reply to itself
 	if message.author == bot.user:
@@ -84,14 +85,16 @@ async def vote(ctx, time: int, *, reason: str):
 		counts[reaction.emoji] = reaction.count - 1
 		print(f'{reaction.emoji} = {counts}')
 	if counts['✅'] > counts['❌']:
-		await ctx.send("The answer to" + reason + ": ✅")
+		await ctx.send('The answer to ' + reason + ' is: ✅')
+	elif counts['✅'] < counts['❌']:
+		await ctx.send('The answer to ' + reason + ' is: ❌')
 	else:
-		await ctx.send("The answer to" + reason + ": ❌")
+		await ctx.send('Aww shucks, its a stalemate')
 		return
 	return
 
 
-@bot.command
+@bot.command()
 async def details(ctx):
 	"""link to github"""
 	em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
