@@ -2,6 +2,7 @@ import discord
 import os
 import platform
 import asyncio
+import time
 
 from discord.ext import commands
 
@@ -102,6 +103,15 @@ async def details(ctx):
 	await ctx.send(embed=em)
 	return
 
+
+@bot.command()
+async def ping(ctx):
+	"""check ping"""
+	pingtime = time.time()
+	async with ctx.typing():
+		ping: float = time.time() - pingtime
+	await ctx.send(" time is `%.03f seconds` :ping_pong:" % ping)
+	return
 
 token = os.environ.get("DISCORD_BOT_SECRET")
 bot.run(token)
