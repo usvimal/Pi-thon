@@ -53,7 +53,7 @@ async def on_message(message):
 	if creator in message.content.lower():
 		msg = message.content.lower().format(message)
 		author = message.author
-		server = message.server.name
+		guild = message.guild.name
 		em = discord.Embed(title='@' + server, description=msg, colour=0xFF00FF)
 		em.set_author(name=author, icon_url=author.avatar_url)
 		channel = bot.get_user(creatorID)
