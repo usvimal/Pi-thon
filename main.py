@@ -25,7 +25,7 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Game(name='epic games'))
 	return
 
-"""
+
 @bot.event
 async def on_message(message):
 	# we do not want the bot to reply to itself
@@ -58,8 +58,8 @@ async def on_message(message):
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
 		return
-	return
-"""
+	await bot.process_commands(message)
+
 
 @bot.command()
 async def talk(ctx, *, arg):
