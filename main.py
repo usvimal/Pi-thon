@@ -53,7 +53,8 @@ async def on_message(message):
 	if creator in message.content.lower():
 		msg = message.content.lower().format(message)
 		author = message.author
-		em = discord.Embed(title='Someone messaged you!', description=msg, colour=0xFF00FF)
+		server = message.server.name
+		em = discord.Embed(title='@' + server, description=msg, colour=0xFF00FF)
 		em.set_author(name=author, icon_url=author.avatar_url)
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
