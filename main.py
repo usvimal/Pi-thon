@@ -26,7 +26,7 @@ async def on_ready():
 	return
 
 
-@bot.event
+@bot.listen()
 async def on_message(message):
 	# we do not want the bot to reply to itself
 	if message.author == bot.user:
@@ -59,7 +59,6 @@ async def on_message(message):
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
 		return
-	await bot.process_commands(message)
 
 
 @bot.command()
