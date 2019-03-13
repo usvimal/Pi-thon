@@ -4,6 +4,7 @@ import platform
 import asyncio
 import time
 import psycopg2
+import random
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
@@ -24,16 +25,10 @@ async def on_ready():
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
-	x = 1
-	while x == 1:
-		await bot.change_presence(activity=discord.Activity(name='some moosic', type='2'))
-		await asyncio.sleep(120)
-		await bot.change_presence(activity=discord.Game(name='epic games'))
-		await asyncio.sleep(120)
-		await bot.change_presence(activity=discord.Activity(name='paint dry..', type='3'))
-		await asyncio.sleep(120)
-		await bot.change_presence(activity=discord.Game(name='| Connected to ' + str(
-			len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users'))
+	while True:
+		activity_tuple = (discord.Activity(name='some moosic', type='2'), discord.Game(name='epic games'), discord.Activity(name='paint dry..', type='3'), discord.Game(name='| Connected to ' + str(len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users'))
+		activity = random.choice(activity_tuple)
+		await bot.change_presence(activity=activity)
 		await asyncio.sleep(600)
 
 
