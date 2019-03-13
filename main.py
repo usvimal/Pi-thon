@@ -79,17 +79,22 @@ async def talk(ctx, *, arg):
 @bot.command()
 async def vote(ctx, *, reason: str):
 	"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
+	"""enter time in seconds and your reason"""
 	await ctx.message.add_reaction('✅')
 	await ctx.message.add_reaction('❌')
 	await ctx.send("How long do you want the vote to run? (in seconds)")
 	try:
-		msg = await bot.wait_for("message", timeout=20.0)
+		msg = await bot.wait_for("message", timeout=5.0)
 		print(msg.content)
 	except asyncio.TimeoutError:
 		await ctx.send('The vote has been cancelled due to a lack of response')
 	else:
-		await ctx.send('👍')
-		await asyncio.sleep(int(msg.content))
+		if msg.content.isdigit():
+			await ctx.send('👍 vote is running')
+			await asyncio.sleep(int(msg.content))
+		else:
+			await ctx.send('Please restart the vote and send a positive integer only')
+			return
 		reactions = (await ctx.get_message(ctx.message.id)).reactions
 		print(reactions)
 		counts = {}
@@ -104,7 +109,6 @@ async def vote(ctx, *, reason: str):
 			await ctx.send('Aww shucks, its a stalemate')
 			return
 		return
-
 
 @bot.command()
 async def details(ctx):
