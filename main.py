@@ -3,7 +3,7 @@ import os
 import platform
 import asyncio
 import time
-
+import psycopg2
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
@@ -12,6 +12,8 @@ creatorID = int(os.environ.get("creatorID"))
 CillyID = int(os.environ.get("CillyID"))
 WYID = int(os.environ.get("WYID"))
 creator = os.environ.get("creator")
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 
 @bot.event
