@@ -24,8 +24,17 @@ async def on_ready():
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
-	await bot.change_presence(activity=discord.Game(name='epic games'))
-	return
+	x = 1
+	while x == 1:
+		await bot.change_presence(activity=discord.Activity(name='some moosic', type='2'))
+		await asyncio.sleep(120)
+		await bot.change_presence(activity=discord.Game(name='epic games'))
+		await asyncio.sleep(120)
+		await bot.change_presence(activity=discord.Activity(name='paint dry..', type='3'))
+		await asyncio.sleep(120)
+		await bot.change_presence(activity=discord.Game(name='| Connected to ' + str(
+			len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users'))
+		await asyncio.sleep(600)
 
 
 @bot.listen()
@@ -109,6 +118,7 @@ async def vote(ctx, *, reason: str):
 			await ctx.send('Aww shucks, its a stalemate')
 			return
 		return
+
 
 @bot.command()
 async def details(ctx):
