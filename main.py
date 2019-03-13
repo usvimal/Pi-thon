@@ -77,26 +77,33 @@ async def talk(ctx, *, arg):
 
 
 @bot.command()
-async def vote(ctx, time: int, *, reason: str):
+async def vote(ctx, *, reason: str):
 	"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
-	"""enter time in seconds and your reason"""
 	await ctx.message.add_reaction('✅')
 	await ctx.message.add_reaction('❌')
-	await asyncio.sleep(time)
-	reactions = (await ctx.get_message(ctx.message.id)).reactions
-	print(reactions)
-	counts = {}
-	for reaction in reactions:
-		counts[reaction.emoji] = reaction.count - 1
-		print(f'{reaction.emoji} = {counts}')
-	if counts['✅'] > counts['❌']:
-		await ctx.send('The answer to ' + reason + ' is: ✅')
-	elif counts['✅'] < counts['❌']:
-		await ctx.send('The answer to ' + reason + ' is: ❌')
+	await ctx.send("How long do you want the vote to run? (in seconds)")
+	try:
+		msg = await bot.wait_for("message", timeout=20.0)
+		print(msg.content)
+	except asyncio.TimeoutError:
+		await ctx.send('The vote has been cancelled due to a lack of response')
 	else:
-		await ctx.send('Aww shucks, its a stalemate')
+		await ctx.send('👍')
+		await asyncio.sleep(int(msg.content))
+		reactions = (await ctx.get_message(ctx.message.id)).reactions
+		print(reactions)
+		counts = {}
+		for reaction in reactions:
+			counts[reaction.emoji] = reaction.count - 1
+			print(f'{reaction.emoji} = {counts}')
+		if counts['✅'] > counts['❌']:
+			await ctx.send('The answer to ' + reason + ' is: ✅')
+		elif counts['✅'] < counts['❌']:
+			await ctx.send('The answer to ' + reason + ' is: ❌')
+		else:
+			await ctx.send('Aww shucks, its a stalemate')
+			return
 		return
-	return
 
 
 @bot.command()
