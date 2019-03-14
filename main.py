@@ -3,7 +3,7 @@ import os
 import platform
 import asyncio
 import time
-import psycopg2
+import asyncpg
 import random
 from discord.ext import commands
 
@@ -14,7 +14,7 @@ CillyID = int(os.environ.get("CillyID"))
 WYID = int(os.environ.get("WYID"))
 creator = os.environ.get("creator")
 DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+conn = asyncpg.connect(DATABASE_URL)
 
 
 @bot.event
