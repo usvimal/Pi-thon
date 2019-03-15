@@ -6,6 +6,7 @@ import time
 import asyncpg
 import random
 from discord.ext import commands
+import owotrans
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
@@ -14,7 +15,11 @@ CillyID = int(os.environ.get("CillyID"))
 WYID = int(os.environ.get("WYID"))
 creator = os.environ.get("creator")
 DATABASE_URL = os.environ['DATABASE_URL']
-conn = asyncpg.connect(DATABASE_URL)
+
+
+async def create_pool():
+	pool = await asyncpg.create_pool(DATABASE_URL, max_size=100)
+	return pool
 
 
 @bot.event
@@ -132,6 +137,12 @@ async def ping(ctx):
 		ping: float = time.time() - pingtime
 	await ctx.send(" time is `%.03f seconds` :ping_pong:" % ping)
 	return
+
+
+@bot.command()
+async def owo(ctx, *, arg):
+	msg = owotrans.owo(arg)
+	await ctx.send(msg)
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
