@@ -31,7 +31,10 @@ async def on_ready():
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
 	while True:
-		activity_tuple = (discord.Activity(name='some moosic', type='2'), discord.Game(name='epic games'), discord.Activity(name='paint dry..', type='3'), discord.Game(name='| Connected to ' + str(len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users'))
+		activity_tuple = (discord.Activity(name='some moosic', type='2'), discord.Game(name='epic games'),
+						  discord.Activity(name='paint dry..', type='3'), discord.Game(
+			name='| Connected to ' + str(len(bot.guilds)) + ' servers | Connected to ' + str(
+				len(set(bot.get_all_members()))) + ' users'))
 		activity = random.choice(activity_tuple)
 		await bot.change_presence(activity=activity)
 		await asyncio.sleep(600)
@@ -70,6 +73,14 @@ async def on_message(message):
 		channel = bot.get_user(creatorID)
 		await channel.send(embed=em)
 		return
+
+
+async def on_member_update(before, after):
+	print(before)
+	if before.avatar != after.avatar:
+		# gets the first channel from UI
+		ctx = before.guild.text_channels[0]
+		await ctx.send('Ayy nice new dp! {}'.format(before.mention))
 
 
 @bot.command()
