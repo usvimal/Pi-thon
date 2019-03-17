@@ -80,7 +80,7 @@ async def on_member_update(before, after):
 	if before.avatar != after.avatar:
 		# gets the first channel from UI
 		ctx = before.guild.text_channels[0]
-		await ctx.send('Ayy nice new dp! {}'.format(before.mention))
+		await ctx.send(f'Ayy nice new dp! {before.mention}')
 
 
 @bot.command()
@@ -145,8 +145,8 @@ async def ping(ctx):
 	"""check ping"""
 	pingtime = time.time()
 	async with ctx.typing():
-		ping: float = time.time() - pingtime
-	await ctx.send(" time is `%.03f seconds` :ping_pong:" % ping)
+		ping: float = format(time.time() - pingtime, '.03f')
+	await ctx.send(f" time is `{ping} seconds` :ping_pong:")
 	return
 
 
