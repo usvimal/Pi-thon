@@ -168,10 +168,15 @@ async def lyrics(ctx):
 	try:
 		em = discord.Embed(title='lyrics', description = song.lyrics)
 		em = em.set_author(name='Genius')
-		await ctx.send(embed=em)
+		async with ctx.typing():
+			await ctx.send(embed=em)
 	except Error:
 		await ctx.send(song_title)
 		await ctx.send(lyrics)	
+	else:
+		async with ctx.typing():
+			await ctx.send(embed=em)
+		
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
