@@ -156,5 +156,10 @@ async def owo(ctx, *, arg):
 	await ctx.send(msg)
 
 
+@bot.command()
+async def lyrics(ctx):
+	print(ctx.message.author.activity.title)
+	print(ctx.message.author.activity.artist)
+
 token = os.environ.get("DISCORD_BOT_SECRET")
 bot.run(token)
