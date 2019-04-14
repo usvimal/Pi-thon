@@ -8,7 +8,6 @@ import random
 from discord.ext import commands
 import owotrans
 import lyricsgenius
-from urllib.error import HTTPError
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
@@ -171,7 +170,7 @@ async def lyrics(ctx):
 		em = em.set_author(name='Genius')
 		async with ctx.typing():
 			await ctx.send(embed=em)
-	except Error:
+	except HTTPException:
 		await ctx.send(song_title)
 		await ctx.send(lyrics)	
 	else:
