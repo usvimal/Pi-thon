@@ -35,8 +35,8 @@ async def on_ready():
 						  discord.Activity(name='paint dry..', type='3'), discord.Game(
 			name='| Connected to ' + str(len(bot.guilds)) + ' servers | Connected to ' + str(
 				len(set(bot.get_all_members()))) + ' users'))
-		activity = random.choice(activity_tuple)
-		await bot.change_presence(activity=activity)
+		act = random.choice(activity_tuple)
+		await bot.change_presence(activity=act)
 		await asyncio.sleep(600)
 
 
