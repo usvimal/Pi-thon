@@ -164,13 +164,17 @@ async def lyrics(ctx):
 	genius_token = os.environ.get("genius_token")
 	genius = lyricsgenius.Genius(genius_token)
 	song = genius.search_song(song_title , song_artist)
-	em = discord.Embed(title='lyrics', description = song.lyrics)
-	em = em.set_author(name='Genius')
+	
 	try:
+		em = discord.Embed(title='lyrics', description = song.lyrics)
+		em = em.set_author(name='Genius')
 		await ctx.send(embed=em)
-	else:
+	except Error:
 		await ctx.send(song_title)
-		await ctx.send(lyrics)
+		await ctx.send(lyrics)	
+	else:
+		await ctx.send(embed=em)
+		
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
