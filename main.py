@@ -172,9 +172,6 @@ async def lyrics(ctx):
 	except Error:
 		await ctx.send(song_title)
 		await ctx.send(lyrics)	
-	else:
-		await ctx.send(embed=em)
-		
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
