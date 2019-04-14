@@ -4,4 +4,4 @@ owotranslator
 BeautifulSoup4
 google
 html2text
-urllib2
+urllib3
