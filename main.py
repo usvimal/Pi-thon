@@ -170,7 +170,7 @@ async def lyrics(ctx):
 		em = em.set_author(name='Genius')
 		async with ctx.typing():
 			await ctx.send(embed=em)
-	except Error:
+	except HTTPException:
 		await ctx.send(song_title)
 		await ctx.send(lyrics)	
 	else:
