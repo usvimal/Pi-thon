@@ -7,6 +7,7 @@ import asyncpg
 import random
 from discord.ext import commands
 import owotrans
+import lyricsgenius
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
@@ -160,33 +161,12 @@ async def owo(ctx, *, arg):
 async def lyrics(ctx):
 	song_title = ctx.message.author.activity.title
 	song_artist = ctx.message.author.activity.artist
-	song = song_title + 'by' + song_artist
-	hdr = {'User-Agent':
-           ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 '
-            '(KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'),
-           'Accept':
-           ('text/html,application/xhtml+xml,'
-            'application/xml;q=0.9,*/*;q=0.8'),
-           'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-           'Accept-Encoding': 'none',
-           'Accept-Language': 'en-US,en;q=0.8',
-           'Connection': 'keep-alive'}
-
-	url = 'www.azlyrics.com ' + text
-	for i in search(url, lang='en', num=2):
-		link = i
-		break
-	# if a song result is found
-	if link != 'http://www.azlyrics.com/':
-		soup = getSoup(link)
-		# get the lyrics
-		lyrics = soup.body.find("div", {"class": "col-xs-12 col-lg-8 text-center"}).findAll("div")[6].prettify()
-	
-		em = discord.Embed(title='lyrics', content = lyrics)
-		em = em.set_author(name='AZlyrics')
-		await ctx.send(embed=em)
-	else:
-		ctx.send("Song not found")
+	genius_token = os.environ.get("genius_token")
+	genius = lyricsgenius.Genius(genius_token)
+	song = genius.search_song(song_title , song_artist)
+	em = discord.Embed(title='lyrics', content = song.lyrics)
+	em = em.set_author(name='Genius')
+	await ctx.send(embed=em)
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
