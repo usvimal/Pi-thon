@@ -173,9 +173,6 @@ async def lyrics(ctx):
 	except HTTPException:
 		await ctx.send(song_title)
 		await ctx.send(lyrics)	
-	else:
-		async with ctx.typing():
-			await ctx.send(embed=em)
 		
 
 
