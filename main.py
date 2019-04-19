@@ -8,10 +8,9 @@ import random
 from discord.ext import commands
 import owotrans
 import lyricsgenius
+import loadconfig
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
-
-initial_extensions = ()
 
 
 @bot.event
@@ -23,13 +22,9 @@ async def on_ready():
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
 	while True:
-		activity_tuple = (discord.Activity(name='some moosic', type='2'), discord.Game(name='epic games'),
-						  discord.Activity(name='paint dry..', type='3'), discord.Game(
-			name='| Connected to ' + str(len(bot.guilds)) + ' servers | Connected to ' + str(
-				len(set(bot.get_all_members()))) + ' users'))
-		act = random.choice(activity_tuple)
-		await bot.change_presence(activity=act)
-		await asyncio.sleep(600)
+		randomGame = random.choice(loadconfig.games)
+		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1]))
+		await asyncio.sleep(loadconfig.gamestimer)
 
 
 @bot.listen()
@@ -77,5 +72,5 @@ async def on_member_update(before, after):
 		await ctx.send(f'Ayy nice new dp! {before.mention}')
 
 
-token = os.environ.get("DISCORD_BOT_SECRET")
+token = discord_key
 bot.run(token)
