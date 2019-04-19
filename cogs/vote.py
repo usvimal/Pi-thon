@@ -1,4 +1,6 @@
 from discord.ext import commands
+import asyncio
+
 
 class Vote(commands.Cog):
 	def __init__(self, bot):
@@ -38,5 +40,6 @@ class Vote(commands.Cog):
 				return
 			return
 
+
 def setup(bot):
-    bot.add_cog(Vote(bot))
+	bot.add_cog(Vote(bot))
