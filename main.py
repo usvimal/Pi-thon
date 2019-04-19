@@ -17,10 +17,7 @@ WYID = int(os.environ.get("WYID"))
 creator = os.environ.get("creator")
 DATABASE_URL = os.environ['DATABASE_URL']
 
-
-async def create_pool():
-	pool = await asyncpg.create_pool(DATABASE_URL, max_size=100)
-	return pool
+initial_extensions = ()
 
 
 @bot.event
@@ -75,105 +72,15 @@ async def on_message(message):
 		await channel.send(embed=em)
 		return
 
+	if bot.user.mentioned_in(message):
+		await message.add_reaction('👀')
+
 
 async def on_member_update(before, after):
-	print(before)
 	if before.avatar != after.avatar:
 		# gets the first channel from UI
 		ctx = before.guild.text_channels[0]
 		await ctx.send(f'Ayy nice new dp! {before.mention}')
-
-
-@bot.command()
-async def talk(ctx, *, arg):
-	"""deletes your message and talks through the bot"""
-	await ctx.message.delete()
-	print(ctx.message.author.id)
-	if ctx.message.author.id == creatorID or ctx.message.author.id == CillyID or ctx.message.author.id == WYID:
-		await ctx.send(arg)
-		return
-	else:
-		await ctx.send('You are not authorised sorry! {0.ctx.author.mention}')
-		return
-
-
-@bot.command()
-async def vote(ctx, *, reason: str):
-	"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
-	"""enter time in seconds and your reason"""
-	await ctx.message.add_reaction('✅')
-	await ctx.message.add_reaction('❌')
-	await ctx.send("How long do you want the vote to run? (in seconds)")
-	try:
-		msg = await bot.wait_for("message", timeout=5.0)
-		print(msg.content)
-	except asyncio.TimeoutError:
-		await ctx.send('The vote has been cancelled due to a lack of response')
-	else:
-		if msg.content.isdigit():
-			await ctx.send('👍 vote is running')
-			await asyncio.sleep(int(msg.content))
-		else:
-			await ctx.send('Please restart the vote and send a positive integer only')
-			return
-		reactions = (await ctx.get_message(ctx.message.id)).reactions
-		print(reactions)
-		counts = {}
-		for reaction in reactions:
-			counts[reaction.emoji] = reaction.count - 1
-			print(f'{reaction.emoji} = {counts}')
-		if counts['✅'] > counts['❌']:
-			await ctx.send('The answer to ' + reason + ' is: ✅')
-		elif counts['✅'] < counts['❌']:
-			await ctx.send('The answer to ' + reason + ' is: ❌')
-		else:
-			await ctx.send('Aww shucks, its a stalemate')
-			return
-		return
-
-
-@bot.command()
-async def details(ctx):
-	"""link to github"""
-	em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
-	em = em.set_author(name='Minininja', url='https://github.com/usvimal')
-	await ctx.send(embed=em)
-	return
-
-
-@bot.command()
-async def ping(ctx):
-	"""check ping"""
-	pingtime = time.time()
-	async with ctx.typing():
-		ping: float = format(time.time() - pingtime, '.03f')
-	await ctx.send(f" time is `{ping} seconds` :ping_pong:")
-	return
-
-
-@bot.command()
-async def owo(ctx, *, arg):
-	msg = owotrans.owo(arg)
-	await ctx.send(msg)
-
-
-@bot.command()
-async def lyrics(ctx):
-	song_title = ctx.message.author.activity.title
-	song_artist = ctx.message.author.activity.artist
-	genius_token = os.environ.get("genius_token")
-	genius = lyricsgenius.Genius(genius_token)
-	song = genius.search_song(song_title , song_artist)
-	
-	try:
-		em = discord.Embed(title='lyrics', description = song.lyrics)
-		em = em.set_author(name='Genius')
-		async with ctx.typing():
-			await ctx.send(embed=em)
-	except HTTPException:
-		await ctx.send(song_title)
-		await ctx.send(lyrics)	
-		
 
 
 token = os.environ.get("DISCORD_BOT_SECRET")
