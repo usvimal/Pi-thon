@@ -11,12 +11,6 @@ import lyricsgenius
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
-creatorID = int(os.environ.get("creatorID"))
-CillyID = int(os.environ.get("CillyID"))
-WYID = int(os.environ.get("WYID"))
-creator = os.environ.get("creator")
-DATABASE_URL = os.environ['DATABASE_URL']
-
 initial_extensions = ()
 
 
