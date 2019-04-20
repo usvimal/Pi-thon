@@ -14,7 +14,7 @@ class Vote(commands.Cog):
 		await ctx.message.add_reaction('❌')
 		await ctx.send("How long do you want the vote to run? (in seconds)")
 		try:
-			msg = await bot.wait_for("message", timeout=5.0)
+			msg = await self.bot.wait_for("message", timeout=5.0)
 			print(msg.content)
 		except asyncio.TimeoutError:
 			await ctx.send('The vote has been cancelled due to a lack of response')
