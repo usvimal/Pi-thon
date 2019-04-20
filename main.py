@@ -53,13 +53,13 @@ async def on_message(message):
 		return
 
 	# sends me a message if I am mentioned
-	if creator in message.content.lower():
+	if loadconfig.creator in message.content.lower():
 		msg = message.content.lower().format(message)
 		author = message.author
 		guild = message.guild.name
 		em = discord.Embed(title='@' + guild, description=msg, colour=0xFF00FF)
 		em.set_author(name=author, icon_url=author.avatar_url)
-		channel = bot.get_user(creatorID)
+		channel = bot.get_user(loadconfig.creatorID)
 		await channel.send(embed=em)
 		return
 
@@ -74,5 +74,5 @@ async def on_member_update(before, after):
 		await ctx.send(f'Ayy nice new dp! {before.mention}')
 
 
-token = discord_key
+token = loadconfig.discord_key
 bot.run(token)
