@@ -23,7 +23,9 @@ async def on_ready():
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
 	while True:
 		randomGame = random.choice(loadconfig.games)
-		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1]))
+		guild_count = str(len(bot.guilds))
+		member_count = str(len(set(bot.get_all_members())))
+		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1]).format(guilds = guild_count, members = member_count))
 		await asyncio.sleep(loadconfig.gamestimer)
 
 
