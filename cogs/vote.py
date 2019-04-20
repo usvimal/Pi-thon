@@ -25,7 +25,7 @@ class Vote(commands.Cog):
 			else:
 				await ctx.send('Please restart the vote and send a positive integer only')
 				return
-			reactions = (await ctx.channel.get_message(ctx.message.id)).reactions
+			reactions = (await ctx.fetch_message(ctx.message.id)).reactions
 			print(reactions)
 			counts = {}
 			for reaction in reactions:
