@@ -5,7 +5,7 @@ import asyncio
 class Vote(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-	
+
 	@commands.command()
 	async def vote(self, ctx, *, reason: str):
 		"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
@@ -25,7 +25,7 @@ class Vote(commands.Cog):
 			else:
 				await ctx.send('Please restart the vote and send a positive integer only')
 				return
-			reactions = (await self.bot.get_message(ctx.message.id)).reactions
+			reactions = (await ctx.channel.get_message(ctx.message.id)).reactions
 			print(reactions)
 			counts = {}
 			for reaction in reactions:
