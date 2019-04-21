@@ -27,6 +27,8 @@ class Lyrics(commands.Cog):
 			await ctx.send(song_title)
 			await ctx.send(song.lyrics)
 			return
+		except AttributeError:
+			await ctx.send('Make sure you are playing a song on Spotify first!')
 		return
 
 	@lyrics.command()
