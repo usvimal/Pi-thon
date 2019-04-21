@@ -41,4 +41,5 @@ class Lyrics(commands.Cog):
 		if after.activity == 'None':
 			return
 
-
+def setup(bot):
+	bot.add_cog(Lyrics(bot))
