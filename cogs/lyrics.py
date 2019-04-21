@@ -15,19 +15,20 @@ class Lyrics(commands.Cog):
 		genius_token = os.environ.get("genius_token")
 		genius = lyricsgenius.Genius(genius_token)
 		song = genius.search_song(song_title, song_artist)
-
-		try:
-			em = discord.Embed(title='lyrics', description=song.lyrics)
-			em = em.set_author(name='Genius')
-			async with ctx.typing():
-				await ctx.send(embed=em)
-		except ConnectionError:
+		if len(song.lyrics) > 2048:
 			await ctx.send(song_title)
 			await ctx.send(song.lyrics)
+		else:
+			try:
+				em = discord.Embed(title='lyrics', description=song.lyrics)
+				em = em.set_author(name='Genius')
+				async with ctx.typing():
+					await ctx.send(embed=em)
+			await ctx.send(song_title)
+			await ctx.send(song.lyrics)
+			except AttributeError:
+				await ctx.send('Make sure you are playing a song on Spotify first!')
 			return
-		except AttributeError:
-			await ctx.send('Make sure you are playing a song on Spotify first!')
-		return
 
 	@lyrics.command()
 	async def start(self, ctx):
