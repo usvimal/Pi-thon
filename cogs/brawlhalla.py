@@ -11,7 +11,7 @@ class Brawlhalla(commands.Cog):
 		self.bot = bot
 
 	@commands.command()
-	def ping(host):
+	def ping(self, host):
 		"""
 		Returns True if host (str) responds to a ping request.
 		Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
@@ -41,6 +41,7 @@ class Brawlhalla(commands.Cog):
 					await check()
 		except:
 			pass
+
 
 def setup(bot):
 	bot.add_cog(Brawlhalla(bot))
