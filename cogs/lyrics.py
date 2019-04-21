@@ -24,8 +24,6 @@ class Lyrics(commands.Cog):
 				em = em.set_author(name='Genius')
 				async with ctx.typing():
 					await ctx.send(embed=em)
-			await ctx.send(song_title)
-			await ctx.send(song.lyrics)
 			except AttributeError:
 				await ctx.send('Make sure you are playing a song on Spotify first!')
 			return
