@@ -2,13 +2,11 @@ from discord.ext import commands
 import discord
 import os
 import lyricsgenius
-import asyncio
 
 
 class Lyrics(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.bg_task = self.loop.create_task(self.start())
 
 	@commands.group()
 	async def lyrics(self, ctx):
@@ -40,6 +38,7 @@ class Lyrics(commands.Cog):
 			await self.lyrics
 		if after.activity == 'None':
 			return
+
 
 def setup(bot):
 	bot.add_cog(Lyrics(bot))
