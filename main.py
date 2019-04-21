@@ -13,9 +13,7 @@ import logging
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
-logger = logging.getLogger('discord')
-#logger.setLevel(logging.DEBUG)
-logger.setLevel(logging.WARNING)
+logging.basicConfig(level=logging.WARNING)
 
 
 @bot.event
