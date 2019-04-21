@@ -40,6 +40,11 @@ class Vote(commands.Cog):
 				return
 			return
 
+	@vote.error
+	async def vote_error(self, ctx, error):
+		if isinstance(error, commands.MissingRequiredArgument):
+			return await ctx.send('Please add a question together with ;vote')
+
 
 def setup(bot):
 	bot.add_cog(Vote(bot))
