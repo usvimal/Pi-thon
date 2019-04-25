@@ -83,6 +83,20 @@ async def on_member_update(before, after):
 		ctx = before.guild.text_channels[0]
 		await ctx.send(f'Ayy nice new dp! {before.mention}')
 
+@bot.command()
+async def talk(ctx, *, arg):
+	"""deletes your message and talks through the bot"""
+	await ctx.message.delete()
+	print(ctx.message.author.id)
+	if ctx.message.author.id == creatorID or ctx.message.author.id == CillyID or ctx.message.author.id == WYID:
+		await ctx.send(arg)
+		return
+	else:
+		await ctx.send('You are not authorised sorry! {0.ctx.author.mention}')
+		return
+
+
+
 
 token = loadconfig.discord_key
 bot.run(token)
