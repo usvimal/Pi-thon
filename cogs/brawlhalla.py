@@ -10,7 +10,7 @@ class Brawlhalla(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command()
+	@commands.Cog.listener()
 	def ping(self, host):
 		"""
 		Returns True if host (str) responds to a ping request.
