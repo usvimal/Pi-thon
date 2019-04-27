@@ -10,7 +10,6 @@ class Brawlhalla(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.Cog.listener()
 	def ping(self, host):
 		"""
 		Returns True if host (str) responds to a ping request.
@@ -25,6 +24,7 @@ class Brawlhalla(commands.Cog):
 
 		return subprocess.run(command) == 0
 
+	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		try:
 			if before.id == creatorID and after.activity.name == 'Brawlhalla':
