@@ -7,6 +7,7 @@ class Fun(commands.Cog):
 
 	@commands.command()
 	async def owo(self, ctx, *, arg):
+		"""owoifies your message"""
 		msg = owotrans.owo(arg)
 		await ctx.send(msg)
 

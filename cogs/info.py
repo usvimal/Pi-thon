@@ -17,7 +17,13 @@ class Info(commands.Cog):
 
 	@commands.command(aliases=["latency"])
 	async def ping(self,ctx):
+		"""sends ping"""
 		ctx.send(bot.latency)
+
+	@commands.command()
+	async def link(self,ctx):
+		"""link to add bot to other servers"""
+		ctx.send('https://discordapp.com/api/oauth2/authorize?client_id=517153107604668438&permissions=0&scope=bot')
 
 def setup(bot):
 	bot.add_cog(Info(bot))
