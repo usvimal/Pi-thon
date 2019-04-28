@@ -36,7 +36,7 @@ class Lyrics(commands.Cog):
 
 	async def on_member_update(self, before, after):
 		if before.activity.title != after.activity.title:
-			await self.lyrics
+			await self.lyrics()
 		if after.activity == 'None':
 			return
 
