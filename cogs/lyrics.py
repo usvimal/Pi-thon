@@ -11,7 +11,7 @@ def chunks(s, n):
 		yield s[start:start + n]
 
 
-class Lyrics(commands.Cog):
+	class Lyrics(commands.Cog):
 	def __init__(self, bot):
 		""" Registers genius token and add a list of registered user and their context"""
 		self.bot = bot
