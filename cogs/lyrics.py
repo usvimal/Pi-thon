@@ -43,15 +43,15 @@ class Lyrics(commands.Cog):
 	async def on_member_update(self, before, after):
 		""" If the user is registered and the next activity is still Spotify, show new lyrics. """
 		if before in self.user_context_dict and after.activity != "None":
-				# Get the context of registered user and update the dictionary
-				ctx = self.user_context_dict[before]
-				del self.user_context_dict[before]
-				self.user_context_dict[after] = ctx
+			# Get the context of registered user and update the dictionary
+			ctx = self.user_context_dict[before]
+			del self.user_context_dict[before]
+			self.user_context_dict[after] = ctx
 
-				before_description = self.get_song_description(ctx, before.activity)
-				after_description = self.get_song_description(ctx, after.activity)
-				if before_description != after_description:
-						await self.show_lyrics_from_description(ctx, *after_description)
+			before_description = self.get_song_description(ctx, before.activity)
+			after_description = self.get_song_description(ctx, after.activity)
+			if before_description != after_description:
+				await self.show_lyrics_from_description(ctx, *after_description)
 
 
 	def get_song_description(self, ctx, activity):
