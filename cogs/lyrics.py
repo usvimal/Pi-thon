@@ -11,13 +11,11 @@ def chunks(s, n):
 		yield s[start:start + n]
 
 
-	class Lyrics(commands.Cog):
+class Lyrics(commands.Cog):
 	def __init__(self, bot):
-		""" Registers genius token and add a list of registered user and their context"""
 		self.bot = bot
 		genius_token = os.environ.get("genius_token")
 		self.genius = lyricsgenius.Genius(genius_token)
-		self.user_context_dict = dict()
 
 	@commands.group()
 	async def lyrics(self, ctx):
@@ -27,6 +25,7 @@ def chunks(s, n):
 
 	@lyrics.command()
 	async def start(self, ctx):
+<<<<<<< HEAD
 		""" Register the user to the user-context dictionary and show the first song"""
 		if ctx.author not in self.user_context_dict:
 			self.user_context_dict[ctx.author] = ctx
@@ -53,9 +52,13 @@ def chunks(s, n):
 			del self.user_context_dict[ctx.author]
 		else:
 			ctx.send("You must use \";lyrics start\" first before using this command.")
+=======
+		song_title, song_artist = self.get_song_description(ctx.message.author.activity)
+		await self.show_lyrics_from_description(ctx, song_title, song_artist)
+>>>>>>> parent of ec3ad14... 2nd update to lyrics.py by Min
 
-	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
+<<<<<<< HEAD
 		""" If the user is registered and the next activity is still Spotify, show new lyrics. """
 		if before in self.user_context_dict and after.activity == discord.Spotify:
 			# Get the context of registered user and update the dictionary
@@ -67,6 +70,15 @@ def chunks(s, n):
 			after_description = self.get_song_description(after.activity)
 			if before_description != after_description:
 				await self.show_lyrics_from_description(ctx, *after_description)
+=======
+			if after.activity == "None":
+				return None
+			else:
+					before_description = self.get_song_description(before.activity)
+					after_description = self.get_song_description(after.activity)
+					if before_description != after_description:
+							await self.show_lyrics_from_description(*after_description)
+>>>>>>> parent of ec3ad14... 2nd update to lyrics.py by Min
 
 	def get_song_description(self, activity):
 		""" Get the description of a song from user activity. """
@@ -84,7 +96,7 @@ def chunks(s, n):
 		try:
 			for chunk in chunks(self.get_lyrics(song_title, song_artist), 2048):
 				em = discord.Embed(title=song_title, description=chunk)
-				em = em.set_author(name=song_artist)
+				em = em.set_author(name='Genius')
 				async with ctx.typing():
 					await ctx.send(embed=em)
 		except Exception as e:
