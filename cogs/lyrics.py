@@ -45,16 +45,16 @@ class Lyrics(commands.Cog):
 		""" Get lyrics from the song description. """
 		return self.genius.search_song(song_title, song_artist).lyrics
 
-	async def show_lyrics_from_description(self, song_title, song_artist):
+	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
 		for chunk in chunks(self.get_lyrics(song_title, song_artist), 2048):
 			try:
 				em = discord.Embed(title=song_title, description=chunk)
 				em = em.set_author(name='Genius')
-				async with self.bot.typing():
-					await self.bot.send(embed=em)
+				async with ctx.typing():
+					await ctx.send(embed=em)
 			except AttributeError:
-				await self.bot.send('Make sure you are playing a song on Spotify first!')
+				await ctx.send('Make sure you are playing a song on Spotify first!')
 
 
 def setup(bot):
