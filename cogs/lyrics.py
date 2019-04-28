@@ -35,7 +35,7 @@ class Lyrics(commands.Cog):
 		else:
 			ctx.send("You cannot use \";lyrics start\" again. Use \";lyrics change\" to change the context.")
 
-	@lyrics.comamnd()
+	@lyrics.command()
 	async def change(self, ctx):
 		if ctx.author in self.user_context_dict:
 			if self.user_context_dict[ctx.author] == ctx:
