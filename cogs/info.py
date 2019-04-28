@@ -1,7 +1,6 @@
 from discord.ext import commands
 import discord
-
-bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
+import time
 
 class Info(commands.Cog):
 	def __init__(self, bot):
@@ -17,13 +16,18 @@ class Info(commands.Cog):
 
 	@commands.command(aliases=["latency"])
 	async def ping(self,ctx):
-		"""sends ping"""
-		await ctx.send(bot.latency)
+		"""check ping"""
+		pingtime = time.time()
+		async with ctx.typing():
+			ping = float(format(time.time() - pingtime, '.03f'))
+		await ctx.send(f" time is `{ping} seconds` :ping_pong:")
+		return
 
 	@commands.command()
 	async def link(self,ctx):
 		"""link to add bot to other servers"""
 		await ctx.send('https://discordapp.com/api/oauth2/authorize?client_id=517153107604668438&permissions=0&scope=bot')
+
 
 def setup(bot):
 	bot.add_cog(Info(bot))
