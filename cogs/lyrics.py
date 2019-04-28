@@ -26,6 +26,7 @@ class Lyrics(commands.Cog):
 	@lyrics.command()
 	async def start(self, ctx):
 <<<<<<< HEAD
+<<<<<<< HEAD
 		""" Register the user to the user-context dictionary and show the first song"""
 		if ctx.author not in self.user_context_dict:
 			self.user_context_dict[ctx.author] = ctx
@@ -71,6 +72,12 @@ class Lyrics(commands.Cog):
 			if before_description != after_description:
 				await self.show_lyrics_from_description(ctx, *after_description)
 =======
+=======
+		song_title, song_artist = self.get_song_description(ctx.message.author.activity)
+		await self.show_lyrics_from_description(ctx, song_title, song_artist)
+
+	async def on_member_update(self, before, after):
+>>>>>>> parent of ec3ad14... 2nd update to lyrics.py by Min
 			if after.activity == "None":
 				return None
 			else:
@@ -78,6 +85,9 @@ class Lyrics(commands.Cog):
 					after_description = self.get_song_description(after.activity)
 					if before_description != after_description:
 							await self.show_lyrics_from_description(*after_description)
+<<<<<<< HEAD
+>>>>>>> parent of ec3ad14... 2nd update to lyrics.py by Min
+=======
 >>>>>>> parent of ec3ad14... 2nd update to lyrics.py by Min
 
 	def get_song_description(self, activity):
