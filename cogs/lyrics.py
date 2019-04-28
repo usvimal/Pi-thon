@@ -21,12 +21,12 @@ class Lyrics(commands.Cog):
 	async def lyrics(self, ctx):
 		if ctx.invoked_subcommand is None:
 			song_title, song_artist = self.get_song_description(ctx.message.author.activity)
-			await self.show_lyrics_from_description(song_title, song_artist)
+			await self.show_lyrics_from_description(ctx, song_title, song_artist)
 
 	@lyrics.command()
 	async def start(self, ctx):
 		song_title, song_artist = self.get_song_description(ctx.message.author.activity)
-		await self.show_lyrics_from_description(song_title, song_artist)
+		await self.show_lyrics_from_description(ctx, song_title, song_artist)
 
 	async def on_member_update(self, before, after):
 			if after.activity == "None":
