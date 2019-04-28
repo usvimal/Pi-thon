@@ -32,50 +32,64 @@ class Lyrics(commands.Cog):
 			self.user_context_dict[ctx.author] = ctx
 			song_title, song_artist = self.get_song_description(ctx.message.author.activity)
 			await self.show_lyrics_from_description(ctx, song_title, song_artist)
+		else:
+			ctx.send("You cannot use \";lyrics start\" again. Use \";lyrics change\" to change the context.")
+
+	@lyrics.comamnd()
+	async def change(self, ctx):
+		if ctx.author in self.user_context_dict:
+			if self.user_context_dict[ctx.author] == ctx:
+				ctx.send("Current context is the original context for you.")
+			else:
+				self.user_context_dict[ctx.author] = ctx
+				ctx.send("Context changed for you.")
+		else:
+			ctx.send("Use \";lyrics start\" to register first.")
 
 	@lyrics.command()
 	async def stop(self, ctx):
 		""" Deregister the user from the dictionary """
 		if ctx.author in self.user_context_dict:
 			del self.user_context_dict[ctx.author]
+		else:
+			ctx.send("You must use \";lyrics start\" first before using this command.")
 
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		""" If the user is registered and the next activity is still Spotify, show new lyrics. """
-		if before in self.user_context_dict and after.activity != "None":
+		if before in self.user_context_dict and after.activity == discord.Spotify:
 			# Get the context of registered user and update the dictionary
 			ctx = self.user_context_dict[before]
 			del self.user_context_dict[before]
 			self.user_context_dict[after] = ctx
 
-			before_description = self.get_song_description(ctx, before.activity)
-			after_description = self.get_song_description(ctx, after.activity)
+			before_description = self.get_song_description(before.activity)
+			after_description = self.get_song_description(after.activity)
 			if before_description != after_description:
 				await self.show_lyrics_from_description(ctx, *after_description)
 
-
-	def get_song_description(self, ctx, activity):
+	def get_song_description(self, activity):
 		""" Get the description of a song from user activity. """
-		try:
+		if activity == discord.Spotify:
 			return activity.title, activity.artist
-		except AttributeError:
-			await ctx.send('Make sure you are playing a song on Spotify first!')
+		else:
+			raise Exception("You must be playing a song from Spotify.")
 
-
-	def get_lyrics(self, ctx, song_title, song_artist):
+	def get_lyrics(self, song_title, song_artist):
 		""" Get lyrics from the song description. """
-		try:
-			return self.genius.search_song(song_title, song_artist).lyrics
-		except AttributeError:
-			await ctx.send('Make sure you are playing a song on Spotify first!')
+		return self.genius.search_song(song_title, song_artist).lyrics
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
-		for chunk in chunks(self.get_lyrics(ctx, song_title, song_artist), 2048):
-			em = discord.Embed(title=song_title, description=chunk)
-			em = em.set_author(name=song_artist)
-			async with ctx.typing():
-				await ctx.send(embed=em)
+		try:
+			for chunk in chunks(self.get_lyrics(song_title, song_artist), 2048):
+				em = discord.Embed(title=song_title, description=chunk)
+				em = em.set_author(name=song_artist)
+				async with ctx.typing():
+					await ctx.send(embed=em)
+		except Exception as e:
+			await ctx.send(str(e))
+
 
 
 def setup(bot):
