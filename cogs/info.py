@@ -18,3 +18,6 @@ class Info(commands.Cog):
 	@commands.command(aliases=["latency"])
 	async def ping(self,ctx):
 		ctx.send(bot.latency)
+
+def setup(bot):
+	bot.add_cog(Info(bot))

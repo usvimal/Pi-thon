@@ -1,7 +1,7 @@
 from discord.ext import commands
 import owotrans
 
-class Info(commands.Cog):
+class Fun(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -9,3 +9,7 @@ class Info(commands.Cog):
 	async def owo(self, ctx, *, arg):
 		msg = owotrans.owo(arg)
 		await ctx.send(msg)
+
+
+def setup(bot):
+	bot.add_cog(Fun(bot))
