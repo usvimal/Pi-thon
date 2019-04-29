@@ -70,11 +70,20 @@ class Lyrics(commands.Cog):
                         after_description = self.get_song_description(after)
                         if before_description != after_description:
                                 await self.show_lyrics_from_description(ctx, *after_description)
-
+                                
+        def get_spotify_from_activities(self, activities):
+                """ It is possible that a user may be doing 2 or more activies at a time. This method will
+                return the Spotify activity if it exists. Returns None otherwise """
+                for activity in activities:
+                        if activity == discord.Spotify:
+                                return activity
+                return None
+        
         def get_song_description(self, user):
                 """ Get the description of a song from user if the user is playing a song on Spotify. """
-                if user.activity != "None":
-                        return user.activity.title, user.activity.artist
+                spotify_activity = self.get_spotify_from_activities(user.activities)
+                if spotify_activity is not None:
+                        return spotify_activity.title, spotify_activity.artist
                 else:
                         # TODO: Error Catching
                         pass
@@ -103,6 +112,7 @@ class Lyrics(commands.Cog):
                                         await ctx.send(embed=em)
                 except AttributeError as e:
                         await ctx.send("Attribute Error.")
+
 
 def setup(bot):
         bot.add_cog(Lyrics(bot))
