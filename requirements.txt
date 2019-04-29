@@ -3,3 +3,4 @@ asyncpg
 owotranslator
 lyricsgenius
 urllib3
+pylyrics3
