@@ -89,7 +89,7 @@ async def talk(ctx, *, arg):
 	"""deletes your message and talks through the bot"""
 	await ctx.message.delete()
 	print(ctx.message.author.id)
-	if ctx.message.author.id == loadconfig.creatorID or ctx.message.author.id == loadconfig.CillyID or ctx.message.author.id == loadconfig.WYID:
+	if ctx.message.author.id == loadconfig.creatorID or ctx.message.author.id == loadconfig.CillyID or ctx.message.author.id == loadconfig.WYID or ctx.message.author.id == loadconfig.MinID:
 		await ctx.send(arg)
 		return
 	else:
