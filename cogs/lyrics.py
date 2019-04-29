@@ -60,8 +60,7 @@ class Lyrics(commands.Cog):
         @commands.Cog.listener()
         async def on_member_update(self, before, after):
                 """ If the user is registered and the next activity is still Spotify, show new lyrics. """
-                after_spotify_activity = self.get_spotify_from_activities(after.activities)
-                if before in self.user_context_dict and after_spotify_activity is not None:
+                if before in self.user_context_dict and after.activity != "None":
                         # Get the context of registered user and update the dictionary
                         ctx = self.user_context_dict[before]
                         del self.user_context_dict[before]
@@ -71,20 +70,11 @@ class Lyrics(commands.Cog):
                         after_description = self.get_song_description(after)
                         if before_description != after_description:
                                 await self.show_lyrics_from_description(ctx, *after_description)
-                                
-        def get_spotify_from_activities(self, activities):
-                """ It is possible that a user may be doing 2 or more activies at a time. This method will
-                return the Spotify activity if it exists. Returns None otherwise """
-                for activity in activities:
-                        if activity == discord.Spotify:
-                                return activity
-                return None
-        
+
         def get_song_description(self, user):
                 """ Get the description of a song from user if the user is playing a song on Spotify. """
-                spotify_activity = self.get_spotify_from_activities(user.activities)
-                if spotify_activity is not None:
-                        return spotify_activity.title, spotify_activity.artist
+                if user.activity == discord.Spotify:
+                        return user.activity.title, user.activity.artist
                 else:
                         # TODO: Error Catching
                         pass
@@ -113,7 +103,6 @@ class Lyrics(commands.Cog):
                                         await ctx.send(embed=em)
                 except AttributeError as e:
                         await ctx.send("Attribute Error.")
-
 
 def setup(bot):
         bot.add_cog(Lyrics(bot))
