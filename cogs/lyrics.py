@@ -73,7 +73,7 @@ class Lyrics(commands.Cog):
 
         def get_song_description(self, user):
                 """ Get the description of a song from user if the user is playing a song on Spotify. """
-                if user.activity == discord.Spotify:
+                if user.activity != "None":
                         return user.activity.title, user.activity.artist
                 else:
                         # TODO: Error Catching
