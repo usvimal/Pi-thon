@@ -83,7 +83,7 @@ class Lyrics(commands.Cog):
 		if self.source == "Genius":
 			return self.get_lyrics_genius(song_title, song_artist)
 		elif self.source == "Lyrics-Wikia":
-			return self.get_lyrics_genius(song_title, song_artist)
+			return self.get_lyrics_wiki(song_title, song_artist)
 		return None
 
 	def get_lyrics_genius(self, song_title, song_artist):
