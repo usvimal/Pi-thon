@@ -25,8 +25,8 @@ class Lyrics(commands.Cog):
 			try:
 				song_title, song_artist = self.get_song_description(ctx.author)
 				await self.show_lyrics_from_description(ctx, song_title, song_artist)
-			except Exception as e:
-				await ctx.send(str(e))
+			except Exception:
+				await ctx.send('Please play a song to get the lyrics 🙃')
 
 	@lyrics.command()
 	async def start(self, ctx):
@@ -36,8 +36,8 @@ class Lyrics(commands.Cog):
 				self.user_context_dict[ctx.author] = ctx
 				song_title, song_artist = self.get_song_description(ctx.author)
 				await self.show_lyrics_from_description(ctx, song_title, song_artist)
-			except Exception as e:
-				await ctx.send(str(e))
+			except Exception:
+				await ctx.send('Please play a song to get the lyrics 🙃')
 			else:
 				await ctx.send("\";lyrics start\" has already been activated.")
 
@@ -85,7 +85,7 @@ class Lyrics(commands.Cog):
 				if str(activity) == Lyrics.SPOTIFY:
 					return activity.title, activity.artist
 				else:
-					raise Exception("You must be playing a Spotify application first.")
+					raise Exception("You must be playing a Spotify song first.")
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
@@ -98,8 +98,8 @@ class Lyrics(commands.Cog):
 	@change_source.error
 	async def change_source_error(self, ctx, error):
 		if isinstance(error, commands.MissingRequiredArgument):
-			return await ctx.send('Please add the source you want to get lyrics from. \n The sources available are: \n '
-								  '1.genius \n lyrics-wiki')
+			return await ctx.send('Please add the source you want to get lyrics from. \n The sources available are: \n'
+								  '1.genius \n2.lyrics-wiki')
 
 
 def setup(bot):
