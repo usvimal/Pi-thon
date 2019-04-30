@@ -66,6 +66,7 @@ class Lyrics(commands.Cog):
                 except Exception as e:
                         await ctx.send(str(e))
 
+        @commands.Cog.listener()
         async def on_member_update(self, before, after):
                 """ If the user is registered and the next activity is still Spotify, show new lyrics. """
                 if before in self.user_context_dict and str(after.activity) == Lyrics.SPOTIFY:
@@ -103,8 +104,3 @@ class Lyrics(commands.Cog):
 
 def setup(bot):
         bot.add_cog(Lyrics(bot))
-
-if __name__ == "__main__":
-        a = discord.ext.commands.Bot("!")
-        b = Lyrics(a)
-        a.add_cog(b)
