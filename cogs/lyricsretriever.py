@@ -7,16 +7,15 @@ class LyricsRetriever:
     GENIUS_TOKEN = "genius_token"
     GENIUS_SOURCE_NAME = "genius"
     WIKI_SOURCE_NAME = "lyrics-wiki"
-
+    
     def __init__(self):
         self._sources = self._init_sources()
         self.main_source = list(self._sources.keys())[0]
-
-    @staticmethod
-    def _init_sources():
+        
+    def _init_sources(self):
         """ Returns a dictionary with (key:value) pair with the key being the lyrics source name
             and the value being the function to retrieve lyrics """
-
+        
         return_dict = dict()
 
         try:
@@ -38,7 +37,7 @@ class LyricsRetriever:
             self.main_source = new_source
         else:
             raise Exception("Given source is not available in the list of sources.")
-
+        
     def get_lyrics(self, title, artist):
         """ Get the lyrics from the source """
         lyrics = self._sources[self.main_source](title, artist)
@@ -46,9 +45,8 @@ class LyricsRetriever:
             return lyrics
         else:
             raise Exception("Unable to find lyrics in the main source.")
-
-
+        
 if __name__ == "__main__":
     retriever = LyricsRetriever()
     print(retriever.get_lyrics("Believer", "Imagine Dragons"))
-
+    
