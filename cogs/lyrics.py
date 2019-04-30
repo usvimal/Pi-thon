@@ -3,7 +3,7 @@ import discord
 import lyricsgenius
 import os
 import pylyrics3
-import utils.lyricsretriever as lyricsretriever
+import lyricsretriever
 from discord.ext import commands
 
 
