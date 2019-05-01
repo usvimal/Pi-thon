@@ -22,12 +22,13 @@ class Lyrics(commands.Cog):
 	async def lyrics(self, ctx):
 		""" Show the lyrics of the song curretnly playing in Spotify"""
 		if ctx.invoked_subcommand is None:
-			await ctx.send('Oof owie, that was not a valid command 🤨')
-		elif ctx.subcommand_passed is None:
-			song_title, song_artist = self.get_song_description(ctx.author)
-			await self.show_lyrics_from_description(ctx, song_title, song_artist)
+			if ctx.subcommand_passed:
+				await ctx.send('Oof owie, that was not a valid command 🤨')
+			else:
+				song_title, song_artist = self.get_song_description(ctx.author)
+				await self.show_lyrics_from_description(ctx, song_title, song_artist)
 
-	@lyrics.command()
+	@lyrics.command(aliases=["begin"])
 	async def start(self, ctx):
 		""" Register the user to the user-context dictionary and show the first song"""
 		if ctx.author not in self.user_context_dict:
@@ -37,7 +38,7 @@ class Lyrics(commands.Cog):
 		else:
 			await ctx.send("\";lyrics start\" has already been activated.")
 
-	@lyrics.command()
+	@lyrics.command(aliases=["end"])
 	async def stop(self, ctx):
 		""" Deregister the user from the dictionary """
 		if ctx.author in self.user_context_dict:
