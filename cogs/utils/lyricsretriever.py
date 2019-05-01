@@ -1,14 +1,14 @@
-import discord
 import lyricsgenius
 import os
 import pylyrics3
+from discord.ext import commands
 
 
 class LyricsRetriever:
-	class LyricsNotFoundException(discord.DiscordException):
+	class LyricsNotFoundException(commands.CommandError):
 		pass
 
-	class SourceChangeNotSuccess(discord.DiscordException):
+	class SourceChangeNotSuccess(commands.CommandError):
 		pass
 
 	GENIUS_TOKEN = "genius_token"
@@ -56,5 +56,4 @@ class LyricsRetriever:
 
 
 if __name__ == "__main__":
-	retriever = LyricsRetriever()
-	print(LyricsRetriever.estimate_song_words(retriever.get_lyrics("Rap God", "Eminem")))
+	pass

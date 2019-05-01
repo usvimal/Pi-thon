@@ -1,4 +1,3 @@
-import discord
 from cogs.utils.lyricsretriever import LyricsRetriever
 from discord.ext import commands
 
@@ -10,7 +9,7 @@ def chunks(s, n):
 
 
 class Lyrics(commands.Cog):
-	class SpotifyNotPlaying(discord.DiscordException):
+	class SpotifyNotPlaying(commands.CommandError):
 		pass
 
 	SPOTIFY = "Spotify"
@@ -107,6 +106,4 @@ def setup(bot):
 
 
 if __name__ == "__main__":
-	a = discord.ext.commands.Bot("!")
-	b = Lyrics(a)
-	a.add_cog(b)
+	pass
