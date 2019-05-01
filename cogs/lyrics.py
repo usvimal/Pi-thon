@@ -79,7 +79,7 @@ class Lyrics(commands.Cog):
 	async def on_command_error(self, ctx, error):
 		""" Error thrown by commands will be of the type discord.ext.command.CommandError. For errors not inheriting
 		from CommandError, it will be difficult to error handle. """
-		print(str(error), error)
+		await ctx.send("\n".join(attr+" : "+str(getattr(error, attr)) for attr in dir(error)))
 		if isinstance(error, self.SpotifyNotPlaying):
 			await ctx.send("Please play a song to get the lyrics 🙃")
 		elif isinstance(error, commands.MissingRequiredArgument):
