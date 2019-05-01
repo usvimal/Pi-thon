@@ -103,7 +103,7 @@ class Lyrics(commands.Cog):
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
-		for chunk in chunks(self.lyrics_retriever.get_lyrics(song_title, song_artist), 2048):
+		for chunk in chunks(self.lyrics_retriever.get_lyrics(song_title, song_artist), 1999):
 			em = discord.Embed(title=song_title, description=chunk)
 			em = em.set_author(name=song_artist)
 			async with ctx.typing():
