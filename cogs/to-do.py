@@ -13,6 +13,7 @@ class Todo(commands.Cog):
 		self.bot = bot
 		self.channelid = 572561960982413334
 
+	@commands.Cog.listener()
 	async def on_message(self, message):
 		if message.channel.id == self.channelid:
 			await message.add_reaction('✅')
