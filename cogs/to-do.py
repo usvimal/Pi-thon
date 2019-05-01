@@ -17,7 +17,7 @@ class Todo(commands.Cog):
 	async def on_message(self, message):
 		if message.channel.id == self.channelid:
 			await message.add_reaction('✅')
-			reactions = (await message.fetch_message(message.id)).reactions
+			reactions = (await message.channel.fetch_message(message.id)).reactions
 			counts = {}
 			for reaction in reactions:
 				counts[reaction.emoji] = reaction.count - 1
