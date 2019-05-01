@@ -3,5 +3,6 @@ cogs = [
     'cogs.brawlhalla',
     'cogs.lyrics',
     'cogs.info',
-    'cogs.fun'
+    'cogs.fun',
+    'cogs.to-do'
     ]

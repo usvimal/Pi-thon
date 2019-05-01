@@ -38,7 +38,6 @@ async def on_ready():
 		await asyncio.sleep(loadconfig.gamestimer)
 
 
-
 @bot.listen()
 async def on_message(message):
 	# we do not want the bot to reply to itself

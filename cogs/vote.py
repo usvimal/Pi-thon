@@ -13,6 +13,7 @@ class Vote(commands.Cog):
 		await ctx.message.add_reaction('✅')
 		await ctx.message.add_reaction('❌')
 		await ctx.send("How long do you want the vote to run? (in seconds)")
+
 		def check(user):
 			return user == ctx.message.author
 		try:
