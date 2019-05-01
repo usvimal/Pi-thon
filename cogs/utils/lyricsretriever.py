@@ -1,13 +1,14 @@
+import discord
 import lyricsgenius
 import os
 import pylyrics3
 
 
 class LyricsRetriever:
-	class LyricsNotFoundException(Exception):
+	class LyricsNotFoundException(discord.DiscordException):
 		pass
 
-	class SourceChangeNotSuccess(Exception):
+	class SourceChangeNotSuccess(discord.DiscordException):
 		pass
 
 	GENIUS_TOKEN = "genius_token"

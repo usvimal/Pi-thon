@@ -10,7 +10,7 @@ def chunks(s, n):
 
 
 class Lyrics(commands.Cog):
-	class SpotifyNotPlaying(Exception):
+	class SpotifyNotPlaying(discord.DiscordException):
 		pass
 
 	SPOTIFY = "Spotify"
@@ -59,10 +59,6 @@ class Lyrics(commands.Cog):
 		self.lyrics_retriever.change_main_source(new_source)
 		await ctx.send("Changing of main source is successful.")
 
-	@lyrics.command()
-	async def help(self, ctx, new_source):
-		await ctx.send("To be implemented later :).")
-
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		""" If the user is registered and the next activity is still Spotify, show new lyrics. """
@@ -85,7 +81,7 @@ class Lyrics(commands.Cog):
 		elif isinstance(error, LyricsRetriever.SourceChangeNotSuccess):
 			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
 		elif isinstance(error, commands.MissingRequiredArgument):
-			await ctx.send("Invalid usage of command. Use ;lyrics help for more information.")
+			await ctx.send("Invalid usage of command. Use ;help lyrics for more information.")
 		else:
 			await ctx.send(f"Unexpected error occured. Error: {error}")
 
@@ -95,8 +91,7 @@ class Lyrics(commands.Cog):
 			for activity in user.activities:
 				if str(activity) == Lyrics.SPOTIFY:
 					return activity.title, activity.artist
-				else:
-					raise self.SpotifyNotPlaying
+		raise self.SpotifyNotPlaying
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
