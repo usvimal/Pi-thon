@@ -5,10 +5,10 @@ from discord.ext import commands
 
 
 class LyricsRetriever:
-	class LyricsNotFoundException(commands.CommandError):
+	class LyricsNotFoundException(Exception):
 		pass
 
-	class SourceChangeNotSuccess(commands.CommandError):
+	class SourceChangeNotSuccess(Exception):
 		pass
 
 	GENIUS_TOKEN = "genius_token"
@@ -17,14 +17,25 @@ class LyricsRetriever:
 	AVERAGE_SONG_WORD_SIZE = 1000		# Estimated and added 200 words more, for benefit of doubt
 
 	@staticmethod
+	def genius_get_lyrics(title, artist):
+		genius_api = lyricsgenius.Genius(os.environ.get(LyricsRetriever.GENIUS_TOKEN))
+		song = genius_api.search_song(title, artist)
+		if song is not None:
+			return song.lyrics
+		else:
+			return None
+
+	@staticmethod
+	def lyrics_wiki_get_lyrics(title, artist):
+		return pylyrics3.get_song_lyrics(artist, title)
+
+	@staticmethod
 	def _create_sources():
 		""" Create sources and return as a Sourc Name: Source Object pair. """
 		return_dict = dict()
 
-		genius_api = lyricsgenius.Genius(os.environ.get(LyricsRetriever.GENIUS_TOKEN))
-
-		return_dict[LyricsRetriever.GENIUS_SOURCE_NAME] = lambda title, artist: genius_api.search_song(title, artist).lyrics
-		return_dict[LyricsRetriever.WIKI_SOURCE_NAME] = lambda title, artist: pylyrics3.get_song_lyrics(artist, title)
+		return_dict[LyricsRetriever.GENIUS_SOURCE_NAME] = LyricsRetriever.genius_get_lyrics
+		return_dict[LyricsRetriever.WIKI_SOURCE_NAME] = LyricsRetriever.lyrics_wiki_get_lyrics
 
 		return return_dict
 

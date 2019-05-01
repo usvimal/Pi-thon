@@ -34,9 +34,9 @@ class Lyrics(commands.Cog):
 	async def start(self, ctx):
 		""" Register the user to the user-context dictionary and show the first song"""
 		if ctx.author not in self.user_context_dict:
-			self.user_context_dict[ctx.author] = ctx
 			song_title, song_artist = self.get_song_description(ctx.author)
 			await self.show_lyrics_from_description(ctx, song_title, song_artist)
+			self.user_context_dict[ctx.author] = ctx
 		else:
 			await ctx.send("\";lyrics start\" has already been activated.")
 
@@ -69,18 +69,24 @@ class Lyrics(commands.Cog):
 			before_description = self.get_song_description(before)
 			after_description = self.get_song_description(after)
 			if before_description != after_description:
-				await self.show_lyrics_from_description(ctx, *after_description)
+				try:
+					await self.show_lyrics_from_description(ctx, *after_description)
+				except LyricsRetriever.LyricsNotFoundException:
+					await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
+		""" Error thrown by commands will be of the type discord.ext.command.CommandError. For errors not inheriting
+		from CommandError, it will be difficult to error handle. """
+
 		if isinstance(error, self.SpotifyNotPlaying):
 			await ctx.send("Please play a song to get the lyrics 🙃")
-		elif isinstance(error, LyricsRetriever.LyricsNotFoundException):
-			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
-		elif isinstance(error, LyricsRetriever.SourceChangeNotSuccess):
-			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
 		elif isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send("Invalid usage of command. Use ;help lyrics for more information.")
+		elif str(error).startswith("LyricsNotFoundException"):
+			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
+		elif str(error).startswith("SourceChangeNotSuccess"):
+			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
 		else:
 			await ctx.send(f"Unexpected error occured. Error: {error}")
 
