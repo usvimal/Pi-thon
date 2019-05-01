@@ -1,5 +1,5 @@
 import discord
-import cogs.utils.lyricsretriever
+from cogs.utils.lyricsretriever import LyricsRetriever
 from discord.ext import commands
 
 
@@ -10,12 +10,15 @@ def chunks(s, n):
 
 
 class Lyrics(commands.Cog):
+	class SpotifyNotPlaying(Exception):
+		pass
+
 	SPOTIFY = "Spotify"
 
 	def __init__(self, bot):
 		""" Create a lyrics retriever and add a list of registered user and their context"""
 		self.bot = bot
-		self.lyrics_retriever = cogs.utils.lyricsretriever.LyricsRetriever()
+		self.lyrics_retriever = LyricsRetriever()
 		self.user_context_dict = dict()
 
 	@commands.group()
@@ -53,12 +56,14 @@ class Lyrics(commands.Cog):
 
 	@lyrics.command()
 	async def change_source(self, ctx, new_source):
-		try:
-			self.lyrics_retriever.change_main_source(new_source)
-			await ctx.send("Changing of main source is successful.")
-		except Exception as e:
-			await ctx.send(str(e))
+		self.lyrics_retriever.change_main_source(new_source)
+		await ctx.send("Changing of main source is successful.")
 
+	@lyrics.command()
+	async def help(self, ctx, new_source):
+		await ctx.send("To be implemented later :).")
+
+	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		""" If the user is registered and the next activity is still Spotify, show new lyrics. """
 		if before in self.user_context_dict and str(after.activity) == Lyrics.SPOTIFY:
@@ -71,6 +76,19 @@ class Lyrics(commands.Cog):
 			if before_description != after_description:
 				await self.show_lyrics_from_description(ctx, *after_description)
 
+	@commands.Cog.listener()
+	async def on_command_error(self, ctx, error):
+		if isinstance(error, self.SpotifyNotPlaying):
+			await ctx.send("Please play a song to get the lyrics 🙃")
+		elif isinstance(error, LyricsRetriever.LyricsNotFoundException):
+			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
+		elif isinstance(error, LyricsRetriever.SourceChangeNotSuccess):
+			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
+		elif isinstance(error, commands.MissingRequiredArgument):
+			await ctx.send("Invalid usage of command. Use ;lyrics help for more information.")
+		else:
+			await ctx.send(f"Unexpected error occured. Error: {error}")
+
 	def get_song_description(self, user):
 		""" Get the description of a song from user if the user is playing a song on Spotify. """
 		if user.activities is not None:
@@ -78,7 +96,7 @@ class Lyrics(commands.Cog):
 				if str(activity) == Lyrics.SPOTIFY:
 					return activity.title, activity.artist
 				else:
-					raise Exception("You must be playing a Spotify song first.")
+					raise self.SpotifyNotPlaying
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
@@ -88,19 +106,10 @@ class Lyrics(commands.Cog):
 			async with ctx.typing():
 				await ctx.send(embed=em)
 
-	@change_source.error
-	async def change_source_error(self, ctx, error):
-		if isinstance(error, commands.MissingRequiredArgument):
-			return await ctx.send('Please add the source you want to get lyrics from. \n The sources available are: \n'
-								  '1.genius \n2.lyrics-wiki')
-
-	async def on_command_error(error):
-		if isinstance(error, commands.CommandInvokeError):
-			return print('Please play a song to get the lyrics 🙃')
-
 
 def setup(bot):
 	bot.add_cog(Lyrics(bot))
+
 
 if __name__ == "__main__":
 	a = discord.ext.commands.Bot("!")
