@@ -24,6 +24,8 @@ class Lyrics(commands.Cog):
 		if ctx.invoked_subcommand is None:
 			song_title, song_artist = self.get_song_description(ctx.author)
 			await self.show_lyrics_from_description(ctx, song_title, song_artist)
+		elif ctx.subcommand_passed is None:
+			await ctx.send('Oof owie, that was not a valid command 🤨')
 
 	@lyrics.command()
 	async def start(self, ctx):
@@ -97,9 +99,9 @@ class Lyrics(commands.Cog):
 
 
 def setup(bot):
-		bot.add_cog(Lyrics(bot))
+	bot.add_cog(Lyrics(bot))
 
 if __name__ == "__main__":
-		a = discord.ext.commands.Bot("!")
-		b = Lyrics(a)
-		a.add_cog(b)
+	a = discord.ext.commands.Bot("!")
+	b = Lyrics(a)
+	a.add_cog(b)
