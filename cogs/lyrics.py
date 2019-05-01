@@ -86,9 +86,9 @@ class Lyrics(commands.Cog):
 			await ctx.send("Please play a song to get the lyrics 🙃")
 		elif isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send("Invalid usage of command. Use ;help lyrics for more information.")
-		elif str(error).startswith("LyricsNotFoundException"):
+		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.LyricsNotFoundException):
 			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
-		elif str(error).startswith("SourceChangeNotSuccess"):
+		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.SourceChangeNotSuccess):
 			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
 		else:
 			await ctx.send(f"Unexpected error occured. Error: {error}")
