@@ -22,24 +22,18 @@ class Lyrics(commands.Cog):
 	async def lyrics(self, ctx):
 		""" Show the lyrics of the song curretnly playing in Spotify"""
 		if ctx.invoked_subcommand is None:
-			try:
-				song_title, song_artist = self.get_song_description(ctx.author)
-				await self.show_lyrics_from_description(ctx, song_title, song_artist)
-			except Exception:
-				await ctx.send('Please play a song to get the lyrics 🙃')
+			song_title, song_artist = self.get_song_description(ctx.author)
+			await self.show_lyrics_from_description(ctx, song_title, song_artist)
 
 	@lyrics.command()
 	async def start(self, ctx):
 		""" Register the user to the user-context dictionary and show the first song"""
 		if ctx.author not in self.user_context_dict:
-			try:
-				self.user_context_dict[ctx.author] = ctx
-				song_title, song_artist = self.get_song_description(ctx.author)
-				await self.show_lyrics_from_description(ctx, song_title, song_artist)
-			except Exception:
-				await ctx.send('Please play a song to get the lyrics 🙃')
-			else:
-				await ctx.send("\";lyrics start\" has already been activated.")
+			self.user_context_dict[ctx.author] = ctx
+			song_title, song_artist = self.get_song_description(ctx.author)
+			await self.show_lyrics_from_description(ctx, song_title, song_artist)
+		else:
+			await ctx.send("\";lyrics start\" has already been activated.")
 
 	@lyrics.command()
 	async def stop(self, ctx):
@@ -69,14 +63,10 @@ class Lyrics(commands.Cog):
 			ctx = self.user_context_dict[before]
 			del self.user_context_dict[before]
 			self.user_context_dict[after] = ctx
-
-			try:
-				before_description = self.get_song_description(before)
-				after_description = self.get_song_description(after)
-				if before_description != after_description:
-					await self.show_lyrics_from_description(ctx, *after_description)
-			except Exception:
-				await ctx.send('Please play a song to get the lyrics 🙃')
+			before_description = self.get_song_description(before)
+			after_description = self.get_song_description(after)
+			if before_description != after_description:
+				await self.show_lyrics_from_description(ctx, *after_description)
 
 	def get_song_description(self, user):
 		""" Get the description of a song from user if the user is playing a song on Spotify. """
@@ -100,6 +90,10 @@ class Lyrics(commands.Cog):
 		if isinstance(error, commands.MissingRequiredArgument):
 			return await ctx.send('Please add the source you want to get lyrics from. \n The sources available are: \n'
 								  '1.genius \n2.lyrics-wiki')
+
+	async def on_command_error(error):
+		if isinstance(error, commands.CommandInvokeError):
+			return print('Please play a song to get the lyrics 🙃')
 
 
 def setup(bot):
