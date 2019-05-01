@@ -22,10 +22,10 @@ class Lyrics(commands.Cog):
 	async def lyrics(self, ctx):
 		""" Show the lyrics of the song curretnly playing in Spotify"""
 		if ctx.invoked_subcommand is None:
+			await ctx.send('Oof owie, that was not a valid command 🤨')
+		elif ctx.subcommand_passed is None:
 			song_title, song_artist = self.get_song_description(ctx.author)
 			await self.show_lyrics_from_description(ctx, song_title, song_artist)
-		elif ctx.subcommand_passed is None:
-			await ctx.send('Oof owie, that was not a valid command 🤨')
 
 	@lyrics.command()
 	async def start(self, ctx):
