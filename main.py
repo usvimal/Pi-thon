@@ -76,6 +76,7 @@ async def on_message(message):
 		await message.add_reaction('👀')
 
 
+@bot.listen
 async def on_member_update(before, after):
 	if before.avatar != after.avatar:
 		# gets the first channel from UI
