@@ -18,12 +18,11 @@ bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal pro
 logging_channel = bot.get_channel(573856996256776202)
 
 logger = logging.getLogger("discord")
-logger.setLevel(logging.CRITICAL)
 handler = DiscordHandler(logging_channel)
 str_format = "%(levelname)s:%(message)s"
 formatter = logging.Formatter(str_format)
 handler.setFormatter(formatter)
-handler.setLevel(logging.INFO)
+handler.setLevel(logging.CRITICAL)
 logger.addHandler(handler)
 
 
@@ -53,8 +52,6 @@ async def on_ready():
 @bot.listen()
 async def on_message(message):
 	# we do not want the bot to reply to itself
-	if "test123" in message.content.lower():
-		logger.debug("Debugging. Debugging.")
 	if message.author == bot.user:
 		return
 

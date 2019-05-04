@@ -9,14 +9,15 @@ class DiscordHandler(logging.Handler):
 		self._channel = channel
 
 	def emit(self, record):
+		loop = asyncio.get_running_loop()
 		print("emitted")
-		self.send_to_channel(self.format(record))
+		loop.run_until_complete(self.send_to_channel(self.format(record)))
 
 	async def send_to_channel(self, msg):
 		print("send_to_channel started")
 		for part in self._chunk(msg, 1999):
 			async with self._channel.typing():
-				self._channel.send(msg)
+				await self._channel.send(msg)
 
 	@staticmethod
 	def _chunk(target_str, chunk_size):
