@@ -13,8 +13,6 @@ import logging
 import traceback
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
-logging.basicConfig(level=logging.WARNING)
-
 
 @bot.event
 # outputs in log when bot is logged in
@@ -28,7 +26,7 @@ async def on_ready():
 		try:
 			bot.load_extension(cog)
 		except Exception as e:
-			print(f'Couldn\'t load cog {cog} due to' + str(e))
+			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
 
 	while True:
