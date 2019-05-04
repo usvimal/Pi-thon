@@ -53,6 +53,8 @@ async def on_ready():
 @bot.listen()
 async def on_message(message):
 	# we do not want the bot to reply to itself
+	if "test123" in message.content.lower():
+		logger.debug("Debugging. Debugging.")
 	if message.author == bot.user:
 		return
 
