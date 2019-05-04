@@ -14,7 +14,6 @@ import traceback
 from discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
-
 logger = logging.getLogger("discord")
 
 
@@ -120,11 +119,11 @@ async def log(ctx, *, arg):
 	elif arg == "info":
 		logger.info("Info")
 	elif arg == "warning":
-		logger.info("Warning")
+		logger.warning("Warning")
 	elif arg == "error":
-		logger.info("Error")
+		logger.error("Error")
 	elif arg == "critical":
-		logger.info("Critical")
+		logger.critical("Critical")
 
 token = loadconfig.discord_key
 bot.run(token)
