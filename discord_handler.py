@@ -1,4 +1,5 @@
 import logging
+import discord
 
 """ Handler which is used to make loggers print to discord.	"""
 class DiscordHandler(logging.Handler):
@@ -23,4 +24,6 @@ class DiscordHandler(logging.Handler):
 
 	async def send_to_channel(self, msg):
 		async with self._channel.typing():
-			await self._channel.send(msg)
+			em = discord.Embed(title='@', description=msg, colour=0x19a934)
+			em.set_author(name='logger')
+			await self._channel.send(embed=em)
