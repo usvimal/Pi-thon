@@ -20,13 +20,13 @@ class Todo(commands.Cog):
 			await message.add_reaction('❌')
 
 	@commands.Cog.listener()
-	async def on_raw_reaction_add(self, message_id, channel_id, emoji):
-		if channel_id == self.channelid:
-			if emoji == '✅':
-				await message_id.delete()
-				await channel_id.send(strike(message_id.content))
-			if emoji == '❌':
-				await message_id.delete()
+	async def on_raw_reaction_add(self, payload):
+		if payload.channel_id == self.channelid:
+			if payload.emoji == '✅':
+				await payload.message_id.delete()
+				await payload.channel_id.send(strike(payload.message_id.content))
+			if payload.emoji == '❌':
+				await payload.message_id.delete()
 
 
 def setup(bot):
