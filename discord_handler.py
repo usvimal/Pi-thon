@@ -24,6 +24,5 @@ class DiscordHandler(logging.Handler):
 
 	async def send_to_channel(self, msg):
 		async with self._channel.typing():
-			em = discord.Embed(title='@', description=msg, colour=0x19a934)
-			em.set_author(name='logger')
+			em = discord.Embed(title='logger', description=msg, colour=0x19a934)
 			await self._channel.send(embed=em)

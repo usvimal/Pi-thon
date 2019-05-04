@@ -11,6 +11,7 @@ import lyricsgenius
 import loadconfig
 import logging
 import traceback
+import time
 from discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
@@ -43,6 +44,11 @@ async def on_ready():
 		except Exception as e:
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
+	channel = bot.get_channel(574240405722234881)
+	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
+	em.add_field(name='Cog status', value=bot.extensions + '/n' + discord.ext.commands.ExtensionFailed)
+	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
+	await channel.send(embed=em)
 
 	while True:
 		randomGame = random.choice(loadconfig.games)
@@ -72,7 +78,7 @@ async def on_message(message):
 
 	# sends ben shapiro photo when someone says ok this is epic
 	if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
-		await message.channel.send(file=discord.File('my_image.jpg'))
+		await message.channel.send(file=discord.File('this_is_epic.jpg'))
 		return
 
 	# sends me a message if I am mentioned
