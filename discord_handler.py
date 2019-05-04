@@ -19,7 +19,7 @@ class DiscordHandler(logging.Handler):
 		self.setFormatter(logging.Formatter(str_format))
 
 	def emit(self, record):
-		self._main_loop.run_until_complete(self.send_to_channel(self.format(record)))
+		self._main_loop.create_task(self.send_to_channel(self.format(record)))
 
 	async def send_to_channel(self, msg):
 		async with self._channel.typing():
