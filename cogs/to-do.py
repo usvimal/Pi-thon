@@ -12,7 +12,6 @@ class Todo(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.channelid = 572561960982413334
-		self.message = bot.message
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
@@ -21,14 +20,13 @@ class Todo(commands.Cog):
 			await message.add_reaction('❌')
 
 	@commands.Cog.listener()
-	async def on_raw_reaction_add(self, reaction):
-		if self.message.channel.id == self.channelid:
-			if reaction == '✅':
-				await self.message.delete()
-				await self.message.channel.send(strike(self.message.content))
-			if reaction == '❌':
-				await self.message.delete()
-
+	async def on_raw_reaction_add(self, message_id, channel_id, emoji):
+		if channel_id == self.channelid:
+			if emoji == '✅':
+				await message_id.delete()
+				await channel_id.send(strike(message_id.content))
+			if emoji == '❌':
+				await message_id.delete()
 
 
 def setup(bot):
