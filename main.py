@@ -24,12 +24,7 @@ def _add_discord_handler():
 	main_loop = bot.loop
 	print(logging_channel, main_loop)		# For tracing
 
-	str_format = "%(levelname)s:%(message)s"
-	formatter = logging.Formatter(str_format)
-
-	handler = DiscordHandler(logging_channel, main_loop)
-	handler.setFormatter(formatter)
-	handler.setLevel(logging.CRITICAL)
+	handler = DiscordHandler(logging_channel, main_loop, logging.CRITICAL)
 
 	logger.addHandler(handler)
 
@@ -116,9 +111,20 @@ async def talk(ctx, *, arg):
 		await ctx.send(f'You are not authorised sorry! {ctx.author.mention}')
 		return
 
+
 @bot.command()
-async def log(ctx):
-	logger.critical("Critical Error Critical error.")
+async def log(ctx, *, arg):
+	arg = arg.lowercase()
+	if arg == "debug":
+		logger.debug("Debug")
+	elif arg == "info":
+		logger.info("Info")
+	elif arg == "warning":
+		logger.info("Warning")
+	elif arg == "error":
+		logger.info("Error")
+	elif arg == "critical":
+		logger.info("Critical")
 
 token = loadconfig.discord_key
 bot.run(token)
