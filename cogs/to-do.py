@@ -21,12 +21,15 @@ class Todo(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
+		channel = self.bot.get_channel(payload.channel_id)
+		message = await channel.fetch_message(payload.message_id)
+
 		if payload.channel_id == self.channelid:
 			if payload.emoji == '✅':
-				await payload.message_id.delete()
-				await payload.channel_id.send(strike(payload.message_id.content))
+				await message.delete()
+				await channel.send(strike(message.content))
 			if payload.emoji == '❌':
-				await payload.message_id.delete()
+				await message.delete()
 
 
 def setup(bot):
