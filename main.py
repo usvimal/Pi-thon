@@ -107,6 +107,9 @@ async def talk(ctx, *, arg):
 		await ctx.send(f'You are not authorised sorry! {ctx.author.mention}')
 		return
 
+@bot.command()
+async def log(ctx):
+	logger.critical("Critical Error Critical error.")
 
 token = loadconfig.discord_key
 bot.run(token)
