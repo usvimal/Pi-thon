@@ -11,7 +11,20 @@ import lyricsgenius
 import loadconfig
 import logging
 import traceback
+from discord_handler import DiscordHandler
+
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
+
+logging_channel = bot.get_channel("573856996256776202")
+
+logger = logging.getLogger("discord")
+logger.setLevel(logging.DEBUG)
+handler = DiscordHandler(logging_channel)
+str_format = "%(levelname)s:%(message)s"
+formatter = logging.Formatter(str_format)
+handler.setFormatter(formatter)
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 @bot.event
