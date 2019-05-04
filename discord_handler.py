@@ -5,6 +5,7 @@ import asyncio
 
 class DiscordHandler(logging.Handler):
 	def __init__(self, channel):
+		super().__init__()
 		self._channel = channel
 
 	def emit(self, record):
