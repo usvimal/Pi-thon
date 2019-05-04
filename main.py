@@ -10,7 +10,7 @@ import owotrans
 import lyricsgenius
 import loadconfig
 import logging
-
+import traceback
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
 logging.basicConfig(level=logging.WARNING)
@@ -27,8 +27,9 @@ async def on_ready():
 	for cog in loadconfig.cogs:
 		try:
 			bot.load_extension(cog)
-		except Exception:
-			print(f'Couldn\'t load cog {cog}')
+		except Exception as e:
+			print(f'Couldn\'t load cog {cog} due to' + str(e))
+			print(traceback.format_exc())
 
 	while True:
 		randomGame = random.choice(loadconfig.games)
