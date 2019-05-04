@@ -57,6 +57,11 @@ async def on_ready():
 		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1].format(guilds = guild_count, members = member_count)))
 		await asyncio.sleep(loadconfig.gamestimer)
 
+@bot.event
+async def on_disconnect():
+	channel = bot.get_channel(574240405722234881)
+	await channel.send('Shutting down..')
+
 
 @bot.listen()
 async def on_message(message):
