@@ -15,20 +15,29 @@ from discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 
-logging_channel = bot.get_channel(573856996256776202)
-
 logger = logging.getLogger("discord")
-handler = DiscordHandler(logging_channel)
-str_format = "%(levelname)s:%(message)s"
-formatter = logging.Formatter(str_format)
-handler.setFormatter(formatter)
-handler.setLevel(logging.CRITICAL)
-logger.addHandler(handler)
+
+
+def _add_discord_handler():
+	LOGGING_CHANNEL_ID = 573856996256776202
+	logging_channel = bot.get_channel(LOGGING_CHANNEL_ID)
+	main_loop = bot.loop
+	print(logging_channel, main_loop)		# For tracing
+
+	str_format = "%(levelname)s:%(message)s"
+	formatter = logging.Formatter(str_format)
+
+	handler = DiscordHandler(logging_channel, main_loop)
+	handler.setFormatter(formatter)
+	handler.setLevel(logging.CRITICAL)
+
+	logger.addHandler(handler)
 
 
 @bot.event
 # outputs in log when bot is logged in
 async def on_ready():
+	_add_discord_handler()
 	print("*Hackerman voice* I'm in")
 	print('Logged in as ' + str(bot.user.name) + ' (ID:' + str(bot.user.id) + ') | Connected to ' + str(
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')

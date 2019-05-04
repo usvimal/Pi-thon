@@ -4,14 +4,14 @@ import asyncio
 
 
 class DiscordHandler(logging.Handler):
-	def __init__(self, channel):
+	def __init__(self, channel, main_loop):
 		super().__init__()
 		self._channel = channel
+		self._main_loop = main_loop
 
 	def emit(self, record):
-		loop = asyncio.get_running_loop()
 		print("emitted")
-		loop.run_until_complete(self.send_to_channel(self.format(record)))
+		self._main_loop.run_until_complete(self.send_to_channel(self.format(record)))
 
 	async def send_to_channel(self, msg):
 		print("send_to_channel started")
