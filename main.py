@@ -114,7 +114,7 @@ async def talk(ctx, *, arg):
 
 @bot.command()
 async def log(ctx, *, arg):
-	arg = arg.lowercase()
+	arg = arg.lower()
 	if arg == "debug":
 		logger.debug("Debug")
 	elif arg == "info":

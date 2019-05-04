@@ -91,6 +91,22 @@ class Lyrics(commands.Cog):
 			async with ctx.typing():
 				await ctx.send(embed=em)
 
+	@commands.Cog.listener()
+	async def on_command_error(self, ctx, error):
+		""" Error thrown by commands will be of the type discord.ext.command.CommandError. For errors not inheriting
+		from CommandError, it will be difficult to error handle. """
+		if isinstance(error, self.SpotifyNotPlaying):
+			await ctx.send("Please play a song to get the lyrics 🙃")
+		elif isinstance(error, commands.MissingRequiredArgument):
+			await ctx.send("Invalid usage of command. Use ;help lyrics for more information.")
+		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.LyricsNotFoundException):
+			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(
+				self.lyrics_retriever.get_main_source()))
+		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.SourceChangeNotSuccess):
+			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
+		else:
+			await ctx.send(f"Unexpected error occured. Error: {error}")
+
 
 def setup(bot):
 	bot.add_cog(Lyrics(bot))
