@@ -1,4 +1,4 @@
-import
+import discord
 from cogs.utils.lyricsretriever import LyricsRetriever
 from discord.ext import commands
 
@@ -21,7 +21,7 @@ class Lyrics(commands.Cog):
 		self.lyrics_retriever = LyricsRetriever()
 		self.user_context_dict = dict()
 
-	@commands.()
+	@commands.group()
 	async def lyrics(self, ctx):
 		""" Show the lyrics of the song curretnly playing in Spotify"""
 		if ctx.invoked_subcommand is None:
