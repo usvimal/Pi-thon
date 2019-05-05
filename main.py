@@ -46,7 +46,11 @@ async def on_ready():
 			print(traceback.format_exc())
 	channel = bot.get_channel(574240405722234881)
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
-	em.add_field(name='Cog status', value=str(bot.extensions) + '/n' + str(discord.ext.commands.ExtensionFailed))
+	for key in bot.extensions:
+		global loaded_cogs
+		loaded_cogs = key
+	em.add_field(name='Loaded cogs', value=loaded_cogs)
+	em.add_field(name='Failed cogs', value=str(discord.ext.commands.ExtensionFailed))
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 	await channel.send(embed=em)
 
