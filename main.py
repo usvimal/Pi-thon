@@ -38,19 +38,23 @@ async def on_ready():
 		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
+	failed_cogs = list()
 	for cog in loadconfig.cogs:
 		try:
 			bot.load_extension(cog)
 		except Exception as e:
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
+			failed_cogs.append(cog)
 	channel = bot.get_channel(574240405722234881)
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	for key in bot.extensions:
 		global loaded_cogs
-		loaded_cogs = key
+		loaded_cogs_list = list(bot.extensions.keys())
+		loaded_cogs = ','.join(loaded_cogs_list)
+
 	em.add_field(name='Loaded cogs', value=loaded_cogs)
-	em.add_field(name='Failed cogs', value=str(discord.ext.commands.ExtensionFailed))
+	em.add_field(name='Failed cogs', value=",".join(failed_cogs))
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 	await channel.send(embed=em)
 
@@ -60,11 +64,6 @@ async def on_ready():
 		member_count = str(len(set(bot.get_all_members())))
 		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1].format(guilds = guild_count, members = member_count)))
 		await asyncio.sleep(loadconfig.gamestimer)
-
-@bot.event
-async def on_disconnect():
-	channel = bot.get_channel(574240405722234881)
-	await channel.send('Shutting down..')
 
 
 @bot.listen()
