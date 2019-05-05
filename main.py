@@ -47,10 +47,10 @@ async def on_ready():
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
 
-	if failed_cogs != '[]':
-		failed_cogs_value = ",".join(failed_cogs)
-	else:
+	if not failed_cogs:
 		failed_cogs_value = 'None'
+	else:
+		failed_cogs_value = ",".join(failed_cogs)
 
 	channel = bot.get_channel(574240405722234881)
 	loaded_cogs = None
