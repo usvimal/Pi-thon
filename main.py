@@ -46,16 +46,22 @@ async def on_ready():
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
-	failed_cogs_value = ",".join(failed_cogs)
+
+	global failed_cogs_value
+	if failed_cogs != '':
+		failed_cogs_value = ",".join(failed_cogs)
+	else:
+		failed_cogs_value = 'none'
+
 	channel = bot.get_channel(574240405722234881)
-	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	for key in bot.extensions:
 		global loaded_cogs
 		loaded_cogs_list = list(bot.extensions.keys())
 		loaded_cogs = ','.join(loaded_cogs_list)
 
-	em.add_field(name='Loaded cogs', value=loaded_cogs)
-	em.add_field(name='Failed cogs', value=failed_cogs_value)
+	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
+	em.add_field(name='Loaded cogs', value=loaded_cogs, inline=False)
+	em.add_field(name='Failed cogs', value=failed_cogs_value, inline=False)
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 	await channel.send(embed=em)
 
