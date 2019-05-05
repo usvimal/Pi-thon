@@ -47,15 +47,13 @@ async def on_ready():
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
 
-	global failed_cogs_value
+	failed_cogs_value = 'None'
 	if failed_cogs != '':
 		failed_cogs_value = ",".join(failed_cogs)
-	else:
-		failed_cogs_value = 'none'
 
 	channel = bot.get_channel(574240405722234881)
+	loaded_cogs = None
 	for key in bot.extensions:
-		global loaded_cogs
 		loaded_cogs_list = list(bot.extensions.keys())
 		loaded_cogs = ','.join(loaded_cogs_list)
 
