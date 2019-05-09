@@ -1,18 +1,13 @@
 import asyncio
-import asyncpg
+import config
 import discord
-import loadconfig
 import logging
-import lyricsgenius
-import os
-import owotrans
 import platform
 import random
-import time
 import traceback
 
 from discord.ext import commands
-from discord_handler import DiscordHandler
+from utils.discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
 logger = logging.getLogger("discord")
@@ -39,7 +34,7 @@ async def on_ready():
 	print('--------')
 	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
 	failed_cogs = list()
-	for cog in loadconfig.cogs:
+	for cog in config.cogs:
 		try:
 			bot.load_extension(cog)
 		except Exception as e:
@@ -65,11 +60,11 @@ async def on_ready():
 	await channel.send(embed=em)
 
 	while True:
-		randomGame = random.choice(loadconfig.games)
+		randomGame = random.choice(config.games)
 		guild_count = str(len(bot.guilds))
 		member_count = str(len(set(bot.get_all_members())))
 		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1].format(guilds = guild_count, members = member_count)))
-		await asyncio.sleep(loadconfig.gamestimer)
+		await asyncio.sleep(config.gamestimer)
 
 
 @bot.listen()
@@ -96,13 +91,13 @@ async def on_message(message):
 		return
 
 	# sends me a message if I am mentioned
-	if loadconfig.creator in message.content.lower():
+	if config.creator in message.content.lower():
 		msg = message.content.lower().format(message)
 		author = message.author
 		guild = message.guild.name
 		em = discord.Embed(title='@' + guild, description=msg, colour=0xFF00FF)
 		em.set_author(name=author, icon_url=author.avatar_url)
-		channel = bot.get_user(loadconfig.creatorID)
+		channel = bot.get_user(config.creatorID)
 		await channel.send(embed=em)
 		return
 
@@ -123,7 +118,7 @@ async def talk(ctx, *, arg):
 	"""deletes your message and talks through the bot"""
 	await ctx.message.delete()
 	print(ctx.message.author.id)
-	if ctx.message.author.id == loadconfig.creatorID or ctx.message.author.id == loadconfig.CillyID or ctx.message.author.id == loadconfig.WYID or ctx.message.author.id == loadconfig.MinID:
+	if ctx.message.author.id == config.creatorID or ctx.message.author.id == config.CillyID or ctx.message.author.id == config.WYID or ctx.message.author.id == config.MinID:
 		await ctx.send(arg)
 		return
 	else:
@@ -145,5 +140,5 @@ async def log(ctx, *, arg):
 	elif arg == "critical":
 		logger.critical("Critical")
 
-token = loadconfig.discord_key
+token = config.discord_key
 bot.run(token)

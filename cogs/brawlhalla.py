@@ -1,5 +1,5 @@
 import asyncio
-import loadconfig
+import config
 import platform
 import subprocess
 
@@ -31,7 +31,7 @@ class Brawlhalla(commands.Cog):
 			if before.id == creatorID and after.activity.name == 'Brawlhalla':
 				pong = self.ping('pingtest-sgp.brawlhalla.com')
 				if pong:
-					channel = self.bot.get_user(loadconfig.creatorID)
+					channel = self.bot.get_user(config.creatorID)
 					await channel.send('Oof! Brawlhalla is down! I will let you know when its back up')
 
 					async def check():
