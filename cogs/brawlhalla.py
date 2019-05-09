@@ -2,7 +2,6 @@ import asyncio
 import loadconfig
 import platform
 import subprocess
-from discord.ext import commands
 
 from config.environment import creatorID
 from discord.ext import commands
