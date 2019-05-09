@@ -13,7 +13,16 @@ bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal pro
 logger = logging.getLogger("discord")
 
 
-def _add_discord_handler():
+@bot.event
+# outputs in log when bot is logged in
+async def on_ready():
+	add_discord_handler()
+	display_startup_message()
+	await load_cogs()
+	await update_bot_games_frequently()
+
+
+def add_discord_handler():
 	LOGGING_CHANNEL_ID = 573856996256776202
 	logging_channel = bot.get_channel(LOGGING_CHANNEL_ID)
 	main_loop = bot.loop
@@ -24,46 +33,53 @@ def _add_discord_handler():
 	logger.addHandler(handler)
 
 
-@bot.event
-# outputs in log when bot is logged in
-async def on_ready():
-	_add_discord_handler()
+def display_startup_message():
+	log_in_msg = "Logged in as {} (ID: {}) | Connected to {} servers | Connected to {} users"
+	version_msg = "Discord.py Version: {} | Python Version: {}"
+
+	print('=' * 100)
 	print("*Hackerman voice* I'm in")
-	print('Logged in as ' + str(bot.user.name) + ' (ID:' + str(bot.user.id) + ') | Connected to ' + str(
-		len(bot.guilds)) + ' servers | Connected to ' + str(len(set(bot.get_all_members()))) + ' users')
-	print('--------')
-	print('Discord.py Version:{} | Python Version: {}'.format(discord.__version__, platform.python_version()))
+	print(log_in_msg.format(bot.user.name, bot.user.id, len(bot.guilds), len(set(bot.get_all_members()))))
+	print('=' * 100)
+	print(version_msg.format(discord.__version__, platform.python_version()))
+
+
+async def load_cogs():
+	# Also prints out cogs status on 'pi-thon updates' discord channel.
+	loaded_cogs = list()
 	failed_cogs = list()
+	channel = bot.get_channel(574240405722234881)
+
 	for cog in config.cogs:
 		try:
 			bot.load_extension(cog)
+			loaded_cogs.append(cog)
 		except Exception as e:
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
 
-	if not failed_cogs:
-		failed_cogs_value = 'None'
-	else:
-		failed_cogs_value = ",".join(failed_cogs)
-
-	channel = bot.get_channel(574240405722234881)
-	loaded_cogs = None
-	for key in bot.extensions:
-		loaded_cogs_list = list(bot.extensions.keys())
-		loaded_cogs = ','.join(loaded_cogs_list)
-
+	loaded_cogs_string = ", ".join(loaded_cogs)
+	failed_cogs_string = ", ".join(failed_cogs)
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
-	em.add_field(name='Loaded cogs', value=loaded_cogs, inline=False)
-	em.add_field(name='Failed cogs', value=failed_cogs_value, inline=False)
+	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
+	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
+
 	await channel.send(embed=em)
 
+
+async def update_bot_games_frequently():
 	while True:
-		randomGame = random.choice(config.games)
-		guild_count = str(len(bot.guilds))
-		member_count = str(len(set(bot.get_all_members())))
-		await bot.change_presence(activity=discord.Activity(type=randomGame[0], name=randomGame[1].format(guilds = guild_count, members = member_count)))
+		random_game = random.choice(config.games)
+		guild_count = len(bot.guilds)
+		member_count = len(set(bot.get_all_members()))
+
+		activity_type = random_game[0]
+		activity_name = random_game[1].format(guilds = guild_count, members = member_count)
+		new_activity = discord.Activity(type = activity_type, name = activity_type)
+		await bot.change_presence(new_activity)
+
 		await asyncio.sleep(config.gamestimer)
 
 
