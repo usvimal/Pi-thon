@@ -4,6 +4,7 @@ import discord
 import logging
 import platform
 import random
+import sys
 import traceback
 
 from discord.ext import commands
@@ -16,21 +17,22 @@ logger = logging.getLogger("discord")
 @bot.event
 # outputs in log when bot is logged in
 async def on_ready():
-	add_discord_handler()
+	add_handlers()
 	display_startup_message()
 	await load_cogs()
 	await update_bot_games_frequently()
 
 
-def add_discord_handler():
+def add_handlers():
 	LOGGING_CHANNEL_ID = 573856996256776202
 	logging_channel = bot.get_channel(LOGGING_CHANNEL_ID)
 	main_loop = bot.loop
-	print(logging_channel, main_loop)		# For tracing
 
-	handler = DiscordHandler(logging_channel, main_loop, logging.CRITICAL)
+	stdout_handler = logging.StreamHandler(sys.stdout)
+	discord_handler = DiscordHandler(logging_channel, main_loop, logging.CRITICAL)
 
-	logger.addHandler(handler)
+	logger.addHandler(stdout_handler)
+	logger.addHandler(discord_handler)
 
 
 def display_startup_message():
@@ -40,8 +42,8 @@ def display_startup_message():
 	print('=' * 100)
 	print("*Hackerman voice* I'm in")
 	print(log_in_msg.format(bot.user.name, bot.user.id, len(bot.guilds), len(set(bot.get_all_members()))))
-	print('=' * 100)
 	print(version_msg.format(discord.__version__, platform.python_version()))
+	print('=' * 100)
 
 
 async def load_cogs():
@@ -59,8 +61,8 @@ async def load_cogs():
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
 
-	loaded_cogs_string = ", ".join(loaded_cogs)
-	failed_cogs_string = ", ".join(failed_cogs)
+	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else " "
+	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else " "
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
 	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
