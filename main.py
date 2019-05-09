@@ -61,8 +61,9 @@ async def load_cogs():
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
 
-	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else " "
-	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else " "
+	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
+	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else "None"
+	
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
 	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
