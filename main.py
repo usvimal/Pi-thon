@@ -63,7 +63,7 @@ async def load_cogs():
 
 	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
 	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else "None"
-	
+
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
 	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
@@ -79,9 +79,9 @@ async def update_bot_games_frequently():
 		member_count = len(set(bot.get_all_members()))
 
 		activity_type = random_game[0]
-		activity_name = random_game[1].format(guilds = guild_count, members = member_count)
-		new_activity = discord.Activity(type = activity_type, name = activity_type)
-		await bot.change_presence(new_activity)
+		activity_name = random_game[1].format(guilds=guild_count, members=member_count)
+		new_activity = discord.Activity(type=activity_type, name=activity_name)
+		await bot.change_presence(activity=new_activity)
 
 		await asyncio.sleep(config.gamestimer)
 
