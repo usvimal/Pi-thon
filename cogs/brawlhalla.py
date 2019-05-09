@@ -1,9 +1,11 @@
 import asyncio
+import loadconfig
 import platform
 import subprocess
 from discord.ext import commands
-import loadconfig
+
 from config.environment import creatorID
+from discord.ext import commands
 
 
 class Brawlhalla(commands.Cog):

@@ -1,5 +1,6 @@
-import logging
 import discord
+import logging
+
 
 """ Handler which is used to make loggers print to discord.	"""
 class DiscordHandler(logging.Handler):

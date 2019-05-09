@@ -1,17 +1,17 @@
-import discord
-import os
-import platform
 import asyncio
-import time
 import asyncpg
-import random
-from discord.ext import commands
-import owotrans
-import lyricsgenius
+import discord
 import loadconfig
 import logging
-import traceback
+import lyricsgenius
+import os
+import owotrans
+import platform
+import random
 import time
+import traceback
+
+from discord.ext import commands
 from discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')

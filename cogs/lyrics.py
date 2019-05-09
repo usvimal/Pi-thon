@@ -1,5 +1,5 @@
 import discord
-from cogs.utils.lyricsretriever import LyricsRetriever
+from utils.lyricsretriever import LyricsRetriever
 from discord.ext import commands
 
 
