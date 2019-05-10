@@ -5,4 +5,5 @@ cogs = [
     'cogs.info',
     'cogs.fun',
     'cogs.to-do'
+    'cogs.command_executor'
     ]

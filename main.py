@@ -24,6 +24,7 @@ async def on_ready():
 
 
 def add_handlers():
+	""" Add Discord and stdout handlers which will output logs to discord and the logging channel and python terminal """
 	LOGGING_CHANNEL_ID = 573856996256776202
 	logging_channel = bot.get_channel(LOGGING_CHANNEL_ID)
 	main_loop = bot.loop
