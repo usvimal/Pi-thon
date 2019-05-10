@@ -16,7 +16,7 @@ class CommandExecutor(commands.Cog):
 		pass
 
 	@cmd.command()
-	def execute(self, ctx, *, args):
+	async def execute(self, ctx, *, args):
 		# set standard system output and error to these 2 file-like strings temporarily
 		code_out, code_err = StringIO(), StringIO()
 		sys.stdout, sys.stderr = code_out, code_err
