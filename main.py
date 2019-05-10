@@ -50,6 +50,7 @@ async def load_cogs():
 	# Also prints out cogs status on 'pi-thon updates' discord channel.
 	loaded_cogs = list()
 	failed_cogs = list()
+	cog_exception = 'Not applicable'
 	channel = bot.get_channel(574240405722234881)
 
 	for cog in config.cogs:
@@ -60,13 +61,14 @@ async def load_cogs():
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
 			failed_cogs.append(cog)
+			cog_exception = str(e)
 
 	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
 	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else "None"
 
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
-	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
+	em.add_field(name='Failed cogs', value=failed_cogs_string + ' due to ' + cog_exception, inline=False)
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 
 	await channel.send(embed=em)
