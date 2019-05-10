@@ -70,9 +70,9 @@ async def load_cogs():
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
 	if failed_cogs_string == 'None':
-		em.add_field(name='Failed cogs', value=failed_cogs_string + ' due to ' + cog_exception, inline=False)
-	else:
 		em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
+	else:
+		em.add_field(name='Failed cogs', value=failed_cogs_string + ' due to ' + cog_exception, inline=False)
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 
 	await channel.send(embed=em)
