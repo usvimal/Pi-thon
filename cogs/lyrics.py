@@ -104,8 +104,6 @@ class Lyrics(commands.Cog):
 				self.lyrics_retriever.get_main_source()))
 		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.SourceChangeNotSuccess):
 			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
-		else:
-			await ctx.send(f"Unexpected error occured. Error: {error}")
 
 
 def setup(bot):
