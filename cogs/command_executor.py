@@ -12,7 +12,7 @@ class CommandExecutor(commands.Cog):
 		pass
 
 	@commands.group()
-	def cmd(self, ctx):
+	async def cmd(self, ctx):
 		pass
 
 	@cmd.command()
