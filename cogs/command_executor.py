@@ -19,19 +19,24 @@ class CommandExecutor(commands.Cog):
 	async def execute(self, ctx, *, args):
 		# set standard system output and error to these 2 file-like strings temporarily
 		code_out, code_err = StringIO(), StringIO()
+		old_out, old_err = sys.stdout, sys.stderr
 		sys.stdout, sys.stderr = code_out, code_err
 
 		exec(args)
 
+		# restore stdout and stderr
+		sys.stdout, sys.stderr = old_out, old_err
+		v1, v2 = code_out.getvalue(), code_err.getvalue()
+
+		output_str = v1 if len(v1) > 0 else "None"
+		err_str = v2 if len(v2) > 0 else "None"
+
 		em = discord.Embed(title='Command Executor', description='I execute commands.')
-		em.add_field(name='Output', value=code_out.getvalue(), inline=False)
-		em.add_field(name='Errors', value=code_err.getvalue(), inline=False)
+		em.add_field(name='Output', value=output_str, inline=False)
+		em.add_field(name='Errors', value=err_str, inline=False)
 
 		async with ctx.typing():
 			await ctx.send(embed=em)
-
-		# restore stdout and stderr
-		sys.stdout, sys.stderr = sys.__stdout__, sys.__stderr__
 
 		code_out.close()
 		code_err.close()

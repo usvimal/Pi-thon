@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+	<environment>
+		<variable type="int">creatorID</variable>
+		<variable type="int">CillyID</variable>
+		<variable type="int">WYID</variable>
+		<variable type="str">creator</variable>
+		<variable type="str">DISCORD_BOT_SECRET</variable>
+		<variable type="int">MinID</variable>
+	</environment>
+	<settings>
+		<bot_prefix>;</bot_prefix>
+		<show_startup_message>True</show_startup_message>
+	</settings>
+	<cogs>
+		<cog activated="True">cogs.vote</cog>
+		<cog activated="True">cogs.brawlhalla</cog>
+		<cog activated="True">cogs.lyrics</cog>
+		<cog activated="True">cogs.info</cog>
+		<cog activated="True">cogs.fun</cog>
+		<cog activated="True">cogs.to-do</cog>
+		<cog activated="True">cogs.command_executor</cog>
+	</cogs>
+	<games gamestimer="180">
+		<game activity_type="playing">| Connected to {guilds} servers | Connected to {members} users</game>
+		<game activity_type="playing">epic games</game>
+		<game activity_type="watching">pain dry ..</game>
+		<game activity_type="watching">you right now</game>
+		<game activity_type="listening">some moosic</game>
+	</games>
+</config>

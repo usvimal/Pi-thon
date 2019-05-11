@@ -3,7 +3,7 @@ import config
 import platform
 import subprocess
 
-from config.environment import creatorID
+from config import creatorID
 from discord.ext import commands
 
 

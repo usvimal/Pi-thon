@@ -10,7 +10,7 @@ import traceback
 from discord.ext import commands
 from utils.discord_handler import DiscordHandler
 
-bot = commands.Bot(command_prefix=';', pm_help=None, description='A personal project for fun')
+bot = commands.Bot(command_prefix=config.bot_prefix, pm_help=None, description='A personal project for fun')
 logger = logging.getLogger("discord")
 
 
@@ -51,8 +51,6 @@ async def load_cogs():
 	# Also prints out cogs status on 'pi-thon updates' discord channel.
 	loaded_cogs = list()
 	failed_cogs = list()
-	cog_exception = 'Not applicable'
-	channel = bot.get_channel(574240405722234881)
 
 	for cog in config.cogs:
 		try:
@@ -64,15 +62,21 @@ async def load_cogs():
 			failed_cogs.append(cog)
 			cog_exception = str(e)
 
+	await show_discord_startup_message(loaded_cogs, failed_cogs)
+
+
+async def show_discord_startup_message(loaded_cogs, failed_cogs):
+	if config.show_startup_message == "False":
+		return
+
+	channel = bot.get_channel(574240405722234881)
+
 	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
 	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else "None"
 
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
-	if failed_cogs_string == 'None':
-		em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
-	else:
-		em.add_field(name='Failed cogs', value=failed_cogs_string + ' due to ' + cog_exception, inline=False)
+	em.add_field(name='Failed cogs', value=failed_cogs_string, inline=False)
 	em.set_author(name='Pi-thon', icon_url=bot.user.avatar_url)
 
 	await channel.send(embed=em)
@@ -165,5 +169,5 @@ async def log(ctx, *, arg):
 	elif arg == "critical":
 		logger.critical("Critical")
 
-token = config.discord_key
+token = config.DISCORD_BOT_SECRET
 bot.run(token)
