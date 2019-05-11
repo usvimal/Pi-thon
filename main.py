@@ -50,7 +50,7 @@ def display_startup_message():
 async def load_cogs():
 	# Also prints out cogs status on 'pi-thon updates' discord channel.
 	loaded_cogs = list()
-	failed_cogs = list()
+	failed_cogs = dict()
 
 	for cog in config.cogs:
 		try:
@@ -59,8 +59,7 @@ async def load_cogs():
 		except Exception as e:
 			print(f'Couldn\'t load cog {cog} due to ' + str(e))
 			print(traceback.format_exc())
-			failed_cogs.append(cog)
-			cog_exception = str(e)
+			failed_cogs[cog] = str(e)
 
 	await show_discord_startup_message(loaded_cogs, failed_cogs)
 
@@ -71,8 +70,11 @@ async def show_discord_startup_message(loaded_cogs, failed_cogs):
 
 	channel = bot.get_channel(574240405722234881)
 
-	loaded_cogs_string = ", ".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
-	failed_cogs_string = ", ".join(failed_cogs) if len(failed_cogs) != 0 else "None"
+	loaded_cogs_string = "\n".join(loaded_cogs) if len(loaded_cogs) != 0 else "None"
+	if len(failed_cogs) != 0:
+		failed_cogs_string = "\n".join(f"{name} : {error_name}" for name, error_name in failed_cogs.items())
+	else:
+		failed_cogs_string = "None"
 
 	em = discord.Embed(title='S T A T U S', description='Pi-thon is up!', colour=0x3c1835)
 	em.add_field(name='Loaded cogs', value=loaded_cogs_string, inline=False)
