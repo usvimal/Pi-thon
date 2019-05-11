@@ -26,12 +26,12 @@ class Brawlhalla(commands.Cog):
 		return subprocess.run(command) == 0
 
 	@commands.Cog.listener()
-	async def on_member_update(self, ctx, before, after):
+	async def on_member_update(self, before, after):
 		try:
 			if after.activity.name == 'Brawlhalla':
 				pong = self.ping('pingtest-sgp.brawlhalla.com')
 				if pong:
-					channel = self.bot.get_user(ctx.author.id)
+					channel = self.bot.get_user(after.id)
 					await channel.send('Oof! Brawlhalla is down! I will let you know when its back up')
 
 					async def check():
