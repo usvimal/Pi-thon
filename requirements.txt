@@ -4,3 +4,5 @@ owotranslator
 lyricsgenius
 urllib3
 pylyrics3
+gspread
+oauth2client
