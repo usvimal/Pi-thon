@@ -1,12 +1,9 @@
 import discord
-from utils.lyricsretriever import LyricsRetriever
+
 from discord.ext import commands
+from utils.chunker import chunks
+from utils.lyricsretriever import LyricsRetriever
 
-
-def chunks(s, n):
-	"""Produce `n`-character chunks from `s`."""
-	for start in range(0, len(s), n):
-		yield s[start:start + n]
 
 
 class Lyrics(commands.Cog):
