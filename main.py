@@ -8,7 +8,7 @@ import sys
 import traceback
 
 from discord.ext import commands
-from utils.db import open_sheet
+from utils.db import ensure_todo_table
 from utils.discord_handler import DiscordHandler
 
 bot = commands.Bot(command_prefix=config.bot_prefix, pm_help=None, description='A personal project for fun')
@@ -20,7 +20,7 @@ logger = logging.getLogger("discord")
 async def on_ready():
 	add_handlers()
 	display_startup_message()
-	open_sheet()
+	await ensure_todo_table()
 	await load_cogs()
 	await update_bot_games_frequently()
 
