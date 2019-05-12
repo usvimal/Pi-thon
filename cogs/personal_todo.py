@@ -25,7 +25,7 @@ class Personal_todo(commands.Cog):
 	async def add(self, ctx, new_todo: str):
 		user_id = ctx.author.id
 		current_todos = await self.get_user_todos(user_id)
-		if current_todos == None:
+		if current_todos is None:
 			await postgres_connection.execute(
 				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT to-do_pk DO "
 				f"UPDATE SET to-do = $2;",
