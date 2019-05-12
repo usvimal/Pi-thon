@@ -7,7 +7,7 @@
 		<variable type="str">creator</variable>
 		<variable type="str">DISCORD_BOT_SECRET</variable>
 		<variable type="int">MinID</variable>
-		<variable type="NIL">GCP_CRED</variable>
+		<variable type="str">DATABASE_URL</variable>
 	</environment>
 	<settings>
 		<bot_prefix>;</bot_prefix>
