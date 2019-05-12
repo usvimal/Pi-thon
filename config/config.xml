@@ -21,6 +21,7 @@
 		<cog activated="True">cogs.fun</cog>
 		<cog activated="True">cogs.to-do</cog>
 		<cog activated="True">cogs.command_executor</cog>
+		<cog activated="True">cogs.personal_todo</cog>
 	</cogs>
 	<games gamestimer="180">
 		<game activity_type="playing">| Connected to {guilds} servers | Connected to {members} users</game>

@@ -1,8 +1,6 @@
-discord.py
 asyncpg
-owotranslator
+discord.py
 lyricsgenius
-urllib3
+owotranslator
 pylyrics3
-gspread
-oauth2client
+urllib3
