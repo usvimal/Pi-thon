@@ -6,12 +6,12 @@ class Personal_todo(commands.Cog):
 		self.bot = bot
 
 	async def get_user_todos(self, user_id: int):
-		row = await postgres_connection.fetchrow(f"SELECT to-do FROM todotable WHERE user_id = $1;",
+		row = await postgres_connection.fetchrow(f"SELECT todo FROM todotable WHERE user_id = $1;",
 		                                         user_id)
 
 		if row is None:
 			return None
-		return row["to-do"]
+		return row["todo"]
 
 	@commands.group()
 	async def todo(self, ctx):
@@ -27,13 +27,13 @@ class Personal_todo(commands.Cog):
 		current_todos = await self.get_user_todos(user_id)
 		if current_todos is None:
 			await postgres_connection.execute(
-				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT to-do_pk DO "
-				f"UPDATE SET to-do = $2;",
+				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT todo_pk DO "
+				f"UPDATE SET todo = $2;",
 				user_id, new_todo)
 		else:
 			await postgres_connection.execute(
-				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT to-do_pk DO "
-				f"UPDATE SET to-do = $2;",
+				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT todo_pk DO "
+				f"UPDATE SET todo = $2;",
 				user_id, current_todos + '\n' + new_todo)
 
 
