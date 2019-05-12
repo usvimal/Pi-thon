@@ -21,7 +21,7 @@ async def ensure_todo_table():
 	command = ('CREATE TABLE IF NOT EXISTS todotable('
 														'user_id BIGINT DEFAULT 0,'
 														'todo TEXT,'
-														'CONSTRAINT todo_pk,'
+														'CONSTRAINT todotable_pk'
 														'PRIMARY KEY (user_id)'
 													')'
 																					)
