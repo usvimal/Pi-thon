@@ -10,7 +10,11 @@ postgres_connection = await asyncpg.connect(dsn=config.DATABASE_URL, ssl=ctx)
 
 
 async def ensure_todo_table():
-	await postgres_connection.execute(' CREATE TABLE IF NOT EXISTS todotable('
-	                                  'user_id BIGINT DEFAULT 0, '
-	                                  'to-do TEXT, CONSTRAINT to-do_pk '
-	                                  'PRIMARY KEY (user_id) )')
+	command = ('CREATE TABLE IF NOT EXISTS todotable('
+														'user_id BIGINT DEFAULT 0,'
+														'to-do TEXT,'
+														'CONSTRAINT to-do_pk,'
+														'PRIMARY KEY (user_id)'
+													')'
+																					)
+	await postgres_connection.execute(command)
