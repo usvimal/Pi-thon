@@ -15,11 +15,15 @@ class Personal_todo(commands.Cog):
 
 	@commands.group()
 	async def todo(self, ctx):
-		author_todo = await self.get_user_todos(ctx.author.id)
-		if author_todo is None:
-			await ctx.send("You have nothing to do")
-		else:
-			await ctx.send("Here are your to-dos: \n" + author_todo)
+		if ctx.invoked_subcommand is None:
+			if ctx.subcommand_passed:
+				await ctx.send('Oof owie, that was not a valid command 🤨')
+			else:
+				author_todo = await self.get_user_todos(ctx.author.id)
+				if author_todo is None:
+					await ctx.send("You have nothing to do")
+				else:
+					await ctx.send("Here are your to-dos: \n" + author_todo)
 
 	@todo.command()
 	async def add(self, ctx, new_todo: str):
@@ -40,4 +44,4 @@ class Personal_todo(commands.Cog):
 
 
 def setup(bot):
-	bot.add_cog(Personal_todo(bot))
+		bot.add_cog(Personal_todo(bot))
