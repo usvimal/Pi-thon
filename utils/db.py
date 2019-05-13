@@ -18,11 +18,10 @@ asyncio.get_event_loop().create_task(_init_postgres_connection())
 
 
 async def ensure_todo_table():
-	command = ('CREATE TABLE IF NOT EXISTS todotable('
-														'user_id BIGINT DEFAULT 0,'
-														'todo TEXT,'
-														'CONSTRAINT todotable_pk'
-														'PRIMARY KEY (user_id)'
-													')'
-																					)
+	command = ('CREATE TABLE IF NOT EXISTS todotable('							
+		'user_id BIGINT DEFAULT 0,'													
+		'todo TEXT,'
+		'CONSTRAINT todotable_pk PRIMARY KEY (user_id)'
+		')'
+		)
 	await postgres_connection.execute(command)
