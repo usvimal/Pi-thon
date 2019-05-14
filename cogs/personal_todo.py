@@ -36,7 +36,7 @@ class Personal_todo(commands.Cog):
 				user_id, new_todo)
 		else:
 			await postgres_connection.execute(
-				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT ON CONSTRAINT todo_pk DO "
+				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT (user_id) DO "
 				f"UPDATE SET todo = $2;",
 				user_id, current_todos + '\n' + new_todo)
 
