@@ -173,5 +173,6 @@ async def log(ctx, *, arg):
 	elif arg == "critical":
 		logger.critical("Critical")
 
-token = config.DISCORD_BOT_SECRET
-bot.run(token)
+if __name__ == "__main__":
+	token = config.DISCORD_BOT_SECRET
+	bot.run(token)

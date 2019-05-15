@@ -1,17 +1,28 @@
-from discord.ext import commands
-from utils.db import postgres_connection
+import discord
 
-class Personal_todo(commands.Cog):
+from discord.ext import commands
+from utils.db import conn_pool
+
+
+class personal_todo(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
 	async def get_user_todos(self, user_id: int):
-		row = await postgres_connection.fetchrow(f"SELECT todo FROM todotable WHERE user_id = $1;",
-		                                         user_id)
-
-		if row is None:
+		async with conn_pool.acquire() as conn:
+			details = await conn.fetch(f"SELECT todo, completed FROM todotable WHERE user_id = $1;",
+		                                            user_id)
+		if details is None:
 			return None
-		return row["todo"]
+		return details
+
+	@staticmethod
+	def convert_boolean_to_emoji(dict_to_convert):
+		for key, item in dict_to_convert.items():
+			if item is False:
+				dict_to_convert[key] = '❌'
+			if item is True:
+				dict_to_convert[key] = '✅'
 
 	@commands.group()
 	async def todo(self, ctx):
@@ -19,29 +30,27 @@ class Personal_todo(commands.Cog):
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
 			else:
-				author_todo = await self.get_user_todos(ctx.author.id)
-				if author_todo is None:
-					await ctx.send("You have nothing to do")
+				todo_record = await self.get_user_todos(ctx.author.id)
+				if todo_record is None:
+					await ctx.send(f"{ctx.user.mention} has no todos yet.")
 				else:
-					await ctx.send("Here are your to-dos: \n" + author_todo)
+					todo_dict = dict(todo_record)
+					em = discord.Embed(title='To-dos', colour=0xff3056)
+					em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+					self.convert_boolean_to_emoji(todo_dict)
+					for key, value in todo_dict.items():
+						em.add_field(name=key, value=value, inline=False)
+					await ctx.send(embed=em)
 
 	@todo.command()
-	async def add(self, ctx, new_todo: str):
+	async def add(self, ctx, *, new_todo: str):
 		user_id = ctx.author.id
-		current_todos = await self.get_user_todos(user_id)
-		if current_todos is None:
-			await postgres_connection.execute(
-				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT (user_id) DO "
-				f"UPDATE SET todo = $2;",
-				user_id, new_todo)
-		else:
-			await postgres_connection.execute(
-				f"INSERT INTO todotable VALUES ($1, $2) ON CONFLICT (user_id) DO "
-				f"UPDATE SET todo = $2;",
-				user_id, current_todos + '\n' + new_todo)
-
-
+		async with conn_pool.acquire() as conn:
+			await conn.execute(
+				f"INSERT INTO todotable VALUES ($1, $2)"
+				,user_id, new_todo)
+		await ctx.message.add_reaction('👍')
 
 
 def setup(bot):
-		bot.add_cog(Personal_todo(bot))
+	bot.add_cog(personal_todo(bot))
