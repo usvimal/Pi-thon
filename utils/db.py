@@ -21,13 +21,7 @@ async def ensure_todo_table():
 		'user_id BIGINT DEFAULT 0,'													
 		'todo TEXT,'
 	    'completed BOOLEAN DEFAULT False'
-		'CONSTRAINT todotable_pk PRIMARY KEY (user_id)'
-		')'
+		');'
 		)
 	async with conn_pool.acquire() as conn:
 		await conn.execute(command)
-
-
-
-
-
