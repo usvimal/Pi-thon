@@ -2,6 +2,7 @@ import discord
 
 from discord.ext import commands
 from utils.db import conn_pool
+from utils.text_formatter import strike
 
 
 class personal_todo(commands.Cog):
