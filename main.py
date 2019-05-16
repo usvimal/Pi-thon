@@ -9,7 +9,6 @@ import sys
 import traceback
 
 from discord.ext import commands
-# 	from utils.db import ensure_todo_table
 from utils.discord_handler import DiscordHandler
 
 
@@ -34,7 +33,7 @@ class MainBot(commands.Bot):
 		self._add_handlers()
 		self._display_startup_message()
 		await self.init_postgres_connection()
-		# await ensure_todo_table()
+		await self.fetch_prefixes_from_db()
 		await self._load_cogs()
 		await self._update_bot_games_frequently()
 
@@ -105,6 +104,7 @@ class MainBot(commands.Bot):
 	async def init_postgres_connection(self):
 		self.dbpool = await asyncpg.create_pool(dsn=config.DATABASE_URL)
 
+	async def fetch_prefixes_from_db(self):
 		async with self.dbpool.acquire() as conn:
 			prefixes = await conn.fetch("SELECT guild_id, prefix FROM guildprop;")
 			for row in prefixes:

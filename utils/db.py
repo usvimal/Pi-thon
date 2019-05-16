@@ -2,8 +2,14 @@ from main import bot
 
 
 class Database:
-	def __init__(self):
+	def __init__(self, main_loop):
 		self.bot = bot
+		self._main_loop = main_loop
+
+	def task_manager(self):
+		self._main_loop.create_task(self.ensure_todo_table())
+		self._main_loop.create_task(self.ensure_guild_properties())
+		self._main_loop.create_task(self.ensure_user_properties())
 
 	async def ensure_todo_table(self):
 		command = ('CREATE TABLE IF NOT EXISTS todotable('							
