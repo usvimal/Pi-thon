@@ -9,6 +9,7 @@ class Settings(commands.Cog):
 		self.brawlhalla_activated = {}
 		self.config = config
 
+	@commands.guild_only()
 	@commands.group()
 	async def prefix(self, ctx):
 		""" Show the lyrics of the song curretnly playing in Spotify"""
@@ -16,14 +17,11 @@ class Settings(commands.Cog):
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
 			else:
-				guild_id = ctx.guild.id
-				if guild_id is None:
-					return
-				else:
-					prefix = self.bot.all_prefixes[ctx.guild.id]
-					await ctx.send(f"Current prefix for this server is `{prefix}`.")
+				prefix = self.bot.all_prefixes[ctx.guild.id]
+				await ctx.send(f"Current prefix for this server is `{prefix}`.")
 
-	@prefix.command()
+	@commands.guild_only()
+	@prefix.command(aliases=["change"])
 	async def set(self, ctx, prefix):
 		"""Set guild prefix"""
 		guild_id = ctx.guild.id
