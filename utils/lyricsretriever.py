@@ -1,7 +1,6 @@
 import lyricsgenius
 import os
 import pylyrics3
-from discord.ext import commands
 
 
 class LyricsRetriever:

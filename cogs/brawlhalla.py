@@ -1,9 +1,7 @@
 import asyncio
-import config
 import platform
 import subprocess
 
-from config import creatorID
 from discord.ext import commands
 
 
