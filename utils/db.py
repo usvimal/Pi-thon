@@ -1,22 +1,38 @@
-import asyncio
-import asyncpg
-import config
-
-conn_pool = None
+from main import bot
 
 
-async def init_postgres_connection():
-	global conn_pool
-	conn_pool = await asyncpg.create_pool(dsn=config.DATABASE_URL)
-asyncio.get_event_loop().run_until_complete(init_postgres_connection())
+class Database:
+	def __init__(self):
+		self.bot = bot
 
+	async def ensure_todo_table(self):
+		command = ('CREATE TABLE IF NOT EXISTS todotable('							
+			'user_id BIGINT,'													
+			'todo TEXT,'
+		    'completed BOOLEAN DEFAULT False,'
+		    'time_added TIMESTAMP'
+			');'
+			)
+		async with self.bot.dbpool.acquire() as conn:
+			await conn.execute(command)
 
-async def ensure_todo_table():
-	command = ('CREATE TABLE IF NOT EXISTS todotable('							
-		'user_id BIGINT DEFAULT 0,'													
-		'todo TEXT,'
-	    'completed BOOLEAN DEFAULT False'
-		');'
-		)
-	async with conn_pool.acquire() as conn:
-		await conn.execute(command)
+	async def ensure_guild_properties(self):
+		command = ('CREATE TABLE IF NOT EXISTS guildprop('							
+			'guild_id BIGINT,'													
+			'prefix VARCHAR(4) DEFAULT ;,'
+		    'lyrics_source TEXT DEFAULT genius'
+		    'PRIMARY KEY (guild_id)'
+			');'
+			)
+		async with self.bot.dbpool.acquire() as conn:
+			await conn.execute(command)
+
+	async def ensure_user_properties(self):
+		command = ('CREATE TABLE IF NOT EXISTS userprop('							
+			'user_id BIGINT,'													
+		    'brawlhalla_cog BOOLEAN DEFAULT False'
+		    'PRIMARY KEY (user_id)'
+			');'
+			)
+		async with self.bot.dbpool.acquire() as conn:
+			await conn.execute(command)

@@ -10,7 +10,7 @@
 		<variable type="str">DATABASE_URL</variable>
 	</environment>
 	<settings>
-		<bot_prefix>;</bot_prefix>
+		<default_prefix>;</default_prefix>
 		<show_startup_message>True</show_startup_message>
 	</settings>
 	<cogs>

@@ -1,4 +1,5 @@
 import asyncio
+import asyncpg
 import config
 import discord
 import logging
@@ -20,10 +21,11 @@ class MainBot(commands.Bot):
 	UPDATES_CHANNEL_ID = 574240405722234881
 
 	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+		super().__init__(command_prefix=self._get_prefix, **kwargs)
 
 		self._logging_channel = None
 		self._updates_channel = None
+		self.all_prefixes = {}
 
 	async def on_ready(self):
 		self._logging_channel = self.get_channel(self.LOGGING_CHANNEL_ID)
@@ -31,6 +33,7 @@ class MainBot(commands.Bot):
 
 		self._add_handlers()
 		self._display_startup_message()
+		await self.init_postgres_connection()
 		# await ensure_todo_table()
 		await self._load_cogs()
 		await self._update_bot_games_frequently()
@@ -99,6 +102,22 @@ class MainBot(commands.Bot):
 
 			await asyncio.sleep(config.gamestimer)
 
+	async def init_postgres_connection(self):
+		self.dbpool = await asyncpg.create_pool(dsn=config.DATABASE_URL)
+
+		async with self.dbpool.acquire() as conn:
+			prefixes = await conn.fetch("SELECT guild_id, prefix FROM guildprop;")
+			for row in prefixes:
+				self.all_prefixes[row["guild_id"]] = row["prefix"]
+
+	def _get_prefix(self, message):
+		if not message.guild:
+			return config.default_prefix  # Use default prefix in DMs
+		try:
+			return commands.when_mentioned_or(self.all_prefixes[message.guild.id])(self, message)
+		except KeyError:
+			return commands.when_mentioned_or(config.default_prefix)(self, message)
+
 	async def on_message(self, message):
 		# we do not want the bot to reply to itself
 		a = await self.get_prefix(message)
@@ -138,7 +157,8 @@ class MainBot(commands.Bot):
 
 		await bot.process_commands(message)
 
-	async def on_member_update(self, before, after):
+	@staticmethod
+	async def on_member_update(before, after):
 		if before.avatar != after.avatar:
 			# gets the first channel from UI
 			ctx = before.guild.text_channels[0]
@@ -146,6 +166,6 @@ class MainBot(commands.Bot):
 
 
 if __name__ == "__main__":
-	bot = MainBot(command_prefix=config.bot_prefix, pm_help=None, description='A personal project for fun')
+	bot = MainBot(pm_help=None, description='A personal project for fun')
 	token = config.DISCORD_BOT_SECRET
 	bot.run(token)

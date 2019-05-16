@@ -5,7 +5,6 @@ from utils.text_formatter import chunks
 from utils.lyricsretriever import LyricsRetriever
 
 
-
 class Lyrics(commands.Cog):
 	class SpotifyNotPlaying(commands.CommandError):
 		pass

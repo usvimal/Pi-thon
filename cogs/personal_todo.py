@@ -1,7 +1,6 @@
 import discord
 
 from discord.ext import commands
-from utils.db import conn_pool
 from utils.text_formatter import strike
 
 
@@ -10,7 +9,7 @@ class personal_todo(commands.Cog):
 		self.bot = bot
 
 	async def get_user_todos(self, user_id: int):
-		async with conn_pool.acquire() as conn:
+		async with self.bot.dbpool.acquire() as conn:
 			details = await conn.fetch(f"SELECT todo, completed FROM todotable WHERE user_id = $1;",
 		                                            user_id)
 		if details is None:
@@ -46,7 +45,7 @@ class personal_todo(commands.Cog):
 	@todo.command()
 	async def add(self, ctx, *, new_todo: str):
 		user_id = ctx.author.id
-		async with conn_pool.acquire() as conn:
+		async with self.bot.dbpool.acquire() as conn:
 			await conn.execute(
 				f"INSERT INTO todotable VALUES ($1, $2)"
 				,user_id, new_todo)
