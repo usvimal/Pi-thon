@@ -21,7 +21,8 @@ class PrettyAbstractPrinter:
 		prettified_text = self._use_formatters(text)
 
 		for chunk in chunks(prettified_text, self._chr_limit):
-			await ctx.send(chunk)
+			async with ctx.typing():
+				await ctx.send(chunk)
 
 	def _use_formatters(self, text):
 		copied_text = text
