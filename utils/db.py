@@ -1,12 +1,7 @@
 import asyncio
 import asyncpg
 import config
-import ssl
 
-
-ctx = ssl.create_default_context(cafile='assets/rds-combined-ca-bundle.pem')
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
 conn_pool = None
 
 

@@ -1,4 +1,4 @@
-from utils.chunker import chunks
+from utils.text_formatter import chunks
 
 class PrettyAbstractPrinter:
 	def __init__(self):

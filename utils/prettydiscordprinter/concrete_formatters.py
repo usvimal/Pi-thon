@@ -1,4 +1,4 @@
-from utils.chunker import chunks
+from utils.text_formatter import chunks
 from utils.prettydiscordprinter.abstract_classes import PrettyAbstractFormatter
 
 

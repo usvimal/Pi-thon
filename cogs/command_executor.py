@@ -3,7 +3,7 @@ import discord
 import sys
 import traceback
 
-from utils.chunker import chunks
+from utils.text_formatter import chunks
 from discord.ext import commands
 from io import StringIO
 

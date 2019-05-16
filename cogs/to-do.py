@@ -1,11 +1,5 @@
 from discord.ext import commands
-
-
-def strike(text):
-	result = ''
-	for c in text:
-		result = result + c + '\u0336'
-	return result
+from utils.text_formatter import strike
 
 
 class Todo(commands.Cog):

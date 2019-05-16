@@ -14,14 +14,16 @@
 		<show_startup_message>True</show_startup_message>
 	</settings>
 	<cogs>
-		<cog activated="True">cogs.vote</cog>
 		<cog activated="True">cogs.brawlhalla</cog>
-		<cog activated="True">cogs.lyrics</cog>
-		<cog activated="True">cogs.info</cog>
-		<cog activated="True">cogs.fun</cog>
-		<cog activated="True">cogs.to-do</cog>
 		<cog activated="True">cogs.command_executor</cog>
+		<cog activated="True">cogs.fun</cog>
+		<cog activated="True">cogs.info</cog>
+		<cog activated="True">cogs.lyrics</cog>
 		<cog activated="True">cogs.personal_todo</cog>
+		<cog activated="True">cogs.settings</cog>
+		<cog activated="True">cogs.to-do</cog>
+		<cog activated="True">cogs.vote</cog>
+
 	</cogs>
 	<games gamestimer="180">
 		<game activity_type="playing">| Connected to {guilds} servers | Connected to {members} users</game>
