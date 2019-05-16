@@ -10,7 +10,7 @@ class Settings(commands.Cog):
 		self.config = config
 
 	@commands.command(aliases=["setprefix"])
-	async def prefix(self, ctx, prefix:str):
+	async def prefix(self, ctx, prefix):
 		"""Set guild prefix"""
 		guild_id = ctx.guild.id
 		if guild_id is None:
@@ -19,6 +19,8 @@ class Settings(commands.Cog):
 			if prefix == '':
 				self.bot.all_prefixes[ctx.guild.id] = prefix
 				await ctx.send(f"Current prefix for this server is `{prefix}`.")
+			if len(prefix) > 5:
+				ctx.send('Please keep your prefix to below 5 characters')
 			else:
 				if self.bot.all_prefixes.get(ctx.guild.id):
 					async with self.bot.dbpool.acquire() as conn:
