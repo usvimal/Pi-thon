@@ -16,20 +16,24 @@ class Settings(commands.Cog):
 		if guild_id is None:
 			return
 		else:
-			if self.bot.all_prefixes.get(ctx.guild.id):
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute(
-						'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;', prefix, guild_id
-					)
+			if prefix == '':
+				self.bot.all_prefixes[ctx.guild.id] = prefix
+				await ctx.send(f"Current prefix for this server is `{prefix}`.")
 			else:
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute(
-						'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-						guild_id,
-						prefix
-					)
-			self.bot.all_prefixes[ctx.guild.id] = prefix
-			await ctx.send(f"New prefix for this server is `{prefix}`.")
+				if self.bot.all_prefixes.get(ctx.guild.id):
+					async with self.bot.dbpool.acquire() as conn:
+						await conn.execute(
+							'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;', prefix, guild_id
+						)
+				else:
+					async with self.bot.dbpool.acquire() as conn:
+						await conn.execute(
+							'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
+							guild_id,
+							prefix
+						)
+				self.bot.all_prefixes[ctx.guild.id] = prefix
+				await ctx.send(f"New prefix for this server is `{prefix}`.")
 
 
 def setup(bot):
