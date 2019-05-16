@@ -23,20 +23,20 @@ class Database:
 			await conn.execute(command)
 
 	async def ensure_guild_properties(self):
-		command = ('CREATE TABLE IF NOT EXISTS guildprop('							
-			'guild_id BIGINT,'													
-			'prefix VARCHAR(4) DEFAULT ;,'
-		    'lyrics_source TEXT DEFAULT genius'
-		    'PRIMARY KEY (guild_id)'
-			');'
-			)
+		command = ('CREATE TABLE IF NOT EXISTS guildprop('
+		           'guild_id BIGINT,'
+		           'prefix VARCHAR(4),'
+		           'lyrics_source VARCHAR(10) DEFAULT \'genius\','
+		           'PRIMARY KEY (guild_id)'
+		           ');'
+		           )
 		async with self.bot.dbpool.acquire() as conn:
 			await conn.execute(command)
 
 	async def ensure_user_properties(self):
 		command = ('CREATE TABLE IF NOT EXISTS userprop('							
 			'user_id BIGINT,'													
-		    'brawlhalla_cog BOOLEAN DEFAULT False'
+		    'brawlhalla_cog BOOLEAN DEFAULT False,'
 		    'PRIMARY KEY (user_id)'
 			');'
 			)

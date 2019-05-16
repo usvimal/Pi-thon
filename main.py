@@ -110,7 +110,7 @@ class MainBot(commands.Bot):
 			for row in prefixes:
 				self.all_prefixes[row["guild_id"]] = row["prefix"]
 
-	def _get_prefix(self, message):
+	def _get_prefix(self, bot, message):
 		if not message.guild:
 			return config.default_prefix  # Use default prefix in DMs
 		try:
