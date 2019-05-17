@@ -1,7 +1,6 @@
 import asyncio
 import platform
 import subprocess
-import config
 
 from discord.ext import commands
 
@@ -27,10 +26,9 @@ class Brawlhalla(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		try:
-			if after.activity.name == 'Spotify' and before.id == config.creatorID:
+			if after.activity.name == 'Brawlhalla' and self.bot.brawlhalla_status.get(before.id, default=False) is True:
 				pong = self.ping('pingtest-sgp.brawlhalla.com')
 				if pong:
-					print('Brawl is up')
 					channel = self.bot.get_user(after.id)
 					await channel.send('Oof! Brawlhalla is down! I will let you know when its back up')
 
@@ -41,11 +39,8 @@ class Brawlhalla(commands.Cog):
 						await channel.send('yay its back up!')
 
 					await check()
-				elif not pong:
-					print('Brawl is down')
-
-		except Exception as e:
-			print(e)
+		except:
+			pass
 
 
 def setup(bot):
