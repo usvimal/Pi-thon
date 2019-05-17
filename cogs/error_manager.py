@@ -1,6 +1,7 @@
 from discord.ext import commands
 import utils.checks
 
+
 class ErrorManager(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -20,7 +21,9 @@ class ErrorManager(commands.Cog):
 				return await ctx.send("You don't have permission to use this command!")
 
 		elif isinstance(error, commands.BotMissingPermissions):
-			return await ctx.send(f"I don't have the following permission(s) to run this command!{self.convert_list_to_string(error.missing_perms)}")
+			return await ctx.send(
+				f"I don't have the following permission(s) to run this command!{self.convert_list_to_string(
+					error.missing_perms)}")
 
 
 def setup(bot):

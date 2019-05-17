@@ -23,6 +23,7 @@
 		<cog activated="True">cogs.settings</cog>
 		<cog activated="True">cogs.to-do</cog>
 		<cog activated="True">cogs.vote</cog>
+		<cog activated="True">cogs.error_manager</cog>
 
 	</cogs>
 	<games gamestimer="180">
