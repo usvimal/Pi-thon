@@ -15,7 +15,7 @@ class Vote(commands.Cog):
 		await ctx.send("How long do you want the vote to run? (in seconds)")
 
 		def check(user):
-			return user == ctx.message.author
+			return user == ctx.author
 		try:
 			msg = await self.bot.wait_for("message", timeout=60.0, check=check)
 			print(msg.content)
