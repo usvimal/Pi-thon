@@ -157,13 +157,6 @@ class MainBot(commands.Bot):
 
 		await bot.process_commands(message)
 
-	@staticmethod
-	async def on_member_update(before, after):
-		if before.avatar != after.avatar:
-			# gets the first channel from UI
-			ctx = before.guild.text_channels[0]
-			await ctx.send(f'Ayy nice new dp! {before.mention}')
-
 
 if __name__ == "__main__":
 	bot = MainBot(pm_help=None, description='A personal project for fun')
