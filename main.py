@@ -9,6 +9,7 @@ import sys
 import traceback
 
 from discord.ext import commands
+from utils.db import Database
 from utils.discord_handler import DiscordHandler
 
 
@@ -34,6 +35,7 @@ class MainBot(commands.Bot):
 		self._add_handlers()
 		self._display_startup_message()
 		await self.init_postgres_connection()
+		self.database = Database(main_loop=self.loop)
 		await self.fetch_prefixes_from_db()
 		await self.fetch_brawlhalla_status_from_db()
 		await self._load_cogs()

@@ -5,6 +5,7 @@ class Database:
 	def __init__(self, main_loop):
 		self.bot = bot
 		self._main_loop = main_loop
+		self.task_manager()
 
 	def task_manager(self):
 		self._main_loop.create_task(self.ensure_todo_table())
