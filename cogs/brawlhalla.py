@@ -26,7 +26,7 @@ class Brawlhalla(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		try:
-			if after.activity.name == 'Brawlhalla' and self.bot.brawlhalla_status.get(before.id, default = 'False') == 'True':
+			if after.activity.name == 'Brawlhalla' and self.bot.brawlhalla_status.get(before.id, default=False) is True:
 				pong = self.ping('pingtest-sgp.brawlhalla.com')
 				if pong:
 					channel = self.bot.get_user(after.id)
@@ -35,8 +35,9 @@ class Brawlhalla(commands.Cog):
 					async def check():
 						while pong:
 							self.ping('pingtest-sgp.brawlhalla.com')
-							await asyncio.sleep(60*5)
+							await asyncio.sleep(60 * 5)
 						await channel.send('yay its back up!')
+
 					await check()
 		except:
 			pass
