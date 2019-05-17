@@ -54,6 +54,7 @@ class Settings(commands.Cog):
 				async with self.bot.dbpool.acquire() as conn:
 					await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
 					                   user_id, 'True')
+			self.bot.brawlhalla_status[user_id] = 'True'
 			await ctx.message.add_reaction('👍')
 		elif arg.content.lower() == 'disable' or 'off':
 			if self.bot.brawlhalla_status.get(user_id):
@@ -65,9 +66,10 @@ class Settings(commands.Cog):
 				async with self.bot.dbpool.acquire() as conn:
 					await conn.execute('INSERT INTO userprop ("guild_id", "brawlhalla_cog") VALUES ($1, $2);',
 					                   user_id, 'False')
+			self.bot.brawlhalla_status[user_id] = 'False'
 			await ctx.message.add_reaction('👍')
 		elif arg.content.lower() == 'status':
-			if self.bot.brawlhalla_status.get[user_id] == 'True':
+			if self.bot.brawlhalla_status.get(user_id) == 'True':
 				ctx.send('You are subscribed to the brawlhalla down detector')
 			else:
 				ctx.send('You are not subscribed to the brawlhalla down detector')
