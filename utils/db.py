@@ -1,8 +1,5 @@
-from main import bot
-
-
 class Database:
-	def __init__(self, main_loop):
+	def __init__(self, main_loop, bot):
 		self.bot = bot
 		self._main_loop = main_loop
 		self.task_manager()

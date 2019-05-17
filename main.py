@@ -35,7 +35,7 @@ class MainBot(commands.Bot):
 		self._add_handlers()
 		self._display_startup_message()
 		await self.init_postgres_connection()
-		self.database = Database(main_loop=self.loop)
+		self.database = Database(main_loop=self.loop, bot=self)
 		await self.fetch_prefixes_from_db()
 		await self.fetch_brawlhalla_status_from_db()
 		await self._load_cogs()
@@ -172,3 +172,4 @@ if __name__ == "__main__":
 	bot = MainBot(pm_help=None, description='A personal project for fun')
 	token = config.DISCORD_BOT_SECRET
 	bot.run(token)
+	bot.dbpool
