@@ -43,10 +43,14 @@ class Settings(commands.Cog):
 	@commands.group()
 	async def brawlhalla(self, ctx):
 		"""Enable/Disable Brawlhalla feature"""
-		if self.bot.brawlhalla_status.get(ctx.author.id) == 'True':
-			await ctx.send('You are subscribed to the brawlhalla down detector')
-		else:
-			await ctx.send('You are not subscribed to the brawlhalla down detector')
+		if ctx.invoked_subcommand is None:
+			if ctx.subcommand_passed:
+				await ctx.send('Oof owie, that was not a valid command 🤨')
+			else:
+				if self.bot.brawlhalla_status.get(ctx.author.id) == 'True':
+					await ctx.send('You are subscribed to the brawlhalla down detector')
+				else:
+					await ctx.send('You are not subscribed to the brawlhalla down detector')
 
 	@brawlhalla.command(aliases=["on"])
 	async def enable(self, ctx):

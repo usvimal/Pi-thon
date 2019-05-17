@@ -172,4 +172,3 @@ if __name__ == "__main__":
 	bot = MainBot(pm_help=None, description='A personal project for fun')
 	token = config.DISCORD_BOT_SECRET
 	bot.run(token)
-	bot.dbpool
