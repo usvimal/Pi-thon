@@ -40,39 +40,43 @@ class Settings(commands.Cog):
 			self.bot.all_prefixes[ctx.guild.id] = prefix
 			await ctx.send(f"New prefix for this server is `{prefix}`.")
 
-	@commands.command()
-	async def brawlhalla(self, ctx, arg):
+	@commands.group()
+	async def brawlhalla(self, ctx):
 		"""Enable/Disable Brawlhalla feature"""
+		if self.bot.brawlhalla_status.get(ctx.author.id) == 'True':
+			await ctx.send('You are subscribed to the brawlhalla down detector')
+		else:
+			await ctx.send('You are not subscribed to the brawlhalla down detector')
+
+	@brawlhalla.command(aliases=["on"])
+	async def enable(self, ctx):
 		user_id = ctx.author.id
-		if arg.content.lower() == 'enable' or 'on':
-			if self.bot.brawlhalla_status.get(user_id):
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute(
-						'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "user_id"=$2;',
-						'True', user_id)
-			else:
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
-					                   user_id, 'True')
-			self.bot.brawlhalla_status[user_id] = 'True'
-			await ctx.message.add_reaction('👍')
-		elif arg.content.lower() == 'disable' or 'off':
-			if self.bot.brawlhalla_status.get(user_id):
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute(
-						'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "guild_id"=$2;',
-						'False', user_id)
-			else:
-				async with self.bot.dbpool.acquire() as conn:
-					await conn.execute('INSERT INTO userprop ("guild_id", "brawlhalla_cog") VALUES ($1, $2);',
-					                   user_id, 'False')
-			self.bot.brawlhalla_status[user_id] = 'False'
-			await ctx.message.add_reaction('👍')
-		elif arg.content.lower() == 'status':
-			if self.bot.brawlhalla_status.get(user_id) == 'True':
-				ctx.send('You are subscribed to the brawlhalla down detector')
-			else:
-				ctx.send('You are not subscribed to the brawlhalla down detector')
+		if self.bot.brawlhalla_status.get(user_id):
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute(
+					'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "user_id"=$2;',
+					'True', user_id)
+		else:
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
+				                   user_id, 'True')
+		self.bot.brawlhalla_status[user_id] = 'True'
+		await ctx.message.add_reaction('👍')
+
+	@brawlhalla.command(aliases=["off"])
+	async def disable(self, ctx):
+		user_id = ctx.author.id
+		if self.bot.brawlhalla_status.get(user_id):
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute(
+					'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "guild_id"=$2;',
+					'False', user_id)
+		else:
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute('INSERT INTO userprop ("guild_id", "brawlhalla_cog") VALUES ($1, $2);',
+				                   user_id, 'False')
+		self.bot.brawlhalla_status[user_id] = 'False'
+		await ctx.message.add_reaction('👍')
 
 
 def setup(bot):
