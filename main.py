@@ -25,6 +25,7 @@ class MainBot(commands.Bot):
 		self._logging_channel = None
 		self._updates_channel = None
 		self.all_prefixes = {}
+		self.brawlhalla_status = {}
 
 	async def on_ready(self):
 		self._logging_channel = self.get_channel(self.LOGGING_CHANNEL_ID)
@@ -34,6 +35,7 @@ class MainBot(commands.Bot):
 		self._display_startup_message()
 		await self.init_postgres_connection()
 		await self.fetch_prefixes_from_db()
+		await self.fetch_brawlhalla_status_from_db()
 		await self._load_cogs()
 		await self._update_bot_games_frequently()
 
@@ -117,6 +119,12 @@ class MainBot(commands.Bot):
 			return commands.when_mentioned_or(self.all_prefixes[message.guild.id])(self, message)
 		except KeyError:
 			return commands.when_mentioned_or(config.default_prefix)(self, message)
+
+	async def fetch_brawlhalla_status_from_db(self):
+		async with self.dbpool.acquire() as conn:
+			brawlhalla_status = await conn.fetch("SELECT user_id, brawlhalla_cog FROM userprop;")
+			for row in brawlhalla_status:
+				self.brawlhalla_status[row["user_id"]] = row["brawlhalla_cog"]
 
 	async def on_message(self, message):
 		# we do not want the bot to reply to itself

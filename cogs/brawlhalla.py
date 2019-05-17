@@ -26,7 +26,7 @@ class Brawlhalla(commands.Cog):
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
 		try:
-			if after.activity.name == 'Brawlhalla':
+			if after.activity.name == 'Brawlhalla' and self.bot.brawlhalla_status.get(before.id, default = 'False') == 'True':
 				pong = self.ping('pingtest-sgp.brawlhalla.com')
 				if pong:
 					channel = self.bot.get_user(after.id)

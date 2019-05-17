@@ -5,8 +5,6 @@ import config
 class Settings(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.all_prefixes = {}
-		self.brawlhalla_activated = {}
 		self.config = config
 
 	@commands.guild_only()
@@ -32,17 +30,47 @@ class Settings(commands.Cog):
 			if self.bot.all_prefixes.get(ctx.guild.id):
 				async with self.bot.dbpool.acquire() as conn:
 					await conn.execute(
-						'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;', prefix, guild_id
-					)
+						'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;',
+						prefix, guild_id)
 			else:
 				async with self.bot.dbpool.acquire() as conn:
 					await conn.execute(
 						'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-						guild_id,
-						prefix
-					)
+						guild_id, prefix)
 			self.bot.all_prefixes[ctx.guild.id] = prefix
 			await ctx.send(f"New prefix for this server is `{prefix}`.")
+
+	@commands.command()
+	async def brawlhalla(self, ctx, arg):
+		"""Enable/Disable Brawlhalla feature"""
+		user_id = ctx.author.id
+		if arg.content.lower() == 'enable' or 'on':
+			if self.bot.brawlhalla_status.get(user_id):
+				async with self.bot.dbpool.acquire() as conn:
+					await conn.execute(
+						'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "user_id"=$2;',
+						'True', user_id)
+			else:
+				async with self.bot.dbpool.acquire() as conn:
+					await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
+					                   user_id, 'True')
+			await ctx.message.add_reaction('👍')
+		elif arg.content.lower() == 'disable' or 'off':
+			if self.bot.brawlhalla_status.get(user_id):
+				async with self.bot.dbpool.acquire() as conn:
+					await conn.execute(
+						'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "guild_id"=$2;',
+						'False', user_id)
+			else:
+				async with self.bot.dbpool.acquire() as conn:
+					await conn.execute('INSERT INTO userprop ("guild_id", "brawlhalla_cog") VALUES ($1, $2);',
+					                   user_id, 'False')
+			await ctx.message.add_reaction('👍')
+		elif arg.content.lower() == 'status':
+			if self.bot.brawlhalla_status.get[user_id] == 'True':
+				ctx.send('You are subscribed to the brawlhalla down detector')
+			else:
+				ctx.send('You are not subscribed to the brawlhalla down detector')
 
 
 def setup(bot):
