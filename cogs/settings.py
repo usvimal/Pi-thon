@@ -12,7 +12,7 @@ class Settings(commands.Cog):
 	@commands.guild_only()
 	@commands.group()
 	async def prefix(self, ctx):
-		""" Show the lyrics of the song curretnly playing in Spotify"""
+		""" Show current prefix for this guild"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
@@ -21,6 +21,7 @@ class Settings(commands.Cog):
 				await ctx.send(f"Current prefix for this server is `{prefix}`.")
 
 	@commands.guild_only()
+	@commands.has_permissions(manage_guild=True)
 	@prefix.command(aliases=["change"])
 	async def set(self, ctx, prefix):
 		"""Set guild prefix"""

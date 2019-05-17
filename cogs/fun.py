@@ -1,5 +1,6 @@
 import owotrans
 from discord.ext import commands
+import config
 
 
 class Fun(commands.Cog):
@@ -13,6 +14,7 @@ class Fun(commands.Cog):
 		await ctx.send(msg)
 
 	@commands.command()
+	@commands.bot_has_permissions(manage_messages=True)
 	async def talk(self, ctx, *, arg):
 		"""deletes your message and talks through the bot"""
 		await ctx.message.delete()

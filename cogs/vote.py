@@ -7,7 +7,7 @@ class Vote(commands.Cog):
 		self.bot = bot
 
 	@commands.command()
-	async def vote(self, ctx, *, reason: str):
+	async def vote(self, ctx, *, question: str):
 		"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
 		"""enter time in seconds and your reason"""
 		await ctx.message.add_reaction('✅')
@@ -35,18 +35,13 @@ class Vote(commands.Cog):
 				counts[reaction.emoji] = reaction.count - 1
 				print(f'{reaction.emoji} = {counts}')
 			if counts['✅'] > counts['❌']:
-				await ctx.send('The answer to ' + reason + ' is: ✅')
+				await ctx.send('The answer to ' + question + ' is: ✅')
 			elif counts['✅'] < counts['❌']:
-				await ctx.send('The answer to ' + reason + ' is: ❌')
+				await ctx.send('The answer to ' + question + ' is: ❌')
 			else:
 				await ctx.send('Aww shucks, its a stalemate')
 				return
 			return
-
-	@vote.error
-	async def vote_error(self, ctx, error):
-		if isinstance(error, commands.MissingRequiredArgument):
-			return await ctx.send('Please add a question together with ;vote')
 
 
 def setup(bot):
