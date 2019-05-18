@@ -84,8 +84,8 @@ class Lyrics(commands.Cog):
 		for chunk in chunks(self.lyrics_retriever.get_lyrics(song_title, song_artist), 2048):
 			em = discord.Embed(title=song_title, description=chunk)
 			em = em.set_author(name=song_artist)
-			async with ctx.typing():
-				await ctx.send(embed=em)
+			await ctx.trigger_typing()
+			await ctx.send(embed=em)
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
