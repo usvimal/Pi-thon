@@ -12,13 +12,11 @@ class Vote(commands.Cog):
 		"""enter time in seconds and your reason"""
 		await ctx.message.add_reaction('✅')
 		await ctx.message.add_reaction('❌')
-		await ctx.send("How long do you want the vote to run? (in seconds)")
+		await ctx.send("How long do you want the vote to run? (Send an integer in seconds)")
 
-		def check(user):
-			return user == ctx.author
+		check = lambda m: m.author == ctx.author and m.channel == ctx.channel
 		try:
 			msg = await self.bot.wait_for("message", timeout=60.0, check=check)
-			print(msg.content)
 		except asyncio.TimeoutError:
 			await ctx.send('The vote has been cancelled due to a lack of response')
 		else:
@@ -29,11 +27,9 @@ class Vote(commands.Cog):
 				await ctx.send('Please restart the vote and send a positive integer only')
 				return
 			reactions = (await ctx.fetch_message(ctx.message.id)).reactions
-			print(reactions)
 			counts = {}
 			for reaction in reactions:
 				counts[reaction.emoji] = reaction.count - 1
-				print(f'{reaction.emoji} = {counts}')
 			if counts['✅'] > counts['❌']:
 				await ctx.send('The answer to ' + question + ' is: ✅')
 			elif counts['✅'] < counts['❌']:
