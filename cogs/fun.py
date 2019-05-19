@@ -26,5 +26,6 @@ class Fun(commands.Cog):
 			await ctx.send(f'You are not authorised sorry! {ctx.author.mention}')
 			return
 
+
 def setup(bot):
 	bot.add_cog(Fun(bot))
