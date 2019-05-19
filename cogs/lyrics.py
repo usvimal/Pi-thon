@@ -14,12 +14,12 @@ class Lyrics(commands.Cog):
 	def __init__(self, bot):
 		""" Create a lyrics retriever and add a list of registered user and their context"""
 		self.bot = bot
-		self.lyrics_retriever = LyricsRetriever()
+		self.lyrics_retriever = LyricsRetriever(bot)
 		self.user_context_dict = dict()
 
 	@commands.group()
 	async def lyrics(self, ctx):
-		""" Show the lyrics of the song curretnly playing in Spotify"""
+		""" Show the lyrics of the song currently playing in Spotify"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
@@ -29,7 +29,7 @@ class Lyrics(commands.Cog):
 
 	@lyrics.command(aliases=["begin"])
 	async def start(self, ctx):
-		""" Register the user to the user-context dictionary and show the first song"""
+		""" Show lyrics for all the songs the user plays until they stop this"""
 		if ctx.author not in self.user_context_dict:
 			song_title, song_artist = self.get_song_description(ctx.author)
 			await self.show_lyrics_from_description(ctx, song_title, song_artist)
@@ -39,7 +39,7 @@ class Lyrics(commands.Cog):
 
 	@lyrics.command(aliases=["end"])
 	async def stop(self, ctx):
-		""" Deregister the user from the dictionary """
+		""" Stop showing new lyrics """
 		if ctx.author in self.user_context_dict:
 			del self.user_context_dict[ctx.author]
 			await ctx.send("You will stop receiving lyrics now.")
@@ -48,12 +48,25 @@ class Lyrics(commands.Cog):
 
 	@lyrics.command()
 	async def source(self, ctx):
-		await ctx.send("Current lyric source is {}.".format(self.lyrics_retriever.get_main_source()))
+		""" Show the current source for lyrics"""
+		current_source = self.lyrics_retriever.get_main_source(ctx.author.id)
+		await ctx.send(f"Current lyric source is {current_source}.")
 
 	@lyrics.command()
-	async def change_source(self, ctx, new_source):
-		self.lyrics_retriever.change_main_source(new_source)
-		await ctx.send("Changing of main source is successful.")
+	async def change_source(self, ctx):
+		""" Change the lyrics source"""
+		em = discord.Embed(title='Choose your source:', description='\t1. genius \n\t2. lyrics-wiki', color=0xbd6c24)
+		em.set_footer(text="Send the number corresponding to the lyrics source")
+		await ctx.send(embed=em)
+		check = lambda m: m.author == ctx.author and m.channel == ctx.channel
+		msg = await self.bot.wait_for("message", timeout=60.0, check=check)
+		new_source = ''
+		if int(msg.content) == 1:
+			new_source = 'genius'
+		elif int(msg.content) == 2:
+			new_source = 'lyrics-wiki'
+		self.lyrics_retriever.change_main_source(ctx.author.id, new_source)
+		await ctx.send(f"Changing of lyrics source to `{new_source}` is successful.")
 
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
@@ -95,9 +108,7 @@ class Lyrics(commands.Cog):
 			await ctx.send("Please play a song to get the lyrics 🙃")
 		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.LyricsNotFoundException):
 			await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(
-				self.lyrics_retriever.get_main_source()))
-		elif hasattr(error, "original") and isinstance(error.original, LyricsRetriever.SourceChangeNotSuccess):
-			await ctx.send("Invalid argument for song sources.\nValid arguments are:\n\t1. genius \n\t2. lyrics-wiki")
+				self.lyrics_retriever.get_main_source(ctx.author.id)))
 
 
 def setup(bot):

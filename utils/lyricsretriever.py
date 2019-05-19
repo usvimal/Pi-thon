@@ -30,7 +30,7 @@ class LyricsRetriever:
 
 	@staticmethod
 	def _create_sources():
-		""" Create sources and return as a Sourc Name: Source Object pair. """
+		""" Create sources and return as a Source Name: Source Object pair. """
 		return_dict = dict()
 
 		return_dict[LyricsRetriever.GENIUS_SOURCE_NAME] = LyricsRetriever.genius_get_lyrics
@@ -43,18 +43,25 @@ class LyricsRetriever:
 		""" This is an attempt to weed out false positives in song search. """
 		return len(lyrics.split())
 
-	def __init__(self):
+	def __init__(self, bot):
+		self.bot = bot
 		self._sources = self._create_sources()
 		self.main_source = list(self._sources.keys())[0]
 
-	def get_main_source(self):
-		return self.main_source
+	def get_main_source(self, user_id):
+		return self.bot.brawlhalla_status.get(user_id)
 
-	def change_main_source(self, new_source):
-		if new_source in self._sources:
-			self.main_source = new_source
+	def change_main_source(self, user_id, new_source):
+		if user_id in self.bot.lyrics_source:
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute(
+					'UPDATE userprop SET "lyrics_source"=$1 WHERE "user_id"=$2;',
+					new_source, user_id)
 		else:
-			raise self.SourceChangeNotSuccess
+			async with self.bot.dbpool.acquire() as conn:
+				await conn.execute('INSERT INTO userprop ("user_id", "lyrics_source") VALUES ($1, $2);',
+				                   user_id, new_source)
+		self.bot.lyrics_source[user_id] = new_source
 
 	def get_lyrics(self, title, artist):
 		# Retrieve source object from the _sources dictionary and  attempt to get the lyrics.

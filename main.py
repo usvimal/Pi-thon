@@ -27,6 +27,7 @@ class MainBot(commands.Bot):
 		self._updates_channel = None
 		self.all_prefixes = {}
 		self.brawlhalla_status = {}
+		self.lyrics_source = {}
 
 	async def on_ready(self):
 		self._logging_channel = self.get_channel(self.LOGGING_CHANNEL_ID)
@@ -36,8 +37,7 @@ class MainBot(commands.Bot):
 		self._display_startup_message()
 		await self.init_postgres_connection()
 		self.database = Database(main_loop=self.loop, bot=self)
-		await self.fetch_prefixes_from_db()
-		await self.fetch_brawlhalla_status_from_db()
+		await self.batch_fetch_from_db()
 		await self._load_cogs()
 		await self._update_bot_games_frequently()
 
@@ -108,11 +108,16 @@ class MainBot(commands.Bot):
 	async def init_postgres_connection(self):
 		self.dbpool = await asyncpg.create_pool(dsn=config.DATABASE_URL)
 
-	async def fetch_prefixes_from_db(self):
+	async def batch_fetch_from_db(self):
 		async with self.dbpool.acquire() as conn:
-			prefixes = await conn.fetch("SELECT guild_id, prefix FROM guildprop;")
-			for row in prefixes:
-				self.all_prefixes[row["guild_id"]] = row["prefix"]
+			await self.fetch_prefixes_from_db(conn)
+			await self.fetch_brawlhalla_status_from_db(conn)
+			await self.fetch_lyrics_source_from_db(conn)
+
+	async def fetch_prefixes_from_db(self, connection):
+		prefixes = await connection.fetch("SELECT guild_id, prefix FROM guildprop;")
+		for row in prefixes:
+			self.all_prefixes[row["guild_id"]] = row["prefix"]
 
 	def _get_prefix(self, bot, message):
 		if not message.guild:
@@ -122,11 +127,15 @@ class MainBot(commands.Bot):
 		except KeyError:
 			return commands.when_mentioned_or(config.default_prefix)(self, message)
 
-	async def fetch_brawlhalla_status_from_db(self):
-		async with self.dbpool.acquire() as conn:
-			brawlhalla_status = await conn.fetch("SELECT user_id, brawlhalla_cog FROM userprop;")
-			for row in brawlhalla_status:
-				self.brawlhalla_status[row["user_id"]] = row["brawlhalla_cog"]
+	async def fetch_brawlhalla_status_from_db(self, connection):
+		brawlhalla_status = await connection.fetch("SELECT user_id, brawlhalla_cog FROM userprop;")
+		for row in brawlhalla_status:
+			self.brawlhalla_status[row["user_id"]] = row["brawlhalla_cog"]
+
+	async def fetch_lyrics_source_from_db(self, connection):
+		lyrics_source = await connection.fetch("SELECT user_id, lyrics_source FROM userprop;")
+		for row in lyrics_source:
+			self.lyrics_source[row["user_id"]] = row["lyrics_source"]
 
 	async def on_message(self, message):
 		# we do not want the bot to reply to itself
