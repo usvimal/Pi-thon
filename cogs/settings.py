@@ -42,7 +42,7 @@ class Settings(commands.Cog):
 
 	@commands.group()
 	async def brawlhalla(self, ctx):
-		"""Enable/Disable Brawlhalla feature"""
+		"""Check whether the Brawlhalla feature is enabled for you"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
@@ -54,6 +54,7 @@ class Settings(commands.Cog):
 
 	@brawlhalla.command(aliases=["on"])
 	async def enable(self, ctx):
+		"""Enable Brawlhalla feature"""
 		user_id = ctx.author.id
 		if user_id in self.bot.brawlhalla_status:
 			async with self.bot.dbpool.acquire() as conn:
@@ -69,6 +70,7 @@ class Settings(commands.Cog):
 
 	@brawlhalla.command(aliases=["off"])
 	async def disable(self, ctx):
+		"""Disable Brawlhalla feature"""
 		user_id = ctx.author.id
 		if user_id in self.bot.brawlhalla_status:
 			async with self.bot.dbpool.acquire() as conn:

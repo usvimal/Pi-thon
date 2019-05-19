@@ -10,7 +10,7 @@ class Vote(commands.Cog):
 	@commands.command()
 	async def vote(self, ctx, *, question: str):
 		"""vote feature, will add reactions (thumbsup and thumbsdown) and output final result"""
-		"""enter time in seconds and your reason"""
+		"""enter your reason for the vote"""
 		await ctx.message.add_reaction('✅')
 		await ctx.message.add_reaction('❌')
 		await ctx.send("How long do you want the vote to run? (Send an integer in seconds)")

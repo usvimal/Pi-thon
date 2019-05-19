@@ -26,6 +26,7 @@ class personal_todo(commands.Cog):
 
 	@commands.group()
 	async def todo(self, ctx):
+		"""Show your available todos"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
 				await ctx.send('Oof owie, that was not a valid command 🤨')
@@ -44,6 +45,7 @@ class personal_todo(commands.Cog):
 
 	@todo.command()
 	async def add(self, ctx, *, new_todo: str):
+		"""Add a todo"""
 		user_id = ctx.author.id
 		async with self.bot.dbpool.acquire() as conn:
 			await conn.execute(
