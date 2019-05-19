@@ -46,26 +46,24 @@ class LyricsRetriever:
 	def __init__(self, bot):
 		self.bot = bot
 		self._sources = self._create_sources()
-		self.main_source = list(self._sources.keys())[0]
 
 	def get_main_source(self, user_id):
-		return self.bot.brawlhalla_status.get(user_id)
+		return self.bot.lyrics_source.get(user_id)
 
-	def change_main_source(self, user_id, new_source):
+	async def change_main_source(self, user_id, new_source):
 		if user_id in self.bot.lyrics_source:
 			async with self.bot.dbpool.acquire() as conn:
-				await conn.execute(
-					'UPDATE userprop SET "lyrics_source"=$1 WHERE "user_id"=$2;',
-					new_source, user_id)
+				await conn.execute('UPDATE userprop SET "lyrics_source"=$1 WHERE "user_id"=$2;',
+				                   new_source, user_id)
 		else:
 			async with self.bot.dbpool.acquire() as conn:
 				await conn.execute('INSERT INTO userprop ("user_id", "lyrics_source") VALUES ($1, $2);',
 				                   user_id, new_source)
 		self.bot.lyrics_source[user_id] = new_source
 
-	def get_lyrics(self, title, artist):
+	def get_lyrics(self, user_id, title, artist):
 		# Retrieve source object from the _sources dictionary and  attempt to get the lyrics.
-		lyrics = self._sources[self.main_source](title, artist)
+		lyrics = self._sources[self.get_main_source(user_id)](title, artist)
 		if lyrics is not None and self.estimate_song_words(lyrics) <= self.AVERAGE_SONG_WORD_SIZE:
 			return lyrics
 		else:

@@ -59,13 +59,13 @@ class Lyrics(commands.Cog):
 		em.set_footer(text="Send the number corresponding to the lyrics source")
 		await ctx.send(embed=em)
 		check = lambda m: m.author == ctx.author and m.channel == ctx.channel
-		msg = await self.bot.wait_for("message", timeout=60.0, check=check)
+		msg = await self.bot.wait_for("message", timeout=10, check=check)
 		new_source = ''
 		if int(msg.content) == 1:
 			new_source = 'genius'
 		elif int(msg.content) == 2:
 			new_source = 'lyrics-wiki'
-		self.lyrics_retriever.change_main_source(ctx.author.id, new_source)
+		await self.lyrics_retriever.change_main_source(ctx.author.id, new_source)
 		await ctx.send(f"Changing of lyrics source to `{new_source}` is successful.")
 
 	@commands.Cog.listener()
@@ -82,7 +82,7 @@ class Lyrics(commands.Cog):
 				try:
 					await self.show_lyrics_from_description(ctx, *after_description)
 				except LyricsRetriever.LyricsNotFoundException:
-					await ctx.send("Current lyrics source {} could not retrieve the lyrics.".format(self.lyrics_retriever.get_main_source()))
+					await ctx.send(f"Current lyrics source {self.lyrics_retriever.get_main_source(after.id)} could not retrieve the lyrics.")
 
 	def get_song_description(self, user):
 		""" Get the description of a song from user if the user is playing a song on Spotify. """
@@ -94,11 +94,11 @@ class Lyrics(commands.Cog):
 
 	async def show_lyrics_from_description(self, ctx, song_title, song_artist):
 		"""Discord bot will show lyrics of a song from its description."""
-		for chunk in chunks(self.lyrics_retriever.get_lyrics(song_title, song_artist), 2048):
+		for chunk in chunks(self.lyrics_retriever.get_lyrics(ctx.author.id, song_title, song_artist), 2048):
 			em = discord.Embed(title=song_title, description=chunk)
 			em = em.set_author(name=song_artist)
 			await ctx.trigger_typing()
-			await ctx.send(embed=em)
+			await ctx.send(embed=em, delete_after=5*60)
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
