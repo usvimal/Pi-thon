@@ -69,7 +69,6 @@ class CommandExecutor(commands.Cog):
 
 	@cmd.command()
 	@checks.is_officer()
-
 	async def flush(self, ctx):
 		self._variables = dict()
 

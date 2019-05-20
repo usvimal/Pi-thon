@@ -15,7 +15,12 @@ class LinePrefixFormatter(PrettyAbstractFormatter):
 	def pretty_format(self, text):
 		return_text = ""
 		for line in text.split("\n"):
+			first = True
 			for sub_line in chunks(text, self._chr_per_line - len(self._line_prefix)):
-				return_text += self._line_prefix + sub_line + "\n"
+				if first:
+					return_text += self._line_prefix + sub_line + "\n"
+					first = False
+				else:
+					return_text += " " * len(self._line_prefix) + sub_line + "\n"
 
 		return return_text
