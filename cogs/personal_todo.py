@@ -32,8 +32,8 @@ class personal_todo(commands.Cog):
 				await ctx.send('Oof owie, that was not a valid command 🤨')
 			else:
 				todo_record = await self.get_user_todos(ctx.author.id)
-				if todo_record is None:
-					await ctx.send(f"{ctx.user.mention} has no todos yet.")
+				if not todo_record:
+					await ctx.send(f"{ctx.author.mention} has no todos yet.")
 				else:
 					todo_dict = dict(todo_record)
 					em = discord.Embed(title='To-dos', colour=0xff3056)
