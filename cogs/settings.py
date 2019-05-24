@@ -1,5 +1,7 @@
-from discord.ext import commands
 import config
+import discord
+
+from discord.ext import commands
 
 
 class Settings(commands.Cog):
@@ -13,7 +15,10 @@ class Settings(commands.Cog):
 		""" Show current prefix for this guild"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
-				await ctx.send('Oof owie, that was not a valid command 🤨')
+				em = discord.Embed(title='Oof! That was not a valid command 🤨 ',
+				                   description='Type ;help [command] for more info on a command.',
+				                   colour=0x3c1835)
+				await ctx.send(embed=em, delete_after=60)
 			else:
 				prefix = self.bot.all_prefixes[ctx.guild.id]
 				await ctx.send(f"Current prefix for this server is `{prefix}`.")

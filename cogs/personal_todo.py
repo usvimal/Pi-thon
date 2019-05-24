@@ -29,7 +29,10 @@ class personal_todo(commands.Cog):
 		"""Show your available todos"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
-				await ctx.send('Oof owie, that was not a valid command 🤨')
+				em = discord.Embed(title='Oof! That was not a valid command 🤨 ',
+				                   description='Type ;help [command] for more info on a command.',
+				                   colour=0x3c1835)
+				await ctx.send(embed=em, delete_after=60)
 			else:
 				todo_record = await self.get_user_todos(ctx.author.id)
 				if not todo_record:

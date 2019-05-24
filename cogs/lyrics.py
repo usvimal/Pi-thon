@@ -22,7 +22,10 @@ class Lyrics(commands.Cog):
 		""" Show the lyrics of the song currently playing in Spotify"""
 		if ctx.invoked_subcommand is None:
 			if ctx.subcommand_passed:
-				await ctx.send('Oof owie, that was not a valid command 🤨')
+				em = discord.Embed(title='Oof! That was not a valid command 🤨 ',
+				                   description='Type ;help [command] for more info on a command.',
+				                   colour=0x3c1835)
+				await ctx.send(embed=em, delete_after=60)
 			else:
 				song_title, song_artist = self.get_song_description(ctx.author)
 				await self.show_lyrics_from_description(ctx, song_title, song_artist)
