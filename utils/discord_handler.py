@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import logging
 import traceback
@@ -32,23 +33,18 @@ class DiscordHandler(logging.Handler):
 			await self._channel.send(embed=em)
 
 
-class DiscordStdErr:
-	def __init__(self, original_stderr, channel, main_loop):
-		self._original_stderr = original_stderr
+class DiscordWriter:
+	""" Writers which will be used mainly for redirecting stdout and stderr to discord."""
+	def __init__(self, original_writer, channel):
+		self._original_writer = original_writer
 		self._channel = channel
-		self._main_loop = main_loop
+		self._printer = DelayedPrinterWrapper(PrettyCodeBlockPrinter(), delay=2.0)
 
-	# Override stderr write
 	def write(self, text):
-		if len(text) != 0:
-			self._original_stderr.write(text)
-			self._main_loop.create_task(self._send_to_channel(">>> " + text))
-
-	async def _send_to_channel(self, msg):
 		try:
-			printer = PrettyTextPrinter()
-			await printer.pretty_print(self._channel, msg)
+			if len(text) != 0:
+				self._original_writer.write(text)
+				asyncio.get_running_loop().create_task(self._printer.pretty_print(self._channel, text))
 		except Exception as e:
-			self._original_stderr.write(str(e))
-			self._original_stderr.write(traceback.format_exc())
-
+			self._original_writer.write(str(e))
+			self._original_writer.write(traceback.format_exc())

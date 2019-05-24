@@ -10,10 +10,7 @@ import traceback
 
 from discord.ext import commands
 from utils.db import Database
-from utils.discord_handler import DiscordHandler
-
-
-logger = logging.getLogger("discord")
+from utils.discord_handler import DiscordWriter
 
 
 class MainBot(commands.Bot):
@@ -42,12 +39,9 @@ class MainBot(commands.Bot):
 		await self._update_bot_games_frequently()
 
 	def _add_handlers(self):
-		""" Add Discord and stdout handlers which will output logs to discord and the logging channel and python terminal """
-		stdout_handler = logging.StreamHandler(sys.stdout)
-		discord_handler = DiscordHandler(self._logging_channel, self.loop, logging.CRITICAL)
-
-		logger.addHandler(stdout_handler)
-		logger.addHandler(discord_handler)
+		""" Change stdout and stderr to also print out to discord. Outputs and errors will still be printed to console. """
+		sys.stdout = DiscordWriter(sys.stdout, self._logging_channel)
+		sys.stderr = DiscordWriter(sys.stderr, self._logging_channel)
 
 	def _display_startup_message(self):
 		log_in_msg = "Logged in as {} (ID: {}) | Connected to {} servers | Connected to {} users"

@@ -24,6 +24,8 @@ class ErrorManager(commands.Cog):
 		elif isinstance(error, commands.BotMissingPermissions):
 			return await ctx.send(
 				f"I don't have the following permission(s) to run this command!{self.convert_list_to_string(error.missing_perms)}")
+		else:
+			raise error
 
 
 def setup(bot):
