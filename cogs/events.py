@@ -70,10 +70,11 @@ class Events(commands.Cog):
 
 @commands.Cog.listener()
 async def on_guild_join(self, guild):
-	self.bot.all_prefixes[guild.id] = ';'
+	default_prefix = config.default_prefix
+	self.bot.all_prefixes[guild.id] = default_prefix
 	async with self.bot.db.acquire() as db:
 		await db.execute(						'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;',
-						';', guild.id)
+						default_prefix, guild.id)
 
 
 @commands.Cog.listener()

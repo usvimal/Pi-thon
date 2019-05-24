@@ -39,6 +39,20 @@ class Settings(commands.Cog):
 			self.bot.all_prefixes[ctx.guild.id] = prefix
 			await ctx.send(f"New prefix for this server is `{prefix}`.")
 
+	@commands.guild_only()
+	@commands.has_permissions(manage_guild=True)
+	@prefix.command(aliases=["default"])
+	async def reset(self, ctx):
+		"""Reset guild prefix"""
+		guild_id = ctx.guild.id
+		default_prefix = config.default_prefix
+		async with self.bot.dbpool.acquire() as conn:
+			await conn.execute(
+				'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
+				guild_id, default_prefix)
+		self.bot.all_prefixes[ctx.guild.id] = default_prefix
+		await ctx.send(f"Default prefix set to `{default_prefix}`.")
+
 	@commands.group()
 	async def brawlhalla(self, ctx):
 		"""Check whether the Brawlhalla feature is enabled for you"""
