@@ -44,7 +44,7 @@ class DiscordWriter:
 		try:
 			if len(text) != 0:
 				self._original_writer.write(text)
-				asyncio.get_running_loop().create_task(self._printer.pretty_print(self._channel, text))
+				asyncio.get_event_loop().create_task(self._printer.pretty_print(self._channel, text))
 		except Exception as e:
 			self._original_writer.write(str(e))
 			self._original_writer.write(traceback.format_exc())

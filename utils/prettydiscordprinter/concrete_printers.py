@@ -61,7 +61,7 @@ class DelayedPrinterWrapper(PrettyTextPrinter):
 		if self._queue is None:
 			self._queue = []
 			self._text = []
-			asyncio.get_running_loop().create_task(self.check_message_updates(ctx))
+			asyncio.get_event_loop().create_task(self.check_message_updates(ctx))
 		self._queue.append(text)
 
 	async def check_message_updates(self, ctx):
