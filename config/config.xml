@@ -16,6 +16,7 @@
 	<cogs>
 		<cog activated="True">cogs.brawlhalla</cog>
 		<cog activated="True">cogs.command_executor</cog>
+		<cog activated="True">cogs.events</cog>
 		<cog activated="True">cogs.fun</cog>
 		<cog activated="True">cogs.info</cog>
 		<cog activated="True">cogs.lyrics</cog>
@@ -23,7 +24,6 @@
 		<cog activated="True">cogs.settings</cog>
 		<cog activated="True">cogs.to-do</cog>
 		<cog activated="True">cogs.vote</cog>
-		<cog activated="True">cogs.error_manager</cog>
 
 	</cogs>
 	<games gamestimer="180">

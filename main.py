@@ -131,45 +131,6 @@ class MainBot(commands.Bot):
 		for row in lyrics_source:
 			self.lyrics_source[row["user_id"]] = row["lyrics_source"]
 
-	async def on_message(self, message):
-		# we do not want the bot to reply to itself
-		a = await self.get_prefix(message)
-		if message.author == self.user:
-			return
-
-		# sends message when libtard is mentioned
-		if 'libtard' in message.content.lower():
-			msg = 'libtard epic rekt 8)'.format(message)
-			await message.channel.send(msg)
-			return
-
-		# sends thinking emoji when someone says hmm
-		elif message.content.lower().startswith('hmm'):
-			msg = '\U0001F914'.format(message)
-			await message.channel.send(msg)
-			return
-
-		# sends ben shapiro photo when someone says ok this is epic
-		if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
-			await message.channel.send(file=discord.File('assets/this_is_epic.jpg'))
-			return
-
-		# sends me a message if I am mentioned
-		if config.creator in message.content.lower():
-			msg = message.content.lower().format(message)
-			author = message.author
-			guild = message.guild.name
-			em = discord.Embed(title='@' + guild, description=msg, colour=0xFF00FF)
-			em.set_author(name=author, icon_url=author.avatar_url)
-			channel = self.get_user(config.creatorID)
-			await channel.send(embed=em)
-			return
-
-		if self.user.mentioned_in(message):
-			await message.add_reaction('👀')
-
-		await bot.process_commands(message)
-
 
 if __name__ == "__main__":
 	bot = MainBot(pm_help=None, description='A personal project for fun')
