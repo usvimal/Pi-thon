@@ -57,7 +57,7 @@ class Settings(commands.Cog):
 				else:
 					await ctx.send('You are not subscribed to the brawlhalla down detector')
 
-	@brawlhalla.command(aliases=["on"])
+	@brawlhalla.command(aliases=["on", 'subscribe'])
 	async def enable(self, ctx):
 		"""Enable Brawlhalla feature"""
 		user_id = ctx.author.id
@@ -73,7 +73,7 @@ class Settings(commands.Cog):
 		self.bot.brawlhalla_status[user_id] = True
 		await ctx.message.add_reaction('👍')
 
-	@brawlhalla.command(aliases=["off"])
+	@brawlhalla.command(aliases=["off", 'unsubscribe'])
 	async def disable(self, ctx):
 		"""Disable Brawlhalla feature"""
 		user_id = ctx.author.id
