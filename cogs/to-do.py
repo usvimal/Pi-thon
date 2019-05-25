@@ -29,6 +29,8 @@ class Todo(commands.Cog):
 		emoji = payload.emoji
 		user = message.guild.get_member(payload.user_id)
 
+		if user == self.bot.user:
+			return
 		try:
 			embed = message.embeds[0]
 		except:
@@ -39,9 +41,9 @@ class Todo(commands.Cog):
 				await message.delete()
 		else:
 			if str(emoji) == '✅':
-				striked_message = strike(embed['title'])
-				author_image = embed['thumbnail']['url']
-				author = embed['author']
+				striked_message = strike(embed.title)
+				author_image = embed.thumbnail.url
+				author = embed.author
 				await message.delete()
 				em = discord.Embed(title=striked_message)
 				em.set_author(name=author,icon_url=author_image)
