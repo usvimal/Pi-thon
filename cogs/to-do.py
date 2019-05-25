@@ -10,10 +10,10 @@ class Todo(commands.Cog):
 
 	@checks.is_officer()
 	@commands.command()
-	async def task(self, message):
+	async def task(self, ctx):
 		"""Add task to todo channel"""
 		channel = self.bot.get_channel(self.todo_channel_id)
-		task = await channel.send(message.content)
+		task = await channel.send(ctx.message.content)
 		await task.add_reaction('✅')
 		await task.add_reaction('❌')
 
