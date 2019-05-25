@@ -34,8 +34,8 @@ class Settings(commands.Cog):
 		else:
 			async with self.bot.dbpool.acquire() as conn:
 				await conn.execute(
-					'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-					guild_id, prefix)
+					'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;',
+					prefix, guild_id)
 			self.bot.all_prefixes[ctx.guild.id] = prefix
 			await ctx.send(f"New prefix for this server is `{prefix}`.")
 
@@ -48,8 +48,8 @@ class Settings(commands.Cog):
 		default_prefix = config.default_prefix
 		async with self.bot.dbpool.acquire() as conn:
 			await conn.execute(
-				'INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-				guild_id, default_prefix)
+				'UPDATE guildprop SET "prefix"=$1 WHERE "guild_id"=$2;',
+				default_prefix, guild_id)
 		self.bot.all_prefixes[ctx.guild.id] = default_prefix
 		await ctx.send(f"Default prefix set to `{default_prefix}`.")
 
