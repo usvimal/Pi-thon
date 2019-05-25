@@ -47,7 +47,7 @@ class Todo(commands.Cog):
 				await message.delete()
 				em = discord.Embed(title=striked_message)
 				em.set_author(name=author,icon_url=author_image)
-				channel.send(embed=em)
+				await channel.send(embed=em)
 			if str(emoji) == '❌':
 				await message.delete()
 
