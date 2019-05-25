@@ -13,7 +13,7 @@ class Todo(commands.Cog):
 	async def task(self, message):
 		"""Add task to todo channel"""
 		channel = self.bot.get_channel(self.todo_channel_id)
-		task = await channel.send(message)
+		task = await channel.send(message.content)
 		await task.add_reaction('✅')
 		await task.add_reaction('❌')
 
