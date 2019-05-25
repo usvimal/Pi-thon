@@ -42,11 +42,11 @@ class Todo(commands.Cog):
 		else:
 			if str(emoji) == '✅':
 				striked_message = strike(embed.title)
-				author_image = embed.thumbnail.url
+				author_image = embed.author.icon_url
 				author = embed.author.name
 				await message.delete()
 				em = discord.Embed(title=striked_message)
-				em.set_author(name=author,icon_url=author_image)
+				em.set_author(name=author, icon_url=author_image)
 				await channel.send(embed=em)
 			if str(emoji) == '❌':
 				await message.delete()
