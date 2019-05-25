@@ -9,7 +9,7 @@ class Todo(commands.Cog):
 		self.todo_channel_id = 572561960982413334
 
 	@checks.is_officer()
-	@commands.Cog()
+	@commands.command()
 	async def task(self, message):
 		"""Add task to todo channel"""
 		channel = self.bot.get_channel(self.todo_channel_id)
