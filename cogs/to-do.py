@@ -1,4 +1,5 @@
 from discord.ext import commands
+from utils import checks
 from utils.text_formatter import strike
 
 
@@ -7,14 +8,13 @@ class Todo(commands.Cog):
 		self.bot = bot
 		self.todo_channel_id = 572561960982413334
 
-	@commands.Cog.listener()
-	async def on_message(self, message):
-		if message.author == self.bot.user:
-			return
-
-		if message.channel.id == self.todo_channel_id:
-			await message.add_reaction('✅')
-			await message.add_reaction('❌')
+	@checks.is_officer()
+	@commands.Cog
+	async def task(self, message):
+		channel = self.bot.get_channel(self.todo_channel_id)
+		task = await channel.send(message)
+		await task.add_reaction('✅')
+		await task.add_reaction('❌')
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):

@@ -54,7 +54,6 @@ class CommandExecutor(commands.Cog):
 		else:
 			return f"{name} = {str_value}"
 
-
 	@cmd.command()
 	@checks.is_officer()
 	async def mute(self, ctx):
