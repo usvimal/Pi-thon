@@ -29,7 +29,7 @@
 	<games gamestimer="180">
 		<game activity_type="playing">| Connected to {guilds} servers | Connected to {members} users</game>
 		<game activity_type="playing">epic games</game>
-		<game activity_type="watching">pain dry ..</game>
+		<game activity_type="watching">paint dry ..</game>
 		<game activity_type="watching">you right now</game>
 		<game activity_type="listening">some moosic</game>
 	</games>
