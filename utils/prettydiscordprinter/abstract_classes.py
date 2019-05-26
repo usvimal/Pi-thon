@@ -4,7 +4,6 @@ class PrettyAbstractPrinter:
 	def __init__(self):
 		self._formatters = []
 		self._chr_limit = None				# Implement later
-		self._chr_per_line = None			# Implement later
 
 	def add_formatters(self, *formatters):
 		for formatter in formatters:
@@ -18,11 +17,7 @@ class PrettyAbstractPrinter:
 		raise NotImplementedError("Implement this abstract function later.")
 
 	async def pretty_print(self, ctx, text):
-		prettified_text = self._use_formatters(text)
-
-		for chunk in chunks(prettified_text, self._chr_limit):
-			async with ctx.typing():
-				await ctx.send(chunk)
+		raise NotImplementedError("Implement this abstract function later.")
 
 	def _use_formatters(self, text):
 		copied_text = text
@@ -31,6 +26,8 @@ class PrettyAbstractPrinter:
 
 		return copied_text
 
+	def get_chr_limit(self):
+		return self._chr_limit
 
 
 class PrettyAbstractFormatter:

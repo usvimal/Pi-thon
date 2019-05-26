@@ -1,5 +1,7 @@
 import asyncio
 
+from copy import deepcopy
+from utils.text_formatter import chunks
 from utils.prettydiscordprinter.abstract_classes import PrettyAbstractPrinter
 from utils.prettydiscordprinter.concrete_formatters import *
 
@@ -10,12 +12,16 @@ class PrettyTextPrinter(PrettyAbstractPrinter):
 		super().__init__()
 
 		self._chr_limit = 2000
-		self._chr_per_line = 100
 
 	def _configure_formatter(self, formatter):
-		if isinstance(formatter, LinePrefixFormatter):
-			formatter.configure(self._chr_per_line)
 		return formatter
+
+	async def pretty_print(self, ctx, text):
+		prettified_text = self._use_formatters(text)
+
+		for chunk in chunks(prettified_text, self._chr_limit):
+			async with ctx.typing():
+				await ctx.send(chunk)
 
 
 class PrettyCodeBlockPrinter(PrettyTextPrinter):
@@ -24,11 +30,8 @@ class PrettyCodeBlockPrinter(PrettyTextPrinter):
 		super().__init__()
 
 		self._chr_limit = 2000 - 6
-		self._chr_per_line = 100
 
 	def _configure_formatter(self, formatter):
-		if isinstance(formatter, LinePrefixFormatter):
-			formatter.configure(self._chr_per_line)
 		return formatter
 
 	async def pretty_print(self, ctx, text):
@@ -37,6 +40,27 @@ class PrettyCodeBlockPrinter(PrettyTextPrinter):
 		for chunk in chunks(prettified_text, self._chr_limit):
 			async with ctx.typing():
 				await ctx.send(f"```{chunk}```")
+
+
+class PrettyEmbedPrinter(PrettyTextPrinter):
+	""" Embed printing to discord. Will be printed in description, not field. """
+	def __init__(self, embed):
+		super().__init__()
+
+		self._chr_limit = 2048
+		self._embed = embed
+
+	def _configure_formatter(self, formatter):
+		return formatter
+
+	async def pretty_print(self, ctx, text):
+		prettified_text = self._use_formatters(text)
+
+		for chunk in chunks(prettified_text, self._chr_limit):
+			embed_clone = deepcopy(self._embed)
+			embed_clone.description = chunk
+			async with ctx.typing():
+				await ctx.send(embed=embed_clone)
 
 
 class DelayedPrinterWrapper(PrettyTextPrinter):
@@ -61,10 +85,10 @@ class DelayedPrinterWrapper(PrettyTextPrinter):
 		if self._queue is None:
 			self._queue = []
 			self._text = []
-			asyncio.get_event_loop().create_task(self.check_message_updates(ctx))
+			asyncio.get_event_loop().create_task(self._check_message_updates(ctx))
 		self._queue.append(text)
 
-	async def check_message_updates(self, ctx):
+	async def _check_message_updates(self, ctx):
 		i = 0
 		max_i = int(self._delay / DelayedPrinterWrapper.SLEEP_DURATION) + 1
 
@@ -79,5 +103,3 @@ class DelayedPrinterWrapper(PrettyTextPrinter):
 		await self._printer.pretty_print(ctx, "\n".join(self._text))
 		self._queue = None
 		self._text = None
-
-
