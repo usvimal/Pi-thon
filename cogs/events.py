@@ -47,8 +47,7 @@ class Events(commands.Cog):
 
 		# sends thinking emoji when someone says hmm
 		elif message.content.lower().startswith('hmm'):
-			msg = '\U0001F914'.format(message)
-			await message.channel.send(msg)
+			await message.add_reaction('\U0001F914')
 			return
 
 		# sends ben shapiro photo when someone says ok this is epic
