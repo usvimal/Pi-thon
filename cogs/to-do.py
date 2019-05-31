@@ -1,6 +1,7 @@
 import discord
 
 from discord.ext import commands
+from time import localtime, strftime
 from utils import checks
 from utils.text_formatter import strike
 
@@ -15,8 +16,9 @@ class Todo(commands.Cog):
 	async def task(self, ctx, *, arg):
 		"""Add task to todo channel"""
 		channel = self.bot.get_channel(self.todo_channel_id)
-		em = discord.Embed(title=arg)
+		em = discord.Embed(description=arg.clean_content)
 		em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+		em.set_footer(text=strftime("created: %d %b %Y | %I:%M %p", localtime()))
 		task = await channel.send(embed=em)
 		await task.add_reaction('✅')
 		await task.add_reaction('❌')
@@ -44,9 +46,11 @@ class Todo(commands.Cog):
 				striked_message = strike(embed.title)
 				author_image = embed.author.icon_url
 				author = embed.author.name
+				footer = embed.footer
 				await message.delete()
 				em = discord.Embed(title=striked_message)
 				em.set_author(name=author, icon_url=author_image)
+				em.set_footer(text=footer)
 				await channel.send(embed=em)
 			if str(emoji) == '❌':
 				await message.delete()

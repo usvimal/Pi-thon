@@ -9,6 +9,6 @@ def is_officer():
 
 
 def in_hideout_task_channel():
-    async def predicate(ctx):
-        return ctx.guild.id == 572561960982413334
+    def predicate(ctx):
+        return ctx.channel.id == 572561960982413334
     return commands.check(predicate)
