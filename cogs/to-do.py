@@ -43,7 +43,7 @@ class Todo(commands.Cog):
 				await message.delete()
 		else:
 			if str(emoji) == '✅':
-				striked_message = strike(embed.title)
+				striked_message = strike(embed.description)
 				author_image = embed.author.icon_url
 				author = embed.author.name
 				footer = embed.footer
