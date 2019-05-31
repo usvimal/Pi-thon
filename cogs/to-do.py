@@ -23,7 +23,6 @@ class Todo(commands.Cog):
 		await task.add_reaction('✅')
 		await task.add_reaction('❌')
 
-	@checks.in_hideout_task_channel()
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
 		channel = self.bot.get_channel(payload.channel_id)
@@ -31,7 +30,7 @@ class Todo(commands.Cog):
 		emoji = payload.emoji
 		user = message.guild.get_member(payload.user_id)
 
-		if user == self.bot.user:
+		if user == self.bot.user or payload.channel_id != self.todo_channel_id:
 			return
 		try:
 			embed = message.embeds[0]
