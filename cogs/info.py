@@ -1,12 +1,15 @@
+import config
 import discord
 import time
 
 from discord.ext import commands
+from utils import checks
 
 
 class Info(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.feedback_channel = bot.get_channel(584041570739945502)
 
 	@commands.command(aliases=["code", "github"])
 	async def details(self, ctx):
@@ -17,7 +20,7 @@ class Info(commands.Cog):
 		return
 
 	@commands.command(aliases=["latency"])
-	async def ping(self,ctx):
+	async def ping(self, ctx):
 		"""check ping"""
 		pingtime = time.time()
 		async with ctx.typing():
@@ -26,9 +29,40 @@ class Info(commands.Cog):
 		return
 
 	@commands.command()
-	async def link(self,ctx):
+	async def link(self, ctx):
 		"""link to add bot to other servers"""
 		await ctx.send('https://discordapp.com/api/oauth2/authorize?client_id=517153107604668438&permissions=0&scope=bot')
+
+	@commands.command()
+	async def feedback(self, ctx, *, content):
+		"""Send feedback to bot developer"""
+
+		em = discord.Embed(title='Feedback', colour=0x37d9b9)
+		em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+		em.description = content
+		em.timestamp = ctx.message.created_at
+
+		if ctx.guild is not None:
+			em.add_field(name='Server', value=f'{ctx.guild.name} (ID: {ctx.guild.id})', inline=False)
+			em.add_field(name='Channel', value=f'{ctx.channel} (ID: {ctx.channel.id})', inline=False)
+		em.set_footer(text=f'Author ID: {ctx.author.id}')
+
+		await self.feedback_channel.send(embed=em)
+		await ctx.message.add_reaction('👍')
+
+	@commands.command()
+	@checks.is_officer()
+	async def dm(self, ctx, user_id: int, *, content: str):
+		user = self.bot.get_user(user_id)
+
+		msg = content + '\n\n*This is a DM sent because you had previously requested feedback or I found a bug' \
+		                ' in a command you used, I do not monitor this DM.*'
+		try:
+			await user.send(msg)
+		except:
+			await ctx.send(f'Could not PM user by ID {user_id}.')
+		else:
+			await ctx.message.add_reaction('👍')
 
 
 def setup(bot):
