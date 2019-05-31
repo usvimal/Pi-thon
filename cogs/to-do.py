@@ -13,10 +13,10 @@ class Todo(commands.Cog):
 
 	@checks.is_officer()
 	@commands.command()
-	async def task(self, ctx, *, arg):
+	async def task(self, ctx, *, arg: commands.clean_content(fix_channel_mentions=True)):
 		"""Add task to todo channel"""
 		channel = self.bot.get_channel(self.todo_channel_id)
-		em = discord.Embed(description=arg.clean_content)
+		em = discord.Embed(description=arg)
 		em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
 		em.set_footer(text=strftime("created: %d %b %Y | %I:%M %p", localtime()))
 		task = await channel.send(embed=em)
