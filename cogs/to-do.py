@@ -46,7 +46,7 @@ class Todo(commands.Cog):
 				striked_message = strike(embed.description)
 				author_image = embed.author.icon_url
 				author = embed.author.name
-				footer = embed.footer
+				footer = embed.footer.text
 				await message.delete()
 				em = discord.Embed(title=striked_message)
 				em.set_author(name=author, icon_url=author_image)

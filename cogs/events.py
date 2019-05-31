@@ -43,22 +43,6 @@ class Events(commands.Cog):
 		if message.author == self.bot.user:
 			return
 
-		# sends message when libtard is mentioned
-		if 'libtard' in message.content.lower():
-			msg = 'libtard epic rekt 8)'.format(message)
-			await message.channel.send(msg)
-			return
-
-		# sends thinking emoji when someone says hmm
-		elif message.content.lower().startswith('hmm'):
-			await message.add_reaction('\U0001F914')
-			return
-
-		# sends ben shapiro photo when someone says ok this is epic
-		if 'ok this is epic' in message.content.lower() or 'okay this is epic' in message.content.lower():
-			await message.channel.send(file=discord.File('assets/this_is_epic.jpg'))
-			return
-
 		# sends me a message if I am mentioned
 		if config.creator in message.content.lower():
 			msg = message.content.lower().format(message)
