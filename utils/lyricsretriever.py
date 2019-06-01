@@ -48,7 +48,7 @@ class LyricsRetriever:
 		self._sources = self._create_sources()
 
 	def get_main_source(self, user_id):
-		return self.bot.lyrics_source.get(user_id)
+		return self.bot.lyrics_source.get(user_id, 'genius')
 
 	async def change_main_source(self, user_id, new_source):
 		if user_id in self.bot.lyrics_source:
