@@ -74,7 +74,7 @@ class Info(commands.Cog):
 		em.add_field(name="Users", value=str(len(self.bot.users)))
 		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
 		em.add_field(name='Bot owner', value=appinfo.owner)
-		em.set_footer(text=f'Python version: {platform.python_version()} \n discord.py version:{discord.__version__}')
+		em.set_footer(text=f'Python version: {platform.python_version()} , discord.py version: {discord.__version__}')
 		await ctx.send(embed=em)
 
 
