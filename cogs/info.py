@@ -64,6 +64,17 @@ class Info(commands.Cog):
 		else:
 			await ctx.message.add_reaction('👍')
 
+	@commands.command()
+	async def status(self, ctx):
+		em = discord.Embed(title="Bot Info",
+		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=104164673) | [Source Code](https://github.com/usvimal/Pi-thon)")
+		em.add_field(name='Guilds', value=str(len(self.bot.guilds)))
+		em.add_field(name="Users", value=str(len(self.bot.users)))
+		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
+		em.set_footer(text='Requested by ' + ctx.author.name, icon_url=ctx.author.avatar_url)
+		em.set_thumbnail(url=self.bot.user.avatar_url)
+		await ctx.send(content=None, embed=em)
+
 
 def setup(bot):
 	bot.add_cog(Info(bot))
