@@ -1,5 +1,5 @@
-import config
 import discord
+import platform
 import time
 
 from discord.ext import commands
@@ -66,14 +66,16 @@ class Info(commands.Cog):
 
 	@commands.command(aliases=["status"])
 	async def info(self, ctx):
-		em = discord.Embed(title="Bot Info",
-		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=104164673) | [Source Code](https://github.com/usvimal/Pi-thon)")
+		appinfo = await self.bot.application_info()
+
+		em = discord.Embed(title=f"Bot Info for {appinfo.name}",
+		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=0) | [Source Code](https://github.com/usvimal/Pi-thon)")
 		em.add_field(name='Guilds', value=str(len(self.bot.guilds)))
 		em.add_field(name="Users", value=str(len(self.bot.users)))
 		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
-		em.set_footer(text='Requested by ' + ctx.author.name, icon_url=ctx.author.avatar_url)
-		em.set_thumbnail(url=self.bot.user.avatar_url)
-		await ctx.send(content=None, embed=em)
+		em.add_field(name='Bot owner', value=appinfo.owner)
+		em.set_footer(text=f'Python version: {platform.python_version()} \n discord.py version:{discord.__version__}')
+		await ctx.send(embed=em)
 
 
 def setup(bot):
