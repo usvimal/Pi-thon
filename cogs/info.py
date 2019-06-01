@@ -11,8 +11,8 @@ class Info(commands.Cog):
 		self.bot = bot
 		self.feedback_channel = bot.get_channel(584041570739945502)
 
-	@commands.command(aliases=["code", "github"])
-	async def details(self, ctx):
+	@commands.command(aliases=["code"])
+	async def github(self, ctx):
 		"""link to github"""
 		em = discord.Embed(title='read my code!', url='https://github.com/usvimal/Pi-thon', colour=0xb949b5)
 		em = em.set_author(name='Minininja', url='https://github.com/usvimal')
@@ -64,8 +64,8 @@ class Info(commands.Cog):
 		else:
 			await ctx.message.add_reaction('👍')
 
-	@commands.command()
-	async def status(self, ctx):
+	@commands.command(aliases=["status"])
+	async def info(self, ctx):
 		em = discord.Embed(title="Bot Info",
 		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=104164673) | [Source Code](https://github.com/usvimal/Pi-thon)")
 		em.add_field(name='Guilds', value=str(len(self.bot.guilds)))
