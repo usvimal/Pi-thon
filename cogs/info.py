@@ -76,7 +76,7 @@ class Info(commands.Cog):
 		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=0) | [Source Code](https://github.com/usvimal/Pi-thon)")
 		em.add_field(name='Guilds', value=str(len(self.bot.guilds)))
 		em.add_field(name="Users", value=str(len(self.bot.users)))
-		em.add_field(name="Mem usage", value=f'{mem_usage}%')
+		em.add_field(name="Mem usage", value=f'{mem_usage} MiB')
 		em.add_field(name="CPU usage", value=f'{psutil.cpu_percent()}%')
 		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
 		em.add_field(name='Bot owner', value=appinfo.owner)
