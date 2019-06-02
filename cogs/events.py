@@ -60,23 +60,19 @@ class Events(commands.Cog):
 		if self.bot.user.mentioned_in(message):
 			await message.add_reaction('👀')
 
+	@commands.Cog.listener()
+	async def on_guild_join(self, guild):
+		default_prefix = config.default_prefix
+		self.bot.all_prefixes[guild.id] = default_prefix
+		async with self.bot.dbpool.acquire() as db:
+			await db.execute('INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
+							guild.id, default_prefix)
 
-@commands.Cog.listener()
-async def on_guild_join(self, guild):
-	print(guild.id)
-	default_prefix = config.default_prefix
-	self.bot.all_prefixes[guild.id] = default_prefix
-	async with self.bot.dbpool.acquire() as db:
-		await db.execute('INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-						guild.id, default_prefix)
-
-
-@commands.Cog.listener()
-async def on_guild_remove(self, guild):
-	print(guild.id)
-	del self.bot.prefixes[guild.id]
-	async with self.bot.dbpool.acquire() as db:
-		await db.execute("DELETE FROM guildprop WHERE guild_id=$1", guild.id)
+	@commands.Cog.listener()
+	async def on_guild_remove(self, guild):
+		del self.bot.prefixes[guild.id]
+		async with self.bot.dbpool.acquire() as db:
+			await db.execute("DELETE FROM guildprop WHERE guild_id=$1", guild.id)
 
 
 def setup(bot):
