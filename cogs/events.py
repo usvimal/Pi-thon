@@ -57,9 +57,6 @@ class Events(commands.Cog):
 			await channel.send(embed=em)
 			return
 
-		if self.bot.user.mentioned_in(message):
-			await message.add_reaction('👀')
-
 	@commands.Cog.listener()
 	async def on_guild_join(self, guild):
 		default_prefix = config.default_prefix
