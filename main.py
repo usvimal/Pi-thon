@@ -107,6 +107,7 @@ class MainBot(commands.Bot):
 			await self.fetch_prefixes_from_db(conn)
 			await self.fetch_brawlhalla_status_from_db(conn)
 			await self.fetch_lyrics_source_from_db(conn)
+			await self.check_guildprop(conn)
 
 	async def fetch_prefixes_from_db(self, connection):
 		prefixes = await connection.fetch("SELECT guild_id, prefix FROM guildprop;")
@@ -130,6 +131,14 @@ class MainBot(commands.Bot):
 		lyrics_source = await connection.fetch("SELECT user_id, lyrics_source FROM userprop;")
 		for row in lyrics_source:
 			self.lyrics_source[row["user_id"]] = row["lyrics_source"]
+
+	async def check_guildprop(self, connection):
+		for guild in self.guilds:
+			if guild.id not in self.all_prefixes:
+				default_prefix = config.default_prefix
+				self.all_prefixes[guild.id] = default_prefix
+				await connection.execute('INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
+				                 guild.id, default_prefix)
 
 
 if __name__ == "__main__":
