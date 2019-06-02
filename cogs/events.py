@@ -63,6 +63,7 @@ class Events(commands.Cog):
 
 @commands.Cog.listener()
 async def on_guild_join(self, guild):
+	print(guild.id)
 	default_prefix = config.default_prefix
 	self.bot.all_prefixes[guild.id] = default_prefix
 	async with self.bot.dbpool.acquire() as db:
@@ -72,6 +73,7 @@ async def on_guild_join(self, guild):
 
 @commands.Cog.listener()
 async def on_guild_remove(self, guild):
+	print(guild.id)
 	del self.bot.prefixes[guild.id]
 	async with self.bot.dbpool.acquire() as db:
 		await db.execute("DELETE FROM guildprop WHERE guild_id=$1", guild.id)
