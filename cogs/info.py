@@ -1,5 +1,7 @@
 import discord
+import os
 import platform
+import psutil
 import time
 
 from discord.ext import commands
@@ -67,11 +69,15 @@ class Info(commands.Cog):
 	@commands.command(aliases=["status"])
 	async def info(self, ctx):
 		appinfo = await self.bot.application_info()
+		process = psutil.Process(os.getpid())
+		mem_usage = round(process.memory_info().rss/1048576, 1)
 
 		em = discord.Embed(title=f"Bot Info for {appinfo.name}",
 		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=0) | [Source Code](https://github.com/usvimal/Pi-thon)")
 		em.add_field(name='Guilds', value=str(len(self.bot.guilds)))
 		em.add_field(name="Users", value=str(len(self.bot.users)))
+		em.add_field(name="Mem usage", value=f'{mem_usage}%')
+		em.add_field(name="CPU usage", value=f'{psutil.cpu_percent()}%')
 		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
 		em.add_field(name='Bot owner', value=appinfo.owner)
 		em.set_footer(text=f'Python version: {platform.python_version()} , discord.py version: {discord.__version__}')
