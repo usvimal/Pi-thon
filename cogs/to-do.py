@@ -2,7 +2,6 @@ import discord
 
 from discord.ext import commands
 from time import localtime, strftime
-from utils import checks
 from utils.text_formatter import strike
 
 
@@ -11,7 +10,7 @@ class Todo(commands.Cog):
 		self.bot = bot
 		self.todo_channel_id = 572561960982413334
 
-	@checks.is_officer()
+	@commands.is_owner()
 	@commands.command()
 	async def task(self, ctx, *, arg: commands.clean_content(fix_channel_mentions=True)):
 		"""Add task to todo channel"""
