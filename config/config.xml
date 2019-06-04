@@ -15,7 +15,6 @@
 	</settings>
 	<cogs>
 		<cog activated="True">cogs.brawlhalla</cog>
-		<cog activated="True">cogs.command_executor</cog>
 		<cog activated="True">cogs.events</cog>
 		<cog activated="True">cogs.fun</cog>
 		<cog activated="True">cogs.info</cog>
