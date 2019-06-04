@@ -4,5 +4,5 @@ from utils.prettydiscordprinter.concrete_printers import *
 __all__ = ["PrettyTextPrinter",
 			"PrettyCodeBlockPrinter",
 			"PrettyEmbedPrinter",
-			"PrettyScrollableEmbedPrinter",
+			"PrettyPaginator",
 			"DelayedPrinterWrapper"]

@@ -65,12 +65,16 @@ class PrettyEmbedPrinter(PrettyAbstractPrinter):
 				await ctx.send(embed=embed_clone)
 
 
-class PrettyScrollableEmbedPrinter(PrettyAbstractPrinter):
-	def __init__(self, embed):
+class PrettyPaginator(PrettyAbstractPrinter):
+	"""
+	Shows a discord message with pages and reactions acting as the button. Users can move left, right, go to the first
+	page, go to the last page, and delete the message by interacting with the buttons.
+	Usage: PrettyPaginator().pretty_print(embeds) where embeds will act as the pages.
+	"""
+	def __init__(self):
 		super().__init__()
 
 		self._chr_limit = 2048
-		self._embed = embed
 
 		self._entries = None
 		self._reaction_emojis = [
@@ -104,18 +108,15 @@ class PrettyScrollableEmbedPrinter(PrettyAbstractPrinter):
 			return
 
 		self._current_index = index
-		embed_clone = deepcopy(self._embed)
-		embed_clone.title = embed_clone.title + f" | Pages: {self._current_index+1}/{len(self._entries)}"
-		embed_clone.description = self._entries[index]
 
 		# Create new message if it is not created and then add reactions
 		if self._message is None:
-			self._message = await self._ctx.send(embed=embed_clone)
+			self._message = await self._ctx.send(embed=self._entries[self._current_index])
 			for (reaction, _) in self._reaction_emojis:
 				await self._message.add_reaction(reaction)
 		# If a message with reactions already exist, edit it
 		else:
-			await self._message.edit(embed=embed_clone)
+			await self._message.edit(embed=self._entries[self._current_index])
 
 	async def _stop_pages(self):
 		self._paginating = False
@@ -136,16 +137,16 @@ class PrettyScrollableEmbedPrinter(PrettyAbstractPrinter):
 	def _configure_formatter(self, formatter):
 		return formatter
 
-	async def pretty_print(self, ctx, text):
+	async def pretty_print(self, ctx, entries):
 		if self._entries is not None:
 			raise Exception("Printer is being used for an exisiting scrollable embed. Create another printer or wait for"
 							"the exisiting embed to expire after the given time")
 
-		# Divide text into pages
-		paginator = Paginator(prefix="", suffix="", max_size=self._chr_limit)
-		for line in text.split("\n"):
-			paginator.add_line(line)
-		self._entries = paginator.pages
+		# Adds page numbers to the title
+		for i, e in enumerate(entries, start=1):
+			e.title += f"| Page {i} out of {len(entries)}"
+
+		self._entries = entries
 		self._ctx = ctx
 
 		await self._show_page(0)
