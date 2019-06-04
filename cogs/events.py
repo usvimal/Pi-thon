@@ -76,7 +76,7 @@ class Events(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_guild_remove(self, guild):
-		del self.bot.prefixes[guild.id]
+		del self.bot.all_prefixes[guild.id]
 		async with self.bot.dbpool.acquire() as db:
 			await db.execute("DELETE FROM guildprop WHERE guild_id=$1", guild.id)
 

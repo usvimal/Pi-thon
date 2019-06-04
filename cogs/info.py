@@ -78,7 +78,7 @@ class Info(commands.Cog):
 		em.add_field(name="Mem usage", value=f'{mem_usage} MiB')
 		em.add_field(name="CPU usage", value=f'{psutil.cpu_percent()}%')
 		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
-		em.add_field(name='Bot owner', value=appinfo.owner)
+		em.add_field(name='Bot owners', value=f'{appinfo.owner} and mk43v3r#1422')
 		em.set_footer(text=f'Python version: {platform.python_version()} , discord.py version: {discord.__version__}')
 		await ctx.send(embed=em)
 
