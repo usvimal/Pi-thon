@@ -16,7 +16,7 @@ class CommandExecutor(commands.Cog):
 		self._mute = False
 
 	@commands.group()
-	@checks.is_officer()
+	@commands.is_owner()
 	async def cmd(self, ctx):
 		""" Shows the status of the command executor. """
 		if ctx.invoked_subcommand is None:
@@ -55,7 +55,7 @@ class CommandExecutor(commands.Cog):
 			return f"{name} = {str_value}"
 
 	@cmd.command()
-	@checks.is_officer()
+	@commands.is_owner()
 	async def mute(self, ctx):
 		""" Set wether command executor will print every output/message to discord. """
 		if self._mute is True:
@@ -67,7 +67,7 @@ class CommandExecutor(commands.Cog):
 		await ctx.send(f"Mute set to {self._mute}")
 
 	@cmd.command()
-	@checks.is_officer()
+	@commands.is_owner()
 	async def flush(self, ctx):
 		self._variables = dict()
 
@@ -75,7 +75,7 @@ class CommandExecutor(commands.Cog):
 			await ctx.send(f"Variables flushed.")
 
 	@cmd.command()
-	@checks.is_officer()
+	@commands.is_owner()
 	async def execute(self, ctx, *, args):
 		""" Execute a single lined statement """
 		code_out = StringIO()

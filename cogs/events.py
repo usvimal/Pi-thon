@@ -24,7 +24,7 @@ class Events(commands.Cog):
 			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
 
 		elif isinstance(error, commands.CheckFailure):
-			if type(error) == utils.checks.is_officer():
+			if type(error) == commands.is_owner():
 				return await ctx.send("You don't have permission to use this command!")
 
 		elif isinstance(error, commands.BotMissingPermissions):

@@ -5,7 +5,6 @@ import psutil
 import time
 
 from discord.ext import commands
-from utils import checks
 
 
 class Info(commands.Cog):
@@ -53,7 +52,7 @@ class Info(commands.Cog):
 		await ctx.message.add_reaction('👍')
 
 	@commands.command()
-	@checks.is_officer()
+	@commands.is_owner()
 	async def dm(self, ctx, user_id: int, *, content: str):
 		user = self.bot.get_user(user_id)
 
