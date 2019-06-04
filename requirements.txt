@@ -1,5 +1,6 @@
 asyncpg
 discord.py
+jishaku
 lyricsgenius
 owotranslator
 psutil

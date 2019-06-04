@@ -2,6 +2,7 @@ import asyncio
 import asyncpg
 import config
 import discord
+import jishaku
 import logging
 import platform
 import random
@@ -130,6 +131,11 @@ class MainBot(commands.Bot):
 		lyrics_source = await connection.fetch("SELECT user_id, lyrics_source FROM userprop;")
 		for row in lyrics_source:
 			self.lyrics_source[row["user_id"]] = row["lyrics_source"]
+
+	async def is_owner(self, user: discord.User):
+		if user.id == config.MinID or user.id == config.creatorID:  # Implement your own conditions here
+			return True
+		return False
 
 
 if __name__ == "__main__":
