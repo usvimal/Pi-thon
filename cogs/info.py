@@ -2,8 +2,10 @@ import discord
 import os
 import platform
 import psutil
+import requests
 import time
 
+from bs4 import BeautifulSoup
 from discord.ext import commands
 
 
@@ -70,6 +72,12 @@ class Info(commands.Cog):
 		appinfo = await self.bot.application_info()
 		process = psutil.Process(os.getpid())
 		mem_usage = round(process.memory_info().rss/1048576, 1)
+		url = 'https://github.com/usvimal/Pi-thon/commits/rewrite-v2.0'
+		response = requests.get(url)
+		soup = BeautifulSoup(response.text, "html.parser")
+		last_commit_image = soup.find('a', class_="commit-author tooltipped tooltipped-s user-mention")
+		last_commit = last_commit_image.find_previous('a').find_previous('a')
+		changelog = last_commit.contents[0]
 
 		em = discord.Embed(title=f"Bot Info for {appinfo.name}",
 		                   description=f"[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id={self.bot.user.id}&scope=bot&permissions=0) | [Source Code](https://github.com/usvimal/Pi-thon)")
@@ -77,8 +85,9 @@ class Info(commands.Cog):
 		em.add_field(name="Users", value=str(len(self.bot.users)))
 		em.add_field(name="Mem usage", value=f'{mem_usage} MiB')
 		em.add_field(name="CPU usage", value=f'{psutil.cpu_percent()}%')
-		em.add_field(name="Prefix", value=f"``{ctx.prefix}``")
-		em.add_field(name='Bot owners', value=f'{appinfo.owner} and mk43v3r#1422')
+		em.add_field(name="Guild prefix", value=f"``{ctx.prefix}``")
+		em.add_field(name='Bot owners', value=f'{appinfo.owner} \nmk43v3r#1422')
+		em.add_field(name='Latest commit', value=f'`{changelog}`')
 		em.set_footer(text=f'Python version: {platform.python_version()} , discord.py version: {discord.__version__}')
 		await ctx.send(embed=em)
 

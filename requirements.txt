@@ -1,8 +1,10 @@
 asyncpg
+beautifulsoup4
 discord.py
 jishaku
 lyricsgenius
 owotranslator
 psutil
 pylyrics3
+requests
 urllib3
