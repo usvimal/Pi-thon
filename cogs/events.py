@@ -31,10 +31,19 @@ class Events(commands.Cog):
 			return await ctx.send(
 				f"I don't have the following permission(s) to run this command!{self.convert_list_to_string(error.missing_perms)}")
 
-		elif isinstance(error, commands.errors.CommandNotFound):
+		elif isinstance(error, commands.BadArgument):
+			return await ctx.send(f'Uh oh there was an error:{error}')
+
+		elif isinstance(error, commands.CommandNotFound):
 			return
 
-		elif isinstance(error, discord.errors.Forbidden):
+		elif isinstance(error, commands.TooManyArguments):
+			return
+
+		elif isinstance(error, discord.Forbidden):
+			return
+
+		elif isinstance(error, discord.NotFound):
 			return
 
 		else:
