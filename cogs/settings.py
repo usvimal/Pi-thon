@@ -2,12 +2,15 @@ import config
 import discord
 
 from discord.ext import commands
+from utils.lyricsretriever import LyricsRetriever
+
 
 
 class Settings(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.config = config
+		self.lyrics_retriever = LyricsRetriever(bot)
 
 	@commands.guild_only()
 	@commands.group()
@@ -101,6 +104,7 @@ class Settings(commands.Cog):
 	async def profile(self, ctx):
 		"""View status of your settings saved in the bot"""
 		brawl_status = ''
+		current_source = self.lyrics_retriever.get_main_source(ctx.author.id)
 		if self.bot.brawlhalla_status.get(ctx.author.id):
 			brawl_status = 'Subscribed'
 		else:
@@ -109,6 +113,8 @@ class Settings(commands.Cog):
 		em = discord.Embed(title=f"{ctx.author}'s profile")
 		em.set_thumbnail(url=ctx.author.avatar_url)
 		em.add_field(name='Brawlhalla status', value=brawl_status)
+		em.add_field(name='Lyrics source', value=current_source)
+		await ctx.send(em)
 
 	@profile.command(aliases=['del', 'remove'])
 	async def delete(self, ctx):
