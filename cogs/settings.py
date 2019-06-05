@@ -97,6 +97,29 @@ class Settings(commands.Cog):
 		self.bot.brawlhalla_status[user_id] = False
 		await ctx.message.add_reaction('👍')
 
+	@commands.group()
+	async def profile(self, ctx):
+		"""View status of your settings saved in the bot"""
+		brawl_status = ''
+		if self.bot.brawlhalla_status.get(ctx.author.id):
+			brawl_status = 'Subscribed'
+		else:
+			brawl_status = 'Not subscribed'
+
+		em = discord.Embed(title=f"{ctx.author}'s profile")
+		em.set_thumbnail(url=ctx.author.avatar_url)
+		em.add_field(name='Brawlhalla status', value=brawl_status)
+
+	@profile.command(aliases=['del', 'remove'])
+	async def delete(self, ctx):
+		"""Deletes your information from the server"""
+		try:
+			del self.bot.brawlhalla_status[ctx.author.id]
+		except:
+			pass
+		async with self.bot.dbpool.acquire() as db:
+			await db.execute("DELETE FROM userprop WHERE user_id=$1", ctx.author.id)
+
 
 def setup(bot):
 	bot.add_cog(Settings(bot))
