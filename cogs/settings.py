@@ -114,7 +114,7 @@ class Settings(commands.Cog):
 		em.set_thumbnail(url=ctx.author.avatar_url)
 		em.add_field(name='Brawlhalla status', value=brawl_status)
 		em.add_field(name='Lyrics source', value=current_source)
-		await ctx.send(em)
+		await ctx.send(embed=em)
 
 	@profile.command(aliases=['del', 'remove'])
 	async def delete(self, ctx):
