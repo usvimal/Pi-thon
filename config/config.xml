@@ -17,7 +17,7 @@
 		<cog activated="True">cogs.brawlhalla</cog>
 		<cog activated="True">cogs.events</cog>
 		<cog activated="True">cogs.fun</cog>
-		<cog activated="True">cogs.helper</cog>
+		<cog activated="False">cogs.helper</cog>
 		<cog activated="True">cogs.info</cog>
 		<cog activated="True">jishaku</cog>
 		<cog activated="True">cogs.lyrics</cog>
