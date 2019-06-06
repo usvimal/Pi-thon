@@ -46,6 +46,12 @@ class Events(commands.Cog):
 		elif isinstance(error, discord.NotFound):
 			return
 
+		elif isinstance(error, discord.errors.Forbidden):
+			return
+
+		elif isinstance(error, discord.errors.NotFound):
+			return
+
 		else:
 			raise error
 
