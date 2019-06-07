@@ -23,33 +23,37 @@ class Todo(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
-		channel = self.bot.get_channel(payload.channel_id)
-		message = await channel.fetch_message(payload.message_id)
-		emoji = payload.emoji
-		user = message.guild.get_member(payload.user_id)
-
-		if user == self.bot.user or payload.channel_id != self.todo_channel_id:
-			return
 		try:
-			embed = message.embeds[0]
+			channel = self.bot.get_channel(payload.channel_id)
+			message = await channel.fetch_message(payload.message_id)
 		except:
-			if str(emoji) == '✅':
-				await message.delete()
-				await channel.send(strike(message.content))
-			if str(emoji) == '❌':
-				await message.delete()
+			return
 		else:
-			if str(emoji) == '✅':
-				striked_message = strike(embed.description)
-				author_image = embed.author.icon_url
-				author = embed.author.name
-				await message.delete()
-				em = discord.Embed(title=striked_message)
-				em.set_author(name=author, icon_url=author_image)
-				em.timestamp = message.created_at
-				await channel.send(embed=em)
-			if str(emoji) == '❌':
-				await message.delete()
+			emoji = payload.emoji
+			user = message.guild.get_member(payload.user_id)
+
+			if user == self.bot.user or payload.channel_id != self.todo_channel_id:
+				return
+			try:
+				embed = message.embeds[0]
+			except:
+				if str(emoji) == '✅':
+					await message.delete()
+					await channel.send(strike(message.content))
+				if str(emoji) == '❌':
+					await message.delete()
+			else:
+				if str(emoji) == '✅':
+					striked_message = strike(embed.description)
+					author_image = embed.author.icon_url
+					author = embed.author.name
+					await message.delete()
+					em = discord.Embed(title=striked_message)
+					em.set_author(name=author, icon_url=author_image)
+					em.timestamp = message.created_at
+					await channel.send(embed=em)
+				if str(emoji) == '❌':
+					await message.delete()
 
 
 def setup(bot):
