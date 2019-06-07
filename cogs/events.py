@@ -20,6 +20,8 @@ class Events(commands.Cog):
 		if hasattr(ctx.command, 'on_error'):
 			return
 
+		ignored_errors = (commands.CommandNotFound, commands.TooManyArguments, discord.Forbidden, discord.NotFound, discord.errors.NotFound, discord.errors.Forbidden)
+
 		if isinstance(error, commands.MissingRequiredArgument):
 			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
 
@@ -34,22 +36,7 @@ class Events(commands.Cog):
 		elif isinstance(error, commands.BadArgument):
 			return await ctx.send(f'Uh oh there was an error:{error}')
 
-		elif isinstance(error, commands.CommandNotFound):
-			return
-
-		elif isinstance(error, commands.TooManyArguments):
-			return
-
-		elif isinstance(error, discord.Forbidden):
-			return
-
-		elif isinstance(error, discord.NotFound):
-			return
-
-		elif isinstance(error, discord.errors.Forbidden):
-			return
-
-		elif isinstance(error, discord.errors.NotFound):
+		elif isinstance(error, ignored_errors):
 			return
 
 		else:
