@@ -34,7 +34,8 @@ class Info(commands.Cog):
 	@commands.command()
 	async def link(self, ctx):
 		"""link to add bot to other servers"""
-		await ctx.send('https://discordapp.com/api/oauth2/authorize?client_id=517153107604668438&permissions=0&scope=bot')
+		await ctx.send(
+			'https://discordapp.com/api/oauth2/authorize?client_id=517153107604668438&permissions=0&scope=bot')
 
 	@commands.command()
 	async def feedback(self, ctx, *, content):
@@ -57,11 +58,12 @@ class Info(commands.Cog):
 	@commands.is_owner()
 	async def dm(self, ctx, user_id: int, *, content: str):
 		user = self.bot.get_user(user_id)
-
-		msg = content + '\n\n*This is a DM sent because you had previously requested feedback or I found a bug' \
-		                ' in a command you used, I do not monitor this DM.*'
+		em = discord.Embed(title='Feedback reply', description=content)
+		em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+		em.set_footer(text='This is a DM sent because you had previously requested feedback or I found a bug '
+		                   'in a command you used, I do not monitor this DM.')
 		try:
-			await user.send(msg)
+			await user.send(embed=em)
 		except:
 			await ctx.send(f'Could not PM user by ID {user_id}.')
 		else:
@@ -71,7 +73,7 @@ class Info(commands.Cog):
 	async def info(self, ctx):
 		appinfo = await self.bot.application_info()
 		process = psutil.Process(os.getpid())
-		mem_usage = round(process.memory_info().rss/1048576, 1)
+		mem_usage = round(process.memory_info().rss / 1048576, 1)
 		url = 'https://github.com/usvimal/Pi-thon/commits/rewrite-v2.0'
 		response = requests.get(url)
 		soup = BeautifulSoup(response.text, "html.parser")
