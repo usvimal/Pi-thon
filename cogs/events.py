@@ -26,17 +26,12 @@ class Events(commands.Cog):
 			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
 
 		elif isinstance(error, commands.CheckFailure):
-			if type(error) == commands.is_owner():
-				return await ctx.send("You don't have permission to use this command!")
-
-		elif isinstance(error, commands.BotMissingPermissions):
-			return await ctx.send(
-				f"I don't have the following permission(s) to run this command!{self.convert_list_to_string(error.missing_perms)}")
+			await ctx.send(str(error))
 
 		elif isinstance(error, commands.BadArgument):
-			return await ctx.send(f'Uh oh there was an error:{error}')
+			return await ctx.send(f'Uh oh there was an error: {error}')
 
-		elif isinstance(error, ignored_errors):
+		elif hasattr(error, "original") and isinstance(error.original, ignored_errors):
 			return
 
 		else:

@@ -1,3 +1,5 @@
+import discord
+
 from discord.ext import commands
 
 
@@ -15,27 +17,22 @@ class Testing(commands.Cog):
 
 	@commands.is_owner()
 	@commands.command()
-	async def test_get_command(self, ctx, *, arg):
-		""" Test bot.get_command(command_name)"""
-		await ctx.send(ctx.bot.get_command(arg).help)
+	async def raise_error(self, ctx, *, args):
+		""" Used to raise specific errors for the purpose of testing the error handler. """
+		class DummyResponse:
+			def __init__(self):
+				self.status = None
+				self.reason = None
 
-	@commands.is_owner()
-	@commands.command()
-	async def test_walk_commands(self, ctx, *, arg):
-		""" Test cog.walk_commands()"""
-		for c in ctx.bot.get_cog(arg).walk_commands():
-			await ctx.send(c.help)
+		if args == "a":
+			raise discord.Forbidden(DummyResponse(), "")
+		elif args == "b":
+			raise discord.NotFound(DummyResponse(), "")
+		elif args == "c":
+			raise discord.errors.NotFound(DummyResponse(), "")
+		elif args == "d":
+			raise discord.errors.Forbidden(DummyResponse(), "")
 
-	@commands.is_owner()
-	@commands.command()
-	async def test_bot_cogs(self, ctx, *, arg):
-		""" Test bot.cogs"""
-		for cog_name, cog_instance in ctx.bot.cogs.items():
-			description = "No description"
-			if cog_instance.description is not None and cog_instance.description != "":
-				description = cog_instance.description
-
-			await ctx.send(f"{cog_name}, {description}")
 
 def setup(bot):
 	bot.add_cog(Testing(bot))
