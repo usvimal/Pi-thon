@@ -1,6 +1,6 @@
 asyncpg
 beautifulsoup4
-discord.py
+discord.py==1.2.2
 jishaku
 lyricsgenius
 owotranslator
