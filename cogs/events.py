@@ -35,6 +35,9 @@ class Events(commands.Cog):
 			return
 
 		else:
+			invoker = f" | Source Channel: {ctx.guild.name} | Source User: {ctx.author.name} |"
+			error.args = (error.args[0] + invoker, )
+
 			raise error
 
 	@commands.Cog.listener()
