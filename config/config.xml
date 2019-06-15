@@ -21,6 +21,7 @@
 		<cog activated="True">cogs.info</cog>
 		<cog activated="True">jishaku</cog>
 		<cog activated="True">cogs.lyrics</cog>
+		<cog activated="True">cogs.moderation</cog>
 		<cog activated="True">cogs.personal_todo</cog>
 		<cog activated="True">cogs.settings</cog>
 		<cog activated="True">cogs.testing</cog>
