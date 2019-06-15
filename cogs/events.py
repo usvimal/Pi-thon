@@ -2,25 +2,18 @@ import config
 import discord
 
 from discord.ext import commands
-import utils.checks
 
 
 class Events(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@staticmethod
-	def convert_list_to_string(unconverted_list):
-		for i in unconverted_list:
-			new_string = ",".join(map(str, unconverted_list))
-			return new_string
-
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
 		if hasattr(ctx.command, 'on_error'):
 			return
 
-		ignored_errors = (commands.CommandNotFound, commands.TooManyArguments, discord.Forbidden, discord.NotFound, discord.errors.NotFound, discord.errors.Forbidden)
+		ignored_errors = (commands.CommandNotFound, commands.TooManyArguments, discord.Forbidden, discord.NotFound, discord.errors.NotFound, discord.errors.Forbidden, commands.errors.CommandNotFound)
 
 		if isinstance(error, commands.MissingRequiredArgument):
 			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
