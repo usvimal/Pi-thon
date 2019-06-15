@@ -40,7 +40,6 @@ class Info(commands.Cog):
 	@commands.command()
 	async def feedback(self, ctx, *, content):
 		"""Send feedback to bot developer"""
-
 		em = discord.Embed(title='Feedback', colour=0x37d9b9)
 		em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
 		em.description = content
@@ -57,6 +56,7 @@ class Info(commands.Cog):
 	@commands.command()
 	@commands.is_owner()
 	async def dm(self, ctx, user_id: int, *, content: str):
+		"""Dm a user with their id"""
 		user = self.bot.get_user(user_id)
 		em = discord.Embed(title='Feedback reply', description=content)
 		em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -71,6 +71,7 @@ class Info(commands.Cog):
 
 	@commands.command(aliases=["status"])
 	async def info(self, ctx):
+		"""Bot status"""
 		appinfo = await self.bot.application_info()
 		process = psutil.Process(os.getpid())
 		mem_usage = round(process.memory_info().rss / 1048576, 1)
