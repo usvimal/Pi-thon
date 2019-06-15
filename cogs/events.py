@@ -24,7 +24,7 @@ class Events(commands.Cog):
 		elif isinstance(error, commands.BadArgument):
 			return await ctx.send(f'Uh oh there was an error: {error}')
 
-		elif hasattr(error, "original") and isinstance(error.original, ignored_errors):
+		elif isinstance(error, ignored_errors):
 			return
 
 		else:
