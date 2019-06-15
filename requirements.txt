@@ -1,7 +1,7 @@
 asyncpg
 beautifulsoup4
 discord.py==1.2.2
-jishaku
+jishaku==1.13.0
 lyricsgenius
 owotranslator
 psutil
