@@ -36,7 +36,7 @@ class Events(commands.Cog):
 
 		else:
 			# Decorate the error message with the source guild and source user.
-			invoker = f" | Source Channel: {ctx.guild.name} | Source User: {ctx.author.name} |"
+			invoker = f" | Source Channel: {ctx.guild.name} | Source User: {ctx.author.name} | Invoked command: {ctx.command}"
 			error.args = (error.args[0] + invoker, )
 
 			raise error
