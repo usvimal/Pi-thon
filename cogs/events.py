@@ -10,24 +10,32 @@ class Events(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
+		# If command has its own error handler, don't do anything
 		if hasattr(ctx.command, 'on_error'):
 			return
 
-		ignored_errors = (commands.CommandNotFound, commands.TooManyArguments, discord.Forbidden, discord.NotFound, discord.errors.NotFound, discord.errors.Forbidden, commands.errors.CommandNotFound)
+		# Get error.original if it is not the original error
+		error = getattr(error, "original", error)
 
-		if isinstance(error, commands.MissingRequiredArgument):
-			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
+		ignored_errors = (commands.errors.CommandNotFound,
+							commands.errors.TooManyArguments,
+							discord.errors.NotFound,
+							discord.errors.Forbidden)
+
+		if isinstance(error, ignored_errors):
+			return
 
 		elif isinstance(error, commands.CheckFailure):
 			await ctx.send(str(error))
 
+		elif isinstance(error, commands.MissingRequiredArgument):
+			return await ctx.send(f"Hol\' up you forgot an argument: {error.param.name}")
+
 		elif isinstance(error, commands.BadArgument):
 			return await ctx.send(f'Uh oh there was an error: {error}')
 
-		elif isinstance(error, ignored_errors):
-			return
-
 		else:
+			# Decorate the error message with the source guild and source user.
 			invoker = f" | Source Channel: {ctx.guild.name} | Source User: {ctx.author.name} |"
 			error.args = (error.args[0] + invoker, )
 

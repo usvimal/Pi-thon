@@ -41,7 +41,7 @@ class MainBot(commands.Bot):
 
 	def _add_handlers(self):
 		""" Change stdout and stderr to also print out to discord. Outputs and errors will still be printed to console. """
-		sys.tracebacklimit = 4
+		sys.tracebacklimit = 0			# Reduce traceback stack size to 0
 		sys.stdout = DiscordWriter(sys.stdout, self._logging_channel)
 		sys.stderr = DiscordWriter(sys.stderr, self._logging_channel)
 
