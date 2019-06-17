@@ -9,14 +9,14 @@ class Testing(commands.Cog):
 		self._bot = bot
 
 	@commands.is_owner()
-	@commands.command()
+	@commands.command(hidden=True)
 	async def poke_testing(self, ctx):
 		""" Utility function to check testing cog is active. """
 		command_names = " | ".join(c.name for c in self.get_commands())
 		await ctx.send(f"`Testing cog active. Test commands = {command_names}`")
 
 	@commands.is_owner()
-	@commands.command()
+	@commands.command(hidden=True)
 	async def raise_error(self, ctx, *, args):
 		""" Used to raise specific errors for the purpose of testing the error handler. """
 		class DummyResponse:
