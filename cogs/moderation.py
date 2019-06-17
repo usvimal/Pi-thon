@@ -7,7 +7,6 @@ class Moderation(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.is_owner()
 	@commands.guild_only()
 	@commands.has_permissions(manage_messages=True)
 	@commands.command(aliases=["purge"])

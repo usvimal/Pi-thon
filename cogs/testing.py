@@ -33,6 +33,12 @@ class Testing(commands.Cog):
 		elif args == "d":
 			raise discord.errors.Forbidden(DummyResponse(), "")
 
+	@commands.is_owner()
+	@commands.command(hidden=True)
+	async def test_emojis(self, ctx):
+		await ctx.send("\U0001F3B2")
+		await ctx.send("\U0000274E")
+
 
 def setup(bot):
 	bot.add_cog(Testing(bot))
