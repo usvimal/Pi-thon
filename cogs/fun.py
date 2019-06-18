@@ -26,7 +26,7 @@ class Fun(commands.Cog):
 		await ctx.send(arg)
 
 	@commands.command()
-	async def dice_game(self, ctx):
+	async def dice(self, ctx):
 		""" Roll the dice until you die (roll 4 to 6). """
 		from random import randint
 
@@ -49,7 +49,6 @@ class Fun(commands.Cog):
 		message = await ctx.send(embed=embed)
 		await message.add_reaction(roll_emoji)
 		await message.add_reaction(stop_emoji)
-		user_choice = None
 
 		# This function will handle user input
 		def progress(reaction, user):
@@ -67,7 +66,9 @@ class Fun(commands.Cog):
 
 			return True
 
+
 		# The game starts here
+		user_choice = None			# Stores the user choice made in each iteration of the while loop
 		while game_in_progress:
 			try:
 				curr_reaction, curr_user = await ctx.bot.wait_for('reaction_add', check=progress, timeout=60.0)
@@ -85,12 +86,12 @@ class Fun(commands.Cog):
 				round_number += 1
 				roll = randint(1, 6)
 
-				if roll <= 3:	# The player rolls successfully, the score will be added
+				if roll <= 3:		# The player rolls successfully, the score will be added
 					accumulated_score += roll
 					embed.description = f"| Player : {ctx.author.name} | Round : {round_number} | Game In Progress |"
 					embed.set_field_at(0, name="Score", value=f"You rolled a {roll}. Your new score is {accumulated_score}.")
 					await message.edit(embed=embed)
-				else:			# The player rolls more than 3 and die
+				else:				# The player rolls more than 3 and die
 					game_in_progress = False
 					await message.delete()
 					await ctx.send(f"`Dice Game: {ctx.author.name} rolled a {roll} and lost with a score of {accumulated_score} on Round {round_number}`")

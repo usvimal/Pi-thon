@@ -36,6 +36,7 @@ class Testing(commands.Cog):
 	@commands.is_owner()
 	@commands.command(hidden=True)
 	async def test_emojis(self, ctx):
+		""" Check if certain emojis are compatible with discord. """
 		await ctx.send("\U0001F3B2")
 		await ctx.send("\U0000274E")
 
