@@ -1,3 +1,4 @@
+import aiohttp
 import discord
 import os
 import platform
@@ -76,8 +77,11 @@ class Info(commands.Cog):
 		process = psutil.Process(os.getpid())
 		mem_usage = round(process.memory_info().rss / 1048576, 1)
 		url = 'https://github.com/usvimal/Pi-thon/commits/rewrite-v2.0'
-		response = requests.get(url)
-		soup = BeautifulSoup(response.text, "html.parser")
+		async with aiohttp.ClientSession() as session:
+			async with session.get(url) as response:
+				if response.status == 200:
+					text = await response.read()
+					soup = BeautifulSoup(text, "html.parser")
 		last_commit_image = soup.find('a', class_="commit-author tooltipped tooltipped-s user-mention")
 		last_commit = last_commit_image.find_previous('a').find_previous('a')
 		changelog = last_commit.contents[0]

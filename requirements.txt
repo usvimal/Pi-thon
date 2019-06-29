@@ -6,5 +6,4 @@ lyricsgenius
 owotranslator
 psutil
 pylyrics3
-requests
 urllib3
