@@ -1,6 +1,7 @@
 import asyncio
 
 from copy import deepcopy
+from datetime import datetime
 from discord import Embed
 from discord.ext.commands import Paginator
 from utils.text_formatter import chunks
@@ -179,7 +180,7 @@ class DelayedPrinterWrapper(PrettyTextPrinter):
 	""" Wraps the printer to wait a specified amount of time before printing. If a new message is requested during this
 		waiting time, it will be appended to the current message and the timer will reset. When the timer is up, begin
 		printing. """
-	SLEEP_DURATION = 0.5
+	SLEEP_DURATION = 2
 
 	def __init__(self, printer, delay=5.0):
 		self._printer = printer
@@ -195,8 +196,9 @@ class DelayedPrinterWrapper(PrettyTextPrinter):
 
 	async def pretty_print(self, ctx, text):
 		if self._queue is None:
+			formatted_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 			self._queue = []
-			self._text = []
+			self._text = [f"[ {formatted_now} ]"]
 			asyncio.get_event_loop().create_task(self._check_message_updates(ctx))
 		self._queue.append(text)
 
