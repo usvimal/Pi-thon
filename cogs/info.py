@@ -94,7 +94,7 @@ class Info(commands.Cog):
 		em.add_field(name="CPU usage", value=f'{psutil.cpu_percent()}%')
 		em.add_field(name="Guild prefix", value=f"``{ctx.prefix}``")
 		em.add_field(name='Bot owners', value=f'{appinfo.owner} \nmk43v3r#1422')
-		em.add_field(name='Latest commit', value=f'`[{changelog}](https://github.com/usvimal/Pi-thon/commits/rewrite-v2.0)`')
+		em.add_field(name='Latest commit', value=f'[`{changelog}`](https://github.com/usvimal/Pi-thon/commits/rewrite-v2.0)')
 		em.set_footer(text=f'Python version: {platform.python_version()} , discord.py version: {discord.__version__}')
 		await ctx.send(embed=em)
 
