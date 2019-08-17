@@ -32,7 +32,6 @@ class MainBot(commands.Bot):
 		'bs4': 'beautifulsoup4'
 	}
 
-
 	def __init__(self, *args, **kwargs):
 		super().__init__(command_prefix=self._get_prefix, **kwargs)
 
@@ -48,12 +47,12 @@ class MainBot(commands.Bot):
 
 		self._add_handlers()
 		self._display_startup_message()
+		await self.check_packages(self.bot_requirements) 
 		await self.init_postgres_connection()
 		self.database = Database(main_loop=self.loop, bot=self)
 		await self.batch_fetch_from_db()
 		await self._load_cogs()
-		await self._update_bot_games_frequently()
-		await self.check_packages(self.bot_requirements)
+		await self._update_bot_games_frequently() #this must be the last
 
 	def _add_handlers(self):
 		""" Change stdout and stderr to also print out to discord. Outputs and errors will still be printed to console. """
@@ -170,7 +169,7 @@ class MainBot(commands.Bot):
 				print('Error retrieving info on', package_name, 'Reason:', e,
 				      '\nPlease fix the dictionary items or remove them.')
 		if latest_version:
-			await self._updates_channel.send('The following modules have updates:', str(latest_version))
+			await self._updates_channel.send('The following modules have updates:' + str(latest_version))
 
 
 if __name__ == "__main__":
