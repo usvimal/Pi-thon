@@ -47,11 +47,11 @@ class MainBot(commands.Bot):
 
 		self._add_handlers()
 		self._display_startup_message()
-		await self.check_packages(self.bot_requirements) 
 		await self.init_postgres_connection()
 		self.database = Database(main_loop=self.loop, bot=self)
 		await self.batch_fetch_from_db()
 		await self._load_cogs()
+		await self.check_packages(self.bot_requirements)
 		await self._update_bot_games_frequently() #this must be the last
 
 	def _add_handlers(self):
