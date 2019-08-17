@@ -155,7 +155,6 @@ class MainBot(commands.Bot):
 		return False
 
 	async def check_packages(self, package_dict):
-		results = {}
 		latest_version = {}
 		for package_name, online_name in package_dict.items():
 			mod = importlib.import_module(package_name)
@@ -166,15 +165,12 @@ class MainBot(commands.Bot):
 			try:
 				current_version = mod.__version__
 				if current_version != online_version:
-					results[package_name] = False
 					latest_version[package_name] = online_version
-				else:
-					results[package_name] = True
 			except Exception as e:
 				print('Error retrieving info on', package_name, 'Reason:', e,
 				      '\nPlease fix the dictionary items or remove them.')
 		if latest_version:
-			await self._updates_channel.send('The following modules have updates:', latest_version)
+			await self._updates_channel.send('The following modules have updates:', str(latest_version))
 
 
 if __name__ == "__main__":
