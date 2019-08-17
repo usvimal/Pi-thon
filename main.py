@@ -2,12 +2,15 @@ import asyncio
 import asyncpg
 import config
 import discord
+import importlib
 import jishaku
+import json
 import logging
 import platform
 import random
 import sys
 import traceback
+import urllib.request
 
 from discord.ext import commands
 from utils.db import Database
@@ -17,6 +20,18 @@ from utils.discord_handler import DiscordWriter
 class MainBot(commands.Bot):
 	LOGGING_CHANNEL_ID = 573856996256776202
 	UPDATES_CHANNEL_ID = 574240405722234881
+	bot_requirements = {
+		'jishaku': 'jishaku',
+		'lyricsgenius': 'lyricsgenius',
+		'discord': 'discord.py',
+		'owotrans': 'owotranslator',
+		'psutil': 'psutil',
+		'pylyrics3': 'pylyrics3',
+		'urllib3': 'urllib3',
+		'asyncpg': 'asyncpg',
+		'bs4': 'beautifulsoup4'
+	}
+
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(command_prefix=self._get_prefix, **kwargs)
@@ -38,6 +53,7 @@ class MainBot(commands.Bot):
 		await self.batch_fetch_from_db()
 		await self._load_cogs()
 		await self._update_bot_games_frequently()
+		await self.check_packages(self.bot_requirements)
 
 	def _add_handlers(self):
 		""" Change stdout and stderr to also print out to discord. Outputs and errors will still be printed to console. """
@@ -137,6 +153,28 @@ class MainBot(commands.Bot):
 		if user.id == config.MinID or user.id == config.creatorID:  # Implement your own conditions here
 			return True
 		return False
+
+	async def check_packages(self, package_dict):
+		results = {}
+		latest_version = {}
+		for package_name, online_name in package_dict.items():
+			mod = importlib.import_module(package_name)
+			data = urllib.request.urlopen("https://www.pypi.org/pypi/" + online_name + "/json").read()
+			output = json.loads(data)
+			version_no = output['info']['version']
+			online_version = version_no[0:6]
+			try:
+				current_version = mod.__version__
+				if current_version != online_version:
+					results[package_name] = False
+					latest_version[package_name] = online_version
+				else:
+					results[package_name] = True
+			except Exception as e:
+				print('Error retrieving info on', package_name, 'Reason:', e,
+				      '\nPlease fix the dictionary items or remove them.')
+		if latest_version:
+			await self._updates_channel.send('The following modules have updates:', latest_version)
 
 
 if __name__ == "__main__":

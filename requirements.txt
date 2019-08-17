@@ -1,9 +1,9 @@
 asyncpg
 beautifulsoup4
 discord.py==1.2.2
-jishaku==1.13.0.126
-lyricsgenius
+jishaku==1.15.0.134
+lyricsgenius==1.6.0
 owotranslator
 psutil
-pylyrics3
+pylyrics3==1.0.6
 urllib3
