@@ -26,7 +26,6 @@ class MainBot(commands.Bot):
 		'discord': 'discord.py',
 		'owotrans': 'owotranslator',
 		'psutil': 'psutil',
-		'pylyrics3': 'pylyrics3',
 		'urllib3': 'urllib3',
 		'asyncpg': 'asyncpg',
 		'bs4': 'beautifulsoup4'
