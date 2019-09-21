@@ -1,6 +1,5 @@
 import asyncio
 import discord
-import config
 import owotrans
 
 from discord.ext import commands

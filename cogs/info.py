@@ -3,7 +3,6 @@ import discord
 import os
 import platform
 import psutil
-import requests
 import time
 
 from bs4 import BeautifulSoup

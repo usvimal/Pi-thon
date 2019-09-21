@@ -1,3 +1,4 @@
+import aiohttp
 import asyncio
 import asyncpg
 import config
@@ -10,7 +11,6 @@ import platform
 import random
 import sys
 import traceback
-import urllib.request
 
 from discord.ext import commands
 from utils.db import Database
@@ -51,7 +51,7 @@ class MainBot(commands.Bot):
 		await self.batch_fetch_from_db()
 		await self._load_cogs()
 		await self.check_packages(self.bot_requirements)
-		await self._update_bot_games_frequently() #this must be the last
+		await self._update_bot_games_frequently()  # this must be the last
 
 	def _add_handlers(self):
 		""" Change stdout and stderr to also print out to discord. Outputs and errors will still be printed to console. """
@@ -156,7 +156,10 @@ class MainBot(commands.Bot):
 		latest_version = {}
 		for package_name, online_name in package_dict.items():
 			mod = importlib.import_module(package_name)
-			data = urllib.request.urlopen("https://www.pypi.org/pypi/" + online_name + "/json").read()
+			session = aiohttp.ClientSession()
+			async with session.get("https://www.pypi.org/pypi/" + online_name + "/json") as resp:
+				data = await resp.read()
+			await session.close()
 			output = json.loads(data)
 			version_no = output['info']['version']
 			online_version = version_no[0:6]
