@@ -163,7 +163,7 @@ class MainBot(commands.Bot):
 			try:
 				current_version = mod.__version__
 				if current_version != online_version:
-					latest_version[package_name] = online_version
+					latest_version[package_name] = version_no
 			except Exception as e:
 				print('Error retrieving info on', package_name, 'Reason:', e,
 				      '\nPlease fix the dictionary items or remove them.')
