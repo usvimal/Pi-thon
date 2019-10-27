@@ -104,16 +104,10 @@ class Fun(commands.Cog):
 
 	@commands.command()
 	async def nword(self, ctx, member: discord.Member):
-		nword1_counter = 0
-		nword2_counter = 0
-		async for message in ctx.channel.history():
-			if message.author == member:
-				if config.nword1 in message.content.lower():
-					nword1_counter += 1
-				if config.nword2 in message.content.lower():
-					nword2_counter += 1
+		nword1_counter = self.bot.nword1_counter.get(member.id)
+		nword2_counter = self.bot.nword2_counter.get(member.id)
 		nwords = nword2_counter + nword1_counter
-		await ctx.send(f"Thank you for the request, comrade. I have looked through {member.mention}'s posting history and found {nwords} N-words, of which {nword1_counter} were hard-Rs.")
+		await ctx.send(f"Thank you for the request, comrade. I have looked through {member.mention}'s posting history and found {nwords} N-words, of which {nword1_counter} were hard-Rs since 27/10/19.")
 
 
 def setup(bot):

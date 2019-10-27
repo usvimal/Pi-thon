@@ -39,6 +39,8 @@ class MainBot(commands.Bot):
 		self.all_prefixes = {}
 		self.brawlhalla_status = {}
 		self.lyrics_source = {}
+		self.nword1_counter = {}
+		self.nword2_counter = {}
 
 	async def on_ready(self):
 		self._logging_channel = self.get_channel(self.LOGGING_CHANNEL_ID)
@@ -123,6 +125,7 @@ class MainBot(commands.Bot):
 			await self.fetch_prefixes_from_db(conn)
 			await self.fetch_brawlhalla_status_from_db(conn)
 			await self.fetch_lyrics_source_from_db(conn)
+			await self.fetch_nword_from_db(conn)
 
 	async def fetch_prefixes_from_db(self, connection):
 		prefixes = await connection.fetch("SELECT guild_id, prefix FROM guildprop;")
@@ -146,6 +149,15 @@ class MainBot(commands.Bot):
 		lyrics_source = await connection.fetch("SELECT user_id, lyrics_source FROM userprop;")
 		for row in lyrics_source:
 			self.lyrics_source[row["user_id"]] = row["lyrics_source"]
+
+	async def fetch_nword_from_db(self, connection):
+		nword1 = await connection.fetch("SELECT user_id, nword1 FROM nwordtable;")
+		nword2 = await connection.fetch("SELECT user_id, nword1 FROM nwordtable;")
+		for row in nword1:
+			self.nword1_counter[row["user_id"]] = row["nword1"]
+		for row in nword2:
+			self.nword1_counter[row["user_id"]] = row["nword2"]
+
 
 	async def is_owner(self, user: discord.User):
 		if user.id == config.MinID or user.id == config.creatorID:  # Implement your own conditions here

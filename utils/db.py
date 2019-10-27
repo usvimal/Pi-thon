@@ -40,3 +40,14 @@ class Database:
 			)
 		async with self.bot.dbpool.acquire() as conn:
 			await conn.execute(command)
+
+	async def ensure_nword_table(self):
+		command = ('CREATE TABLE IF NOT EXISTS nwordtable('							
+			'user_id BIGINT,'													
+		    'nword1 SMALLINT DEFAULT 0,'
+		    'nword2 SMALLINT DEFAULT 0,'
+		    'PRIMARY KEY (user_id)'
+			');'
+			)
+		async with self.bot.dbpool.acquire() as conn:
+			await conn.execute(command)

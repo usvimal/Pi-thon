@@ -58,6 +58,39 @@ class Events(commands.Cog):
 			await channel.send(embed=em)
 			return
 
+		if config.nword1 or config.nword2 in message.content.lower():
+			if config.nword1 in message.content.lower():
+				user_id = message.author.id
+				if user_id in self.bot.nword1_counter:
+					async with self.bot.dbpool.acquire() as conn:
+						nword1 = self.bot.nword1_counter.get(user_id)
+						nword1 += 1
+						await conn.execute(
+							'UPDATE nwordtable SET "nword1"=$1 WHERE "user_id"=$2;',
+							nword1, user_id)
+						self.bot.nword1_counter[user_id] = nword1
+				else:
+					async with self.bot.dbpool.acquire() as conn:
+						await conn.execute('INSERT INTO nwordtable ("user_id", "nword1") VALUES ($1, $2);',
+						                   user_id, 1)
+						self.bot.nword1_counter[user_id] = 1
+
+			if config.nword2 in message.content.lower():
+				user_id = message.author.id
+				if user_id in self.bot.nword2_counter:
+					async with self.bot.dbpool.acquire() as conn:
+						nword2 = self.bot.nword2_counter.get(user_id)
+						nword2 += 1
+						await conn.execute(
+							'UPDATE nwordtable SET "nword2"=$1 WHERE "user_id"=$2;',
+							nword2, user_id)
+						self.bot.nword2_counter[user_id] = nword2
+				else:
+					async with self.bot.dbpool.acquire() as conn:
+						await conn.execute('INSERT INTO nwordtable ("user_id", "nword2") VALUES ($1, $2);',
+						                   user_id, 1)
+						self.bot.nword2_counter[user_id] = 1
+
 	@commands.Cog.listener()
 	async def on_guild_join(self, guild):
 		default_prefix = config.default_prefix
