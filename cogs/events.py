@@ -18,9 +18,9 @@ class Events(commands.Cog):
 		error = getattr(error, "original", error)
 
 		ignored_errors = (commands.errors.CommandNotFound,
-							commands.errors.TooManyArguments,
-							discord.errors.NotFound,
-							discord.errors.Forbidden)
+		                  commands.errors.TooManyArguments,
+		                  discord.errors.NotFound,
+		                  discord.errors.Forbidden)
 
 		if isinstance(error, ignored_errors):
 			return
@@ -37,7 +37,7 @@ class Events(commands.Cog):
 		else:
 			# Decorate the error message with the source guild and source user.
 			invoker = f" | Source Channel: {ctx.guild.name} | Source User: {ctx.author.name} | Invoked command: {ctx.command}"
-			error.args = (error.args[0] + invoker, )
+			error.args = (error.args[0] + invoker,)
 
 			raise error
 
@@ -59,12 +59,15 @@ class Events(commands.Cog):
 			return
 
 		if config.nword1 or config.nword2 in message.content.lower():
-			if config.nword1 in message.content.lower():
+			if config.nword1 in message.content.lower() and 'snigger' not in message.content.lower():
 				user_id = message.author.id
 				if user_id in self.bot.nword1_counter or self.bot.nword2_counter:
 					async with self.bot.dbpool.acquire() as conn:
 						nword1 = self.bot.nword1_counter.get(user_id)
-						nword1 += 1
+						try:
+							nword1 += 1
+						except TypeError:
+							nword1 = 1
 						await conn.execute(
 							'UPDATE nwordtable SET "nword1"=$1 WHERE "user_id"=$2;',
 							nword1, user_id)
@@ -80,6 +83,10 @@ class Events(commands.Cog):
 				if user_id in self.bot.nword1_counter or self.bot.nword2_counter:
 					async with self.bot.dbpool.acquire() as conn:
 						nword2 = self.bot.nword2_counter.get(user_id)
+						try:
+							nword2 += 1
+						except TypeError:
+							nword2 = 1
 						nword2 += 1
 						await conn.execute(
 							'UPDATE nwordtable SET "nword2"=$1 WHERE "user_id"=$2;',
@@ -97,7 +104,7 @@ class Events(commands.Cog):
 		self.bot.all_prefixes[guild.id] = default_prefix
 		async with self.bot.dbpool.acquire() as db:
 			await db.execute('INSERT INTO guildprop ("guild_id", "prefix") VALUES ($1, $2);',
-							guild.id, default_prefix)
+			                 guild.id, default_prefix)
 
 	@commands.Cog.listener()
 	async def on_guild_remove(self, guild):
