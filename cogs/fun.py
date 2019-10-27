@@ -103,7 +103,7 @@ class Fun(commands.Cog):
 				await ctx.send(f"`Dice Game: {ctx.author.name} kept a score of {accumulated_score} on Round {round_number}`")
 
 	@commands.command()
-	async def nword(self, ctx, member : discord.Member):
+	async def nword(self, ctx, member: discord.Member):
 		nword1_counter = 0
 		nword2_counter = 0
 		async for message in ctx.channel.history():
