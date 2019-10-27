@@ -1,8 +1,8 @@
-asyncpg
-beautifulsoup4==4.8.0
-discord.py==1.2.3
+asyncpg==0.19.0
+beautifulsoup4==4.8.1
+discord.py==1.2.4
 jishaku==1.15.0.134
-lyricsgenius==1.6.0
+lyricsgenius==1.7.0
 owotranslator==0.0.6
 psutil==5.6.3
 pylyrics3==1.0.6
