@@ -8,6 +8,9 @@
 		<variable type="str">DISCORD_BOT_SECRET</variable>
 		<variable type="int">MinID</variable>
 		<variable type="str">DATABASE_URL</variable>
+		<variable type="str">nword1</variable>
+		<variable type="str">nword2</variable>
+
 	</environment>
 	<settings>
 		<default_prefix>;</default_prefix>
