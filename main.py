@@ -152,11 +152,11 @@ class MainBot(commands.Bot):
 
 	async def fetch_nword_from_db(self, connection):
 		nword1 = await connection.fetch("SELECT user_id, nword1 FROM nwordtable;")
-		nword2 = await connection.fetch("SELECT user_id, nword1 FROM nwordtable;")
+		nword2 = await connection.fetch("SELECT user_id, nword2 FROM nwordtable;")
 		for row in nword1:
 			self.nword1_counter[row["user_id"]] = row["nword1"]
 		for row in nword2:
-			self.nword1_counter[row["user_id"]] = row["nword2"]
+			self.nword2_counter[row["user_id"]] = row["nword2"]
 
 
 	async def is_owner(self, user: discord.User):
