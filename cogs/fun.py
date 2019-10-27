@@ -1,4 +1,5 @@
 import asyncio
+import config
 import discord
 import owotrans
 
@@ -107,9 +108,9 @@ class Fun(commands.Cog):
 		nword2_counter = 0
 		async for message in ctx.channel.history():
 			if message.author == member:
-				if 'nigger' in message.content.lower():
+				if config.nword1 in message.content.lower():
 					nword1_counter += 1
-				if 'nigga' in message.content.lower():
+				if config.nword2 in message.content.lower():
 					nword2_counter += 1
 		nwords = nword2_counter + nword1_counter
 		await ctx.send(f"Thank you for the request, comrade. I have looked through {member.mention}'s posting history and found {nwords} N-words, of which {nword1_counter} were hard-Rs.")
