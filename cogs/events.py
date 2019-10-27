@@ -61,7 +61,7 @@ class Events(commands.Cog):
 		if config.nword1 or config.nword2 in message.content.lower():
 			if config.nword1 in message.content.lower():
 				user_id = message.author.id
-				if user_id in self.bot.nword1_counter:
+				if user_id in self.bot.nword1_counter or self.bot.nword2_counter:
 					async with self.bot.dbpool.acquire() as conn:
 						nword1 = self.bot.nword1_counter.get(user_id)
 						nword1 += 1
@@ -77,7 +77,7 @@ class Events(commands.Cog):
 
 			if config.nword2 in message.content.lower():
 				user_id = message.author.id
-				if user_id in self.bot.nword2_counter:
+				if user_id in self.bot.nword1_counter or self.bot.nword2_counter:
 					async with self.bot.dbpool.acquire() as conn:
 						nword2 = self.bot.nword2_counter.get(user_id)
 						nword2 += 1
