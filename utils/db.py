@@ -8,6 +8,7 @@ class Database:
 		self._main_loop.create_task(self.ensure_todo_table())
 		self._main_loop.create_task(self.ensure_guild_properties())
 		self._main_loop.create_task(self.ensure_user_properties())
+		self._main_loop.create_task(self.ensure_nword_table())
 
 	async def ensure_todo_table(self):
 		command = ('CREATE TABLE IF NOT EXISTS todotable('							
