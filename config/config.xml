@@ -16,7 +16,6 @@
 		<show_startup_message>True</show_startup_message>
 	</settings>
 	<cogs>
-		<cog activated="True">cogs.brawlhalla</cog>
 		<cog activated="True">cogs.events</cog>
 		<cog activated="True">cogs.fun</cog>
 		<cog activated="False">cogs.helper</cog>
