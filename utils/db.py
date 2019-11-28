@@ -34,7 +34,6 @@ class Database:
 	async def ensure_user_properties(self):
 		command = ('CREATE TABLE IF NOT EXISTS userprop('							
 			'user_id BIGINT,'													
-		    'brawlhalla_cog BOOLEAN DEFAULT False,'
 		    'lyrics_source TEXT DEFAULT \'genius\','
 		    'PRIMARY KEY (user_id)'
 			');'

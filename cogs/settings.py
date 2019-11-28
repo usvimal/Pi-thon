@@ -57,72 +57,18 @@ class Settings(commands.Cog):
 		await ctx.send(f"Default prefix set to `{default_prefix}`.")
 
 	@commands.group()
-	async def brawlhalla(self, ctx):
-		"""Check whether the Brawlhalla feature is enabled for you"""
-		if ctx.invoked_subcommand is None:
-			if ctx.subcommand_passed:
-				await ctx.send('Oof owie, that was not a valid command 🤨')
-			else:
-				if self.bot.brawlhalla_status.get(ctx.author.id):
-					await ctx.send('You are subscribed to the brawlhalla down detector')
-				else:
-					await ctx.send('You are not subscribed to the brawlhalla down detector')
-
-	@brawlhalla.command(aliases=["on", 'subscribe'])
-	async def enable(self, ctx):
-		"""Enable Brawlhalla feature"""
-		user_id = ctx.author.id
-		if user_id in self.bot.brawlhalla_status:
-			async with self.bot.dbpool.acquire() as conn:
-				await conn.execute(
-					'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "user_id"=$2;',
-					True, user_id)
-		else:
-			async with self.bot.dbpool.acquire() as conn:
-				await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
-				                   user_id, True)
-		self.bot.brawlhalla_status[user_id] = True
-		await ctx.message.add_reaction('👍')
-
-	@brawlhalla.command(aliases=["off", 'unsubscribe'])
-	async def disable(self, ctx):
-		"""Disable Brawlhalla feature"""
-		user_id = ctx.author.id
-		if user_id in self.bot.brawlhalla_status:
-			async with self.bot.dbpool.acquire() as conn:
-				await conn.execute(
-					'UPDATE userprop SET "brawlhalla_cog"=$1 WHERE "user_id"=$2;',
-					False, user_id)
-		else:
-			async with self.bot.dbpool.acquire() as conn:
-				await conn.execute('INSERT INTO userprop ("user_id", "brawlhalla_cog") VALUES ($1, $2);',
-				                   user_id, False)
-		self.bot.brawlhalla_status[user_id] = False
-		await ctx.message.add_reaction('👍')
-
-	@commands.group()
 	async def profile(self, ctx):
 		"""View status of your settings saved in the bot"""
-		brawl_status = ''
 		current_source = self.lyrics_retriever.get_main_source(ctx.author.id)
-		if self.bot.brawlhalla_status.get(ctx.author.id):
-			brawl_status = 'Subscribed'
-		else:
-			brawl_status = 'Not subscribed'
 
 		em = discord.Embed(title=f"{ctx.author}'s profile")
 		em.set_thumbnail(url=ctx.author.avatar_url)
-		em.add_field(name='Brawlhalla status', value=brawl_status)
 		em.add_field(name='Lyrics source', value=current_source)
 		await ctx.send(embed=em)
 
 	@profile.command(aliases=['del', 'remove'])
 	async def delete(self, ctx):
 		"""Deletes your information from the server"""
-		try:
-			del self.bot.brawlhalla_status[ctx.author.id]
-		except:
-			pass
 		async with self.bot.dbpool.acquire() as db:
 			await db.execute("DELETE FROM userprop WHERE user_id=$1", ctx.author.id)
 

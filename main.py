@@ -37,7 +37,6 @@ class MainBot(commands.Bot):
 		self._logging_channel = None
 		self._updates_channel = None
 		self.all_prefixes = {}
-		self.brawlhalla_status = {}
 		self.lyrics_source = {}
 		self.nword1_counter = {}
 		self.nword2_counter = {}
@@ -123,7 +122,6 @@ class MainBot(commands.Bot):
 	async def batch_fetch_from_db(self):
 		async with self.dbpool.acquire() as conn:
 			await self.fetch_prefixes_from_db(conn)
-			await self.fetch_brawlhalla_status_from_db(conn)
 			await self.fetch_lyrics_source_from_db(conn)
 			await self.fetch_nword_from_db(conn)
 
@@ -140,11 +138,6 @@ class MainBot(commands.Bot):
 		except KeyError:
 			return commands.when_mentioned_or(config.default_prefix)(self, message)
 
-	async def fetch_brawlhalla_status_from_db(self, connection):
-		brawlhalla_status = await connection.fetch("SELECT user_id, brawlhalla_cog FROM userprop;")
-		for row in brawlhalla_status:
-			self.brawlhalla_status[row["user_id"]] = row["brawlhalla_cog"]
-
 	async def fetch_lyrics_source_from_db(self, connection):
 		lyrics_source = await connection.fetch("SELECT user_id, lyrics_source FROM userprop;")
 		for row in lyrics_source:
@@ -157,7 +150,6 @@ class MainBot(commands.Bot):
 			self.nword1_counter[row["user_id"]] = row["nword1"]
 		for row in nword2:
 			self.nword2_counter[row["user_id"]] = row["nword2"]
-
 
 	async def is_owner(self, user: discord.User):
 		if user.id == config.MinID or user.id == config.creatorID:  # Implement your own conditions here
