@@ -1,7 +1,7 @@
 asyncpg==0.20.1
 beautifulsoup4==4.9.1
 discord.py==1.4.0
-jishaku==1.18.0.194
+jishaku==1.19.0.194
 lyricsgenius==1.8.6
 owotranslator==0.0.6
 psutil==5.7.2
