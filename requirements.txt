@@ -1,4 +1,4 @@
-asyncpg==0.20.1
+asyncpg==0.21.0
 beautifulsoup4==4.9.1
 discord.py==1.4.0
 jishaku==1.19.0.194
